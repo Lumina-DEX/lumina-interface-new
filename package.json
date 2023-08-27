@@ -2,8 +2,8 @@
   "name": "lumina-interface",
   "version": "0.0.1",
   "scripts": {
-    "postinstall": "(cd ./contracts && npm install) && (cd ../ui && npm install)",
-    "build": "(cd ./contracts && npm run build) && (cd ../ui && npm run build)"
+    "postinstall": "(cd ./contracts && npm install) && (cd ./ui && npm install)",
+    "build": "(cd ./contracts && npm run build) && (cd ./ui && npm run build)"
   },
   "devDependencies": {
     "eslint": "^8.48.0",
