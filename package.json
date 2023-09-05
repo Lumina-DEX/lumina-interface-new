@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "postinstall": "(cd ./contracts && npm install) && (cd ./ui && npm install)",
+    "dev": "cd ui && npm run dev",
     "build": "(cd ./contracts && npm run build) && (cd ./ui && npm run build)"
   },
   "devDependencies": {

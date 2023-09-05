@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import ZkappWorkerClient from "./zkappWorkerClient";
+import ZkappWorkerClient from "../lib/zkappWorkerClient";
 import { PublicKey, Field } from "snarkyjs";
 import GradientBG from "../components/GradientBG.js";
 import styles from "../styles/Home.module.css";
