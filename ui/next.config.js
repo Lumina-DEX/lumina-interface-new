@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
-  pageExtensions: ["page.tsx", "page.ts", "page.jsx", "page.js"],
 
   webpack(config) {
     config.resolve.alias = {
@@ -17,7 +16,7 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: "/((?!kyc).*)",
+        source: "/(.*)",
         headers: [
           {
             key: "Cross-Origin-Opener-Policy",
@@ -26,6 +25,10 @@ const nextConfig = {
           {
             key: "Cross-Origin-Embedder-Policy",
             value: "require-corp",
+          },
+          {
+            key: "ngrok-skip-browser-warning",
+            value: "69420",
           },
         ],
       },

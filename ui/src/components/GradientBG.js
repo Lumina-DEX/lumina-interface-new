@@ -1,6 +1,5 @@
 // @ts-nocheck
-import styles from '@/styles/Home.module.css';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from "react";
 
 export default function GradientBG({ children }) {
   const canvasRef = useRef(null);
@@ -17,7 +16,7 @@ export default function GradientBG({ children }) {
 
     this.toString = function () {
       return (
-        'hsla(' + this.h + ', ' + this.s + '%, ' + this.l + '%, ' + this.a + ')'
+        "hsla(" + this.h + ", " + this.s + "%, " + this.l + "%, " + this.a + ")"
       );
     };
   }
@@ -112,7 +111,7 @@ export default function GradientBG({ children }) {
   useEffect(() => {
     if (canvasRef.current) {
       const canvas = canvasRef.current;
-      const ctx = canvas.getContext('2d');
+      const ctx = canvas.getContext("2d");
       setContext(ctx);
 
       const currentPixels = [
@@ -144,16 +143,17 @@ export default function GradientBG({ children }) {
   }, [paint, pixels, context]);
 
   return (
-    <>
-      <div className={styles.background}>
+    <div className="absolute w-screen h-screen top-0 left-0 z-50 bg-white">
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
         <canvas
-          className={styles.backgroundGradients}
+          className="block absolute top-0 left-0 w-full h-full"
           width="6"
           height="6"
           ref={canvasRef}
+          style={{ filter: "blur(150px)" }}
         />
       </div>
-      <div className={styles.container}>{children}</div>
-    </>
+      <div className="relative h-screen">{children}</div>
+    </div>
   );
 }
