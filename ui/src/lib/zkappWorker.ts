@@ -1,10 +1,10 @@
-import { Mina, PublicKey, fetchAccount } from 'snarkyjs';
+import { Mina, PublicKey, fetchAccount } from "snarkyjs";
 
 type Transaction = Awaited<ReturnType<typeof Mina.transaction>>;
 
 // ---------------------------------------------------------------------------------------
 
-import type { Add } from '../../../contracts/src/Add';
+import type { Add } from "../../../contracts/src/Add";
 
 const state = {
   Add: null as null | typeof Add,
@@ -17,13 +17,13 @@ const state = {
 const functions = {
   setActiveInstanceToBerkeley: async (args: {}) => {
     const Berkeley = Mina.Network(
-      'https://proxy.berkeley.minaexplorer.com/graphql'
+      "https://proxy.berkeley.minaexplorer.com/graphql"
     );
-    console.log('Berkeley Instance Created');
+    console.log("Berkeley Instance Created");
     Mina.setActiveInstance(Berkeley);
   },
   loadContract: async (args: {}) => {
-    const { Add } = await import('../../../contracts/build/src/Add.js');
+    const { Add } = await import("../../../contracts/build/src/Add.js");
     state.Add = Add;
   },
   compileContract: async (args: {}) => {
@@ -32,6 +32,11 @@ const functions = {
   fetchAccount: async (args: { publicKey58: string }) => {
     const publicKey = PublicKey.fromBase58(args.publicKey58);
     return await fetchAccount({ publicKey });
+  },
+  getBalance: async (args: { publicKey58: string }) => {
+    const publicKey = PublicKey.fromBase58(args.publicKey58);
+    const balance = Mina.getBalance(publicKey);
+    return JSON.stringify(balance.toJSON());
   },
   initZkappInstance: async (args: { publicKey58: string }) => {
     const publicKey = PublicKey.fromBase58(args.publicKey58);
@@ -70,9 +75,9 @@ export type ZkappWorkerReponse = {
   data: any;
 };
 
-if (typeof window !== 'undefined') {
+if (typeof window !== "undefined") {
   addEventListener(
-    'message',
+    "message",
     async (event: MessageEvent<ZkappWorkerRequest>) => {
       const returnData = await functions[event.data.fn](event.data.args);
 
@@ -85,4 +90,4 @@ if (typeof window !== 'undefined') {
   );
 }
 
-console.log('Web Worker Successfully Initialized.');
+console.log("Web Worker Successfully Initialized.");

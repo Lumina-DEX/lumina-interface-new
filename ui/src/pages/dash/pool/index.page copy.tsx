@@ -1,7 +1,9 @@
+import Layout from "@/components/Layout";
 import useSupabaseFunctions from "@/services/supabase";
 import useAccount from "@/states/useAccount";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { Button } from "react-daisyui";
 
 function PoolPage() {
   const router = useRouter();
@@ -29,9 +31,15 @@ function PoolPage() {
       <h1>Permissioned Pool Page</h1>
 
       {kycVerified ? (
-        <p>List Permissioned Pools</p>
+        <ul>
+          <li>pool1</li>
+          <li>pool2</li>
+          <li>pool3</li>
+        </ul>
       ) : (
-        <button onClick={verify}>Permissioned</button>
+        <Button color="primary" onClick={verify}>
+          Permissioned
+        </Button>
       )}
     </div>
   );

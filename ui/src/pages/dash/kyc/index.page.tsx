@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { ReactElement, useState } from "react";
 import ZKPid from "@/services/zkpid";
 import { useSearchParams } from "next/navigation";
+import Layout from "@/components/Layout";
+import { Button } from "react-daisyui";
+import { NextPageWithLayout } from "@/pages/_app.page";
 
-function KYCPage() {
+const KYCPage: NextPageWithLayout = () => {
   const searchParams = useSearchParams();
 
   const address = searchParams.get("address");
@@ -40,23 +43,21 @@ function KYCPage() {
 
   if (url) {
     return (
-      <div className="card max-w-lg h-96">
-        <iframe
-          id="iframe"
-          title="Lumina KYC"
-          width="100%"
-          height="100%"
-          src={url}
-          allow="cross-origin-isolated"
-          // @ts-ignore
-          credentialless="true"
-        ></iframe>
-      </div>
+      <iframe
+        id="iframe"
+        title="Lumina KYC"
+        width="100%"
+        height="100%"
+        src={url}
+        allow="cross-origin-isolated"
+        // @ts-ignore
+        credentialless="true"
+      ></iframe>
     );
   }
 
   return (
-    <div className="card max-w-lg p-6 gap-6">
+    <>
       <div className="flex flex-col items-center">
         <h1 className="font-bold text-2xl">
           Welcome to ZKP-ID check connection
@@ -100,12 +101,16 @@ function KYCPage() {
       </div>
 
       <div className="w-full">
-        <button color="primary" onClick={handleStartVerification}>
+        <Button color="primary" onClick={handleStartVerification}>
           Start Verification
-        </button>
+        </Button>
       </div>
-    </div>
+    </>
   );
-}
+};
+
+KYCPage.getLayout = function getLayout(page: ReactElement) {
+  return <Layout>{page}</Layout>;
+};
 
 export default KYCPage;

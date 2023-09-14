@@ -3,6 +3,7 @@ import GradientBG from "@/components/GradientBG";
 import { PublicKey } from "snarkyjs";
 import ZkappWorkerClient from "@/lib/zkappWorkerClient";
 import { useEffect, useState } from "react";
+import { MINA_SUB_DECIMAL } from "@/lib/wallet";
 
 export default function AccountUpdater() {
   const state = useAccount();
@@ -51,7 +52,7 @@ export default function AccountUpdater() {
         console.log("Checking if fee payer account exists...");
 
         const res = await zkappWorkerClient.fetchAccount({
-          publicKey: publicKey!,
+          publicKeyBase58: publicKeyBase58!,
         });
         const accountExists = res.error == null;
 
@@ -92,7 +93,7 @@ export default function AccountUpdater() {
           setDisplayText("Checking if fee payer account exists...");
           console.log("Checking if fee payer account exists...");
           const res = await state.zkappWorkerClient!.fetchAccount({
-            publicKey: state.publicKey!,
+            publicKeyBase58: state.publicKeyBase58!,
           });
           const accountExists = res.error == null;
           if (accountExists) {
@@ -101,6 +102,13 @@ export default function AccountUpdater() {
           await new Promise((resolve) => setTimeout(resolve, 5000));
         }
         state.update({ accountExists: true });
+      } else if (state.hasBeenSetup && state.accountExists) {
+        const balance = await state.zkappWorkerClient!.getBalance(
+          state.publicKeyBase58!
+        );
+        state.update({
+          balances: { mina: Number(balance.toString()) / MINA_SUB_DECIMAL },
+        });
       }
     })();
   }, [state.hasBeenSetup]);
