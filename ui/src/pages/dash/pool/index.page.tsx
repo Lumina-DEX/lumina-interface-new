@@ -12,7 +12,7 @@ import type { NextPageWithLayout } from "@/pages/_app.page";
 const PoolPage: NextPageWithLayout = () => {
   const router = useRouter();
 
-  const permissionLessPools: Pool[] = usePools((state) => state.pools);
+  const pools: Pool[] = usePools((state) => state.pools);
   const [tabValue, setTabValue] = useState(0);
 
   return (
@@ -50,8 +50,8 @@ const PoolPage: NextPageWithLayout = () => {
       <Divider className="bg-primary h-1 m-0" />
 
       <div className="w-full py-6">
-        {tabValue === 0 && <PermissionLessPools pools={permissionLessPools} />}
-        {tabValue === 1 && <PermissionedPools pools={[]} />}
+        {tabValue === 0 && <PermissionLessPools pools={pools} />}
+        {tabValue === 1 && <PermissionedPools pools={pools} />}
       </div>
     </div>
   );

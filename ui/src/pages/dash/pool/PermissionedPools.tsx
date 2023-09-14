@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import SearchInput from "@/components/Input/SearchInput";
 import CurrencyFormat from "react-currency-format";
 import { Avatar, Button, Table } from "react-daisyui";
@@ -6,6 +6,7 @@ import { Pool } from "@/types/pool";
 import { connect } from "@/lib/wallet";
 import useAccount from "@/states/useAccount";
 import { useRouter } from "next/router";
+import useSupabaseFunctions from "@/services/supabase";
 
 interface Props {
   pools: Pool[];
@@ -13,9 +14,26 @@ interface Props {
 
 const PermissionedPools: React.FC<Props> = ({ pools }) => {
   const router = useRouter();
-  const address = useAccount((state) => state.publicKeyBase58);
-  const walletConnected = useAccount((state) => state.hasBeenSetup);
-  const kycVerified = useAccount((state) => state.kycVerified);
+  const { address, walletConnected, kycVerified, accountUpdate } = useAccount(
+    (state) => ({
+      address: state.publicKeyBase58,
+      walletConnected: state.hasBeenSetup,
+      kycVerified: state.kycVerified,
+      accountUpdate: state.update,
+    })
+  );
+  const { getPermissioned } = useSupabaseFunctions();
+
+  useEffect(() => {
+    if (address) {
+      getPermissioned(address).then((response) => {
+        const { status, data } = response;
+        if (status === 200) {
+          accountUpdate({ kycVerified: !!data });
+        }
+      });
+    }
+  }, [address]);
 
   const verify = () => {
     router.push({ pathname: "/dash/kyc", query: { address } });
