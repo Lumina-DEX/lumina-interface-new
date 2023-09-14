@@ -49,7 +49,7 @@ export default async function handler(
     const result = await supabase.from("permissions").insert({
       wallet_address: walletAddress,
       zkp,
-      mode: process.env.NODE_ENV,
+      mode: process.env.NEXT_PUBLIC_NODE_ENV,
     });
 
     console.log({ result });

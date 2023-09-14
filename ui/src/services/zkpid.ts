@@ -12,7 +12,7 @@ export default class ZKPid {
     this.zkPidMainUrl = process.env.NEXT_PUBLIC_ZKPID_URL;
     this.customerId = process.env.NEXT_PUBLIC_ZKPID_CUSTOMER_ID;
     this.secretKey = process.env.NEXT_PUBLIC_ZKPID_SECRET_KEY;
-    this.env = process.env.NODE_ENV;
+    this.env = process.env.NEXT_PUBLIC_NODE_ENV;
     this.token = "";
   }
 
