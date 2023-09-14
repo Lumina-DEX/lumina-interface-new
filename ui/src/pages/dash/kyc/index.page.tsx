@@ -43,21 +43,23 @@ const KYCPage: NextPageWithLayout = () => {
 
   if (url) {
     return (
-      <iframe
-        id="iframe"
-        title="Lumina KYC"
-        width="100%"
-        height="100%"
-        src={url}
-        allow="cross-origin-isolated"
-        // @ts-ignore
-        credentialless="true"
-      ></iframe>
+      <div className="card max-w-3xl p-6 gap-6 h-[80vh]">
+        <iframe
+          id="iframe"
+          title="Lumina KYC"
+          width="100%"
+          height="100%"
+          src={url}
+          allow="cross-origin-isolated"
+          // @ts-ignore
+          credentialless="true"
+        ></iframe>
+      </div>
     );
   }
 
   return (
-    <>
+    <div className="card max-w-3xl p-6 gap-6">
       <div className="flex flex-col items-center">
         <h1 className="font-bold text-2xl">
           Welcome to ZKP-ID check connection
@@ -100,12 +102,12 @@ const KYCPage: NextPageWithLayout = () => {
         </ul>
       </div>
 
-      <div className="w-full">
+      <div className="w-full flex justify-center">
         <Button color="primary" onClick={handleStartVerification}>
           Start Verification
         </Button>
       </div>
-    </>
+    </div>
   );
 };
 
