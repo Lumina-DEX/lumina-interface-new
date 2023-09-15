@@ -27,9 +27,10 @@ const PermissionedPools: React.FC<Props> = ({ pools }) => {
   useEffect(() => {
     if (address) {
       getPermissioned(address).then((response) => {
+        console.log({ response });
         const { status, data } = response;
-        if (status === 200) {
-          accountUpdate({ kycVerified: !!data });
+        if (status === 200 && data) {
+          accountUpdate({ kycVerified: !!data[0] });
         }
       });
     }
