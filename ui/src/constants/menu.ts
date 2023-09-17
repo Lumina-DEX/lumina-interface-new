@@ -1,42 +1,38 @@
 export const Logo = {
-  imageUrl: '',
-  title: 'Lumina'
+  imageUrl: "",
+  title: "Lumina",
 };
 
 export const MenuItems = [
   {
-    name: 'Trade',
-    link: 'trade'
+    name: "Trade",
+    link: "trade",
   },
   {
-    name: 'Pool',
-    link: 'pool'
+    name: "Pool",
+    link: "pool",
   },
   {
-    name: 'Stake',
-    link: 'stake'
+    name: "Transfer",
+    link: "transfer",
   },
   {
-    name: 'Transfer',
-    link: 'transfer'
-  },
-  {
-    name: 'Info',
-    link: 'info'
+    name: "Info",
+    link: "info",
   },
 ];
 
 export const WalletDropdownList = [
   {
-    label: 'Explore',
-    href: 'https://etherscan.io/'
+    label: "Explore",
+    href: "https://etherscan.io/",
   },
   {
-    label: 'Transactions',
-    href: '#'
+    label: "Transactions",
+    href: "#",
   },
   {
-    label: 'Proposals',
-    href: '#'
+    label: "Proposals",
+    href: "#",
   },
-]
+];

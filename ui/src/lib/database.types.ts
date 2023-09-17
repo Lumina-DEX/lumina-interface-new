@@ -14,6 +14,7 @@ export interface Database {
           created_at: string
           id: string
           mode: string | null
+          user_id: string | null
           wallet_address: string | null
           zkp: string | null
         }
@@ -21,6 +22,7 @@ export interface Database {
           created_at?: string
           id?: string
           mode?: string | null
+          user_id?: string | null
           wallet_address?: string | null
           zkp?: string | null
         }
@@ -28,10 +30,18 @@ export interface Database {
           created_at?: string
           id?: string
           mode?: string | null
+          user_id?: string | null
           wallet_address?: string | null
           zkp?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "permissions_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
       }
     }
     Views: {
