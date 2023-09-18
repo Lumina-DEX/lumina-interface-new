@@ -9,11 +9,17 @@ export default function useSupabaseFunctions() {
 
   const getPermissioned = useCallback(
     (walletAddress: string) =>
-      supabase
-        .from("permissions")
-        .select("*")
-        .eq("wallet_address", walletAddress)
-        .eq("mode", process.env.NEXT_PUBLIC_ZKPID_TEST_MODE!),
+      process.env.NEXT_PUBLIC_ZKPID_TEST_MODE
+        ? supabase
+            .from("permissions")
+            .select("*")
+            .eq("wallet_address", walletAddress)
+            .eq("mode", process.env.NEXT_PUBLIC_ZKPID_TEST_MODE)
+        : supabase
+            .from("permissions")
+            .select("*")
+            .eq("wallet_address", walletAddress)
+            .is("mode", null),
     [supabase]
   );
 

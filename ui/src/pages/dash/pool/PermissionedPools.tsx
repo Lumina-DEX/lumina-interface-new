@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import SearchInput from "@/components/Input/SearchInput";
 import CurrencyFormat from "react-currency-format";
 import { Avatar, Button, Table } from "react-daisyui";
@@ -23,24 +23,32 @@ const PermissionedPools: React.FC<Props> = ({ pools }) => {
     })
   );
   const { getPermissioned } = useSupabaseFunctions();
+  const [checkingAttestation, setCheckingAttestation] = useState(false);
 
   useEffect(() => {
     if (address) {
+      setCheckingAttestation(true);
       getPermissioned(address).then((response) => {
         const { status, data } = response;
         if (status === 200 && data) {
           accountUpdate({ kycVerified: !!data[0] });
         }
+        setCheckingAttestation(false);
       });
     }
     return () => {
       accountUpdate({ kycVerified: false });
+      setCheckingAttestation(false);
     };
   }, [address]);
 
   const verify = () => {
     router.push({ pathname: "/dash/kyc", query: { address } });
   };
+
+  if (checkingAttestation) {
+    return <>Loading...</>;
+  }
 
   return (
     <>
