@@ -4,9 +4,12 @@ import { useSearchParams } from "next/navigation";
 import Layout from "@/components/Layout";
 import { Button } from "react-daisyui";
 import { NextPageWithLayout } from "@/pages/_app.page";
+import { FaTimes } from "react-icons/fa";
+import { useRouter } from "next/router";
 
 const KYCPage: NextPageWithLayout = () => {
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   const address = searchParams.get("address");
   const [url, setUrl] = useState("");
@@ -41,9 +44,13 @@ const KYCPage: NextPageWithLayout = () => {
     }
   };
 
+  const onClose = () => {
+    router.push("/dash");
+  };
+
   if (url) {
     return (
-      <div className="card max-w-3xl p-6 gap-6 h-[80vh]">
+      <div className="card max-w-3xl p-6 gap-6 h-[80vh] relative">
         <iframe
           id="iframe"
           title="Lumina KYC"
@@ -54,6 +61,14 @@ const KYCPage: NextPageWithLayout = () => {
           // @ts-ignore
           credentialless="true"
         ></iframe>
+        <Button
+          className="absolute top-2 right-2"
+          shape="circle"
+          variant="link"
+          onClick={onClose}
+        >
+          <FaTimes size={24} />
+        </Button>
       </div>
     );
   }

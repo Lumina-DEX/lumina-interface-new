@@ -19,6 +19,10 @@ export default async function handler(
 
   try {
     console.log("/api/kyc", req.body);
+
+    await supabase.from("logs").insert({
+      body: JSON.stringify(req.body),
+    });
     // {
     //   data: {
     //     address: 'B62qoEM26H9XzUhWQxjzpNN4B5ysMdAW7YnbRRbj3M3sStdyn3e8Npc',
@@ -35,10 +39,17 @@ export default async function handler(
     //     }
     //   }
     // }
-    const { payload } = req.body;
+    const {
+      data: { test },
+      payload,
+    } = req.body;
 
     if (payload.data.error) {
-      throw "payload.data.error";
+      throw payload.data.error;
+    }
+
+    if (test && test !== "APPROVED") {
+      throw "Verification Failed!";
     }
 
     const { jwt } = payload.data;
@@ -49,10 +60,13 @@ export default async function handler(
     const result = await supabase.from("permissions").insert({
       wallet_address: walletAddress,
       zkp,
-      mode: process.env.NEXT_PUBLIC_NODE_ENV,
+      mode: test,
     });
 
-    console.log({ result });
+    console.log({
+      record: { walletAddress, zkp, mode: test },
+      result,
+    });
 
     res.status(200);
   } catch (e) {

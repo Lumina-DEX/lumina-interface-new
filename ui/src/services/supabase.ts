@@ -13,7 +13,7 @@ export default function useSupabaseFunctions() {
         .from("permissions")
         .select("*")
         .eq("wallet_address", walletAddress)
-        .eq("mode", process.env.NEXT_PUBLIC_NODE_ENV!),
+        .eq("mode", process.env.NEXT_PUBLIC_ZKPID_TEST_MODE!),
     [supabase]
   );
 

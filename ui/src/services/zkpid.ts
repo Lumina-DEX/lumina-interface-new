@@ -3,7 +3,7 @@ export default class ZKPid {
   private zkPidMainUrl;
   private customerId;
   private secretKey;
-  private env;
+  private testMode;
 
   private token;
 
@@ -12,7 +12,7 @@ export default class ZKPid {
     this.zkPidMainUrl = process.env.NEXT_PUBLIC_ZKPID_URL;
     this.customerId = process.env.NEXT_PUBLIC_ZKPID_CUSTOMER_ID;
     this.secretKey = process.env.NEXT_PUBLIC_ZKPID_SECRET_KEY;
-    this.env = process.env.NEXT_PUBLIC_NODE_ENV;
+    this.testMode = process.env.NEXT_PUBLIC_ZKPID_TEST_MODE;
     this.token = "";
   }
 
@@ -62,7 +62,7 @@ export default class ZKPid {
         body: JSON.stringify({
           address: req.address,
           uid: req.uid,
-          test: this.env === "development" ? "APPROVED" : undefined,
+          test: this.testMode,
         }),
       })
     ).json();
