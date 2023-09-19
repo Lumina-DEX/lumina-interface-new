@@ -27,7 +27,7 @@ export default function App({
   return (
     <>
       <Head>
-        <title>Lumina</title>
+        <title>Lumina DEX</title>
       </Head>
       <SessionContextProvider
         supabaseClient={supabase}

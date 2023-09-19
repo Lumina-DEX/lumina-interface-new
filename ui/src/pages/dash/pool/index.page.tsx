@@ -41,7 +41,7 @@ const PoolPage: NextPageWithLayout = () => {
         <Button
           className="normal-case"
           color="secondary"
-          onClick={() => router.push("/add")}
+          // onClick={() => router.push("/add")}
         >
           + Add Liquidity
         </Button>

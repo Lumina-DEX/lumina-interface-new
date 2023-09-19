@@ -1,11 +1,10 @@
 import { Database } from "@/lib/database.types";
-import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
-import { SupabaseClient, User } from "@supabase/supabase-js";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { SupabaseClient } from "@supabase/supabase-js";
 import { useCallback } from "react";
 
 export default function useSupabaseFunctions() {
   const supabase: SupabaseClient<Database> = useSupabaseClient();
-  const user: User | null = useUser();
 
   const getPermissioned = useCallback(
     (walletAddress: string) =>
