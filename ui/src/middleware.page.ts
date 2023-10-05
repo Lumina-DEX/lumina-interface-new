@@ -5,7 +5,7 @@ import type { NextRequest } from "next/server";
 
 const middlewares = {
   // "/api": apiMiddleware,
-  "/dash": mainMiddleware,
+  // "/dash": mainMiddleware,
 } as const;
 
 export const config = {
@@ -22,16 +22,16 @@ export async function middleware(req: NextRequest) {
 
   if (req.nextUrl.pathname === "/dash") {
     const redirectUrl = req.nextUrl.clone();
-    redirectUrl.pathname = "/dash/pool";
+    redirectUrl.pathname = "/dash/swap";
 
     return NextResponse.redirect(redirectUrl);
   }
 
-  for (const [prefix, middleware] of Object.entries(middlewares)) {
-    if (req.nextUrl.pathname.startsWith(prefix)) {
-      return middleware(req);
-    }
-  }
+  // for (const [prefix, middleware] of Object.entries(middlewares)) {
+  //   if (req.nextUrl.pathname.startsWith(prefix)) {
+  //     return middleware(req);
+  //   }
+  // }
 }
 
 async function mainMiddleware(req: NextRequest) {

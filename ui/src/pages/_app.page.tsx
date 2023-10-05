@@ -9,6 +9,7 @@ import { Database } from "@/lib/database.types";
 import { NextPage } from "next";
 import Updaters from "@/updaters";
 import Head from "next/head";
+import LockPage from "./lock";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -21,6 +22,9 @@ export default function App({
   Component: NextPageWithLayout;
   initialSession: Session;
 }) {
+  const token =
+    (typeof window !== "undefined" && window?.localStorage?.getItem("token")) ||
+    "";
   const [supabase] = useState(() => createPagesBrowserClient<Database>());
   const getLayout = Component.getLayout ?? ((page) => page);
 
@@ -33,8 +37,12 @@ export default function App({
         supabaseClient={supabase}
         initialSession={pageProps.initialSession}
       >
-        {getLayout(<Component {...pageProps} />)}
-        <Updaters />
+        {!token || Number(token) < new Date().getTime() ? (
+          <LockPage />
+        ) : (
+          getLayout(<Component {...pageProps} />)
+        )}
+        {/* <Updaters /> */}
       </SessionContextProvider>
     </>
   );

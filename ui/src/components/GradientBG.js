@@ -143,7 +143,7 @@ export default function GradientBG({ children }) {
   }, [paint, pixels, context]);
 
   return (
-    <div className="absolute w-screen h-screen top-0 left-0 z-50 bg-white">
+    <div className="fixed w-screen h-screen top-0 left-0 z-50 bg-white">
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
         <canvas
           className="block absolute top-0 left-0 w-full h-full"

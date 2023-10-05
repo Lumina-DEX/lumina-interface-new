@@ -6,7 +6,7 @@ export const Logo = {
 export const MenuItems = [
   {
     name: "Trade",
-    link: "trade",
+    link: "swap",
   },
   {
     name: "Pool",
