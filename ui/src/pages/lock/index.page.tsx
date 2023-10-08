@@ -1,15 +1,21 @@
 import React, { useState } from "react";
 import { Form, Input } from "react-daisyui";
+import { useCookies } from "react-cookie";
+import { useRouter } from "next/router";
 
 const LOCK_PASSWORD = process.env.NEXT_PUBLIC_PASSWORD;
 
 function LockPage() {
+  const router = useRouter();
+  const [cookies, setCookie] = useCookies(["expired_at"]);
   const [password, setPassword] = useState("");
 
   const onSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
     if (!!LOCK_PASSWORD && LOCK_PASSWORD === password) {
       const expired_at = new Date().getTime() + 1000 * 60 * 60 * 2; // 2 hours
-      localStorage.setItem("token", expired_at.toString());
+      setCookie("expired_at", expired_at.toString());
+      router.push("/");
     }
   };
 

@@ -27,6 +27,17 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(redirectUrl);
   }
 
+  if (req.nextUrl.pathname.startsWith("/dash")) {
+    const cookie = req.cookies.get("expired_at");
+    const expiredAt = cookie?.value;
+    const isAlive = !!expiredAt && Number(expiredAt) >= new Date().getTime();
+    if (!isAlive) {
+      return NextResponse.redirect(new URL("/lock", req.url));
+    }
+  }
+
+  return NextResponse.next();
+
   // for (const [prefix, middleware] of Object.entries(middlewares)) {
   //   if (req.nextUrl.pathname.startsWith(prefix)) {
   //     return middleware(req);
