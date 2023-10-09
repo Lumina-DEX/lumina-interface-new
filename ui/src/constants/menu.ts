@@ -5,7 +5,7 @@ export const Logo = {
 
 export const MenuItems = [
   {
-    name: "Trade",
+    name: "Swap",
     link: "swap",
   },
   {
@@ -15,10 +15,6 @@ export const MenuItems = [
   {
     name: "Transfer",
     link: "transfer",
-  },
-  {
-    name: "Info",
-    link: "info",
   },
 ];
 

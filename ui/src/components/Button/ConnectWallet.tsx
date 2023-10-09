@@ -91,7 +91,12 @@ const ConnectWallet = () => {
             </Dropdown.Menu>
           </Dropdown>
         ) : (
-          <Button onClick={handleConnectWallet}>Connect Wallet</Button>
+          <Button
+            className="btn-primary text-white"
+            onClick={handleConnectWallet}
+          >
+            Connect Wallet
+          </Button>
         )}
       </div>
     </div>

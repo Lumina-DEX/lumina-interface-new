@@ -32,7 +32,7 @@ const Header = () => {
         className="font-sans"
       >
         <Navbar className="justify-between">
-          <div className="flex-none lg:hidden">
+          <div className="flex-none md:hidden">
             <Button shape="square" color="ghost" onClick={toggleVisible}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -49,34 +49,36 @@ const Header = () => {
               </svg>
             </Button>
             <div
-              className="font-primary flex-1 px-2 mx-2 text-[38px] font-bold cursor-pointer"
-              onClick={() => (window.location.href = "/trade")}
-            >
-              {Logo.title}
-            </div>
+              className="flex-1 mx-2 cursor-pointer w-52 h-12"
+              style={{
+                backgroundImage: "url(/assets/logo/logo.png)",
+                backgroundSize: "cover",
+              }}
+              onClick={() => (window.location.href = "/")}
+            ></div>
           </div>
-          <div className="flex gap-x-6">
+          <div className="flex">
             <div
-              className="font-primary hidden lg:block flex-1 px-2 mx-2 text-[38px] font-bold cursor-pointer"
-              onClick={() => (window.location.href = "/trade")}
-            >
-              {Logo.title}
-            </div>
-            <div className="flex-none hidden lg:block">
-              <div className="relative top-2">
-                <Menu horizontal={true} className="flex flex-grow gap-6 ">
-                  {MenuItems.map((item, index) => (
-                    <Link
-                      key={index}
-                      href={item.link}
-                      className="text-black focus:font-bold font-primary text-xl"
-                    >
-                      {item.name}
-                    </Link>
-                  ))}
-                </Menu>
-              </div>
-            </div>
+              className="hidden md:block flex-1 mx-2 cursor-pointer w-52 h-12"
+              style={{
+                backgroundImage: "url(/assets/logo/logo.png)",
+                backgroundSize: "cover",
+              }}
+              onClick={() => (window.location.href = "/")}
+            ></div>
+          </div>
+          <div className="hidden md:block">
+            <Menu horizontal={true} className="flex flex-grow gap-6 ">
+              {MenuItems.map((item, index) => (
+                <Link
+                  key={index}
+                  href={item.link}
+                  className="focus:font-bold font-primary text-xl active:font-bold visited:font-bold"
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </Menu>
           </div>
           <ConnectWallet />
         </Navbar>

@@ -7,7 +7,7 @@ import { connect } from "@/lib/wallet";
 import useAccount from "@/states/useAccount";
 import { useRouter } from "next/router";
 import useSupabaseFunctions from "@/services/supabase";
-
+import { CgUnavailable } from "react-icons/cg";
 interface Props {
   pools: Pool[];
 }
@@ -92,6 +92,7 @@ const PermissionedPools: React.FC<Props> = ({ pools }) => {
                     <span className="uppercase text-base">
                       {pool.x.symbol} / {pool.y.symbol}
                     </span>
+                    <CgUnavailable />
                   </div>
                   <CurrencyFormat
                     displayType="text"
@@ -121,16 +122,10 @@ const PermissionedPools: React.FC<Props> = ({ pools }) => {
           </Table.Body>
         </Table>
       ) : (
-        <div className="text-center mt-4">
-          {walletConnected ? (
-            <Button color="primary" onClick={verify}>
-              Join
-            </Button>
-          ) : (
-            <Button color="secondary" onClick={connect}>
-              Connect wallet
-            </Button>
-          )}
+        <div className="flex justify-center">
+          <button className="btn h-8 min-h-0 shadow-md btn-primary w-[110px] ">
+            Start KYC
+          </button>
         </div>
       )}
     </>
