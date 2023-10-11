@@ -8,6 +8,7 @@ import useAccount from "@/states/useAccount";
 import { useRouter } from "next/router";
 import useSupabaseFunctions from "@/services/supabase";
 import { CgUnavailable } from "react-icons/cg";
+import Link from "next/link";
 interface Props {
   pools: Pool[];
 }
@@ -51,7 +52,7 @@ const PermissionedPools: React.FC<Props> = ({ pools }) => {
   }
 
   return (
-    <>
+    <div className="py-2">
       {kycVerified ? (
         <Table className="rounded-box px-8" zebra>
           <Table.Head className="text-base text-default">
@@ -123,12 +124,15 @@ const PermissionedPools: React.FC<Props> = ({ pools }) => {
         </Table>
       ) : (
         <div className="flex justify-center">
-          <button className="btn h-8 min-h-0 shadow-md btn-primary w-[110px] ">
+          <Link
+            href="/dash/kyc"
+            className="btn h-8 min-h-0 shadow-md btn-primary w-[110px] "
+          >
             Start KYC
-          </button>
+          </Link>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

@@ -1,23 +1,22 @@
+import Layout from "@/components/Layout";
 import TokenSelector from "@/components/Selector/TokenSelector";
 import useTokens from "@/states/useTokens";
 import clsx from "classnames";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, ReactElement } from "react";
 import { Button, Tabs } from "react-daisyui";
 import CurrencyFormat from "react-currency-format";
 import useAccount from "@/states/useAccount";
 import Decimal from "decimal.js";
 import { Token } from "@/types/token";
-import {
-  createSearchParams,
-  useLocation,
-  useNavigate,
-  useSearchParams,
-} from "react-router-dom";
+import { useSearchParams, usePathname } from "next/navigation";
+import { useRouter } from "next/router";
+import type { NextPageWithLayout } from "@/pages/_app.page";
 
-const AddLiquidityPanel = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+const AddLiquidityPanel: NextPageWithLayout = () => {
+  const router = useRouter();
+
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   const tokens = useTokens((state) => state.tokens);
   const balances = useAccount((state) => state.balances);
@@ -40,40 +39,42 @@ const AddLiquidityPanel = () => {
 
   useEffect(() => {
     setFromAmount("0");
-    let curPath = location.pathname;
-    let tmp = searchParams.get("fromToken");
     if (fromToken === toToken) {
       setFromToken(toToken);
-      setToToken(tokens.find((token) => token.symbol === tmp)!);
+      setToToken(
+        tokens.find((token) => token.symbol === searchParams.get("fromToken"))!
+      );
     }
-    navigate({
-      pathname: curPath,
-      search: createSearchParams({
-        fromToken: fromToken.symbol,
-        toToken: toToken.symbol,
-      }).toString(),
+    const newSearchParams = new URLSearchParams();
+    newSearchParams.append("fromToken", fromToken.symbol);
+    newSearchParams.append("toToken", toToken.symbol);
+
+    router.push({
+      pathname: router.pathname,
+      search: newSearchParams.toString(),
     });
   }, [fromToken]);
 
   useEffect(() => {
     setFromAmount("0");
-    var curPath = location.pathname;
-    let tmp = searchParams.get("toToken");
     if (fromToken === toToken) {
-      setFromToken(tokens.find((token) => token.symbol === tmp)!);
+      setFromToken(
+        tokens.find((token) => token.symbol === searchParams.get("toToken"))!
+      );
       setToToken(fromToken);
     }
-    navigate({
-      pathname: curPath,
-      search: createSearchParams({
-        fromToken: fromToken.symbol,
-        toToken: toToken.symbol,
-      }).toString(),
+    const newSearchParams = new URLSearchParams();
+    newSearchParams.append("fromToken", fromToken.symbol);
+    newSearchParams.append("toToken", toToken.symbol);
+
+    router.push({
+      pathname: router.pathname,
+      search: newSearchParams.toString(),
     });
   }, [toToken]);
 
   return (
-    <div className="bg-light-200 rounded-3xl shadow-lg flex flex-col w-[470px] overflow-hidden">
+    <div className="bg-light-200 rounded-3xl shadow-lg flex flex-col w-[470px] overflow-hidden max-[500px]:w-[400px] max-[420px]:w-[300px]">
       {/* from */}
       <div className="w-full p-8 bg-light-100">
         <div className="flex flex-col w-full gap-4">
@@ -90,7 +91,7 @@ const AddLiquidityPanel = () => {
           <div className="flex justify-between items-center w-full">
             <div className="flex items-baseline gap-2">
               <CurrencyFormat
-                className="bg-transparent text-default text-3xl focus:outline-none w-40"
+                className="bg-transparent text-default text-3xl focus:outline-none w-20"
                 thousandSeparator={true}
                 decimalScale={2}
                 placeholder="0.0"
@@ -141,41 +142,61 @@ const AddLiquidityPanel = () => {
               Balance {toTokenBalance.toString(2)}
             </span>
           </div>
-          <div className="flex items-baseline gap-2">
-            <CurrencyFormat
-              displayType="text"
-              className="bg-transparent text-default text-3xl text-left focus:outline-none w-40"
-              thousandSeparator={true}
-              decimalScale={2}
-              placeholder="0.0"
-              value={toAmount}
-            />
-            <CurrencyFormat
-              displayType="text"
-              className="font-secondary text-disabled"
-              thousandSeparator={true}
-              decimalScale={2}
-              prefix="~$"
-              value={new Decimal(toToken?.usdPrice || "0")
-                .times(toAmount || "0")
-                .toString()}
-            />
+          <div className="flex justify-between items-center w-full">
+            <div className="flex items-baseline gap-2">
+              <CurrencyFormat
+                className="bg-transparent text-default text-3xl focus:outline-none w-20"
+                thousandSeparator={true}
+                decimalScale={2}
+                placeholder="0.0"
+                value={fromAmount}
+                onValueChange={({ value }) => setToAmount(value)}
+              />
+              <CurrencyFormat
+                className="font-secondary text-disabled"
+                displayType="text"
+                thousandSeparator={true}
+                decimalScale={2}
+                prefix="~$"
+                value={new Decimal(toToken?.usdPrice || "0")
+                  .times(fromAmount || "0")
+                  .toString()}
+              />
+            </div>
+            <div className="flex gap-2">
+              <Button
+                className="opacity-50"
+                color="secondary"
+                size="xs"
+                onClick={() =>
+                  setFromAmount((Number(fromTokenBalance) / 2).toString())
+                }
+              >
+                50%
+              </Button>
+              <Button
+                className="opacity-50"
+                color="secondary"
+                size="xs"
+                onClick={() => setFromAmount(fromTokenBalance.toString())}
+              >
+                Max
+              </Button>
+            </div>
           </div>
 
-          <div className="w-full flex gap-8">
+          <div className="w-full flex justify-between gap-x-4">
             {fromToken && toToken ? (
               <>
                 <Button
-                  className="grow h-[60px] min-h-0 shadow-md"
-                  color="secondary"
-                  size="lg"
+                  className="grow shadow-md basis-1/2 leading-5"
+                  color="primary"
                 >
                   Approve {fromToken.symbol.toUpperCase()}
                 </Button>
                 <Button
-                  className="grow h-[60px] min-h-0 shadow-md"
-                  color="secondary"
-                  size="lg"
+                  className="grow shadow-md basis-1/2 leading-5"
+                  color="primary"
                 >
                   Approve {toToken.symbol.toUpperCase()}
                 </Button>
@@ -194,6 +215,10 @@ const AddLiquidityPanel = () => {
       </div>
     </div>
   );
+};
+
+AddLiquidityPanel.getLayout = function getLayout(page: ReactElement) {
+  return <Layout>{page}</Layout>;
 };
 
 export default AddLiquidityPanel;

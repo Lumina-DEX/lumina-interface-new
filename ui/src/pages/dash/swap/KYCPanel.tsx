@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 
 const KYCPanel = () => {
   return (
@@ -6,10 +7,13 @@ const KYCPanel = () => {
       <p className="text-black">
         Complete KYC to access additional liquidity on Lumina
       </p>
-      <div>
-        <button className="btn w-full h-[50px] min-h-0 shadow-md btn-lg btn-primary">
+      <div className="flex justify-center">
+        <Link
+          href="/dash/kyc"
+          className="btn h-8 min-h-0 shadow-md btn-primary w-[110px] "
+        >
           Start KYC
-        </button>
+        </Link>
       </div>
     </div>
   );
