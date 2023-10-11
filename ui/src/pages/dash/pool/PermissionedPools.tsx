@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import SearchInput from "@/components/Input/SearchInput";
 import CurrencyFormat from "react-currency-format";
-import { Avatar, Button, Table } from "react-daisyui";
+import { Avatar, Table } from "react-daisyui";
 import { Pool } from "@/types/pool";
-import { connect } from "@/lib/wallet";
 import useAccount from "@/states/useAccount";
 import { useRouter } from "next/router";
 import useSupabaseFunctions from "@/services/supabase";

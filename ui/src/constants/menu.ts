@@ -16,6 +16,10 @@ export const MenuItems = [
     name: "Transfer",
     link: "transfer",
   },
+  {
+    name: "Enterprise",
+    link: "Enterprise",
+  },
 ];
 
 export const WalletDropdownList = [

@@ -1,5 +1,5 @@
 import Layout from "@/components/Layout";
-import { Button, Divider, Tabs } from "react-daisyui";
+import { Tabs } from "react-daisyui";
 import { useRouter } from "next/router";
 import { ReactElement, useState } from "react";
 import clsx from "classnames";
@@ -46,7 +46,7 @@ const PoolPage: NextPageWithLayout = () => {
             <Tabs.Tab
               style={{ lineHeight: "8px" }}
               className={clsx(
-                "font-medium rounded-tl-[18px]  ml-[-10px] py-7 leading-[8px]",
+                "font-medium rounded-t-[18px] ml-[-10px] py-7 leading-[8px]",
                 {
                   "text-primary text-2xl bg-light-100": tabValue === 1,
                   "text-default text-xl bg-light-200": tabValue !== 1,

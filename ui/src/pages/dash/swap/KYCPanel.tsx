@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React from "react";
 import Link from "next/link";
 
 const KYCPanel = () => {

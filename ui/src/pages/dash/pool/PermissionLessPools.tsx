@@ -3,7 +3,6 @@ import SearchInput from "@/components/Input/SearchInput";
 import CurrencyFormat from "react-currency-format";
 import { Avatar, Table, Collapse } from "react-daisyui";
 import { Pool } from "@/types/pool";
-import { CgUnavailable } from "react-icons/cg";
 import { BsCircle } from "react-icons/bs";
 import Link from "next/link";
 interface Props {
@@ -66,7 +65,7 @@ const PermissionLessPools: React.FC<Props> = ({ pools }) => {
                       {/* <div className="flex flex-row items-center">
                     <CgUnavailable className="text-rose-500" /> Restricted
                   </div> */}
-                      <div className="flex flex-row items-center">
+                      <div className="flex flex-row items-center gap-x-1">
                         <BsCircle className="text-green-300 font-bold" />{" "}
                         Available
                       </div>

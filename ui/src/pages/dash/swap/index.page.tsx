@@ -3,7 +3,6 @@ import React, { ReactElement } from "react";
 import CoinPriceChart from "./CoinPriceChart";
 import SwapPanel from "./SwapPanel";
 import KYCPane from "./KYCPanel";
-import TransactionTable from "./TransactionTable";
 
 function SwapPage() {
   return (
@@ -40,10 +39,6 @@ function SwapPage() {
           </div>
         </div>
       </div>
-      {/* <div className="flex flex-col max-sm:hidden">
-        <div className="text-left font-bold text-xl">Transactions</div>
-        <TransactionTable />
-      </div> */}
     </div>
   );
 }

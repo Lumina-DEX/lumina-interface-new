@@ -1,13 +1,11 @@
 import React, { useState } from "react";
-import { Logo, MenuItems } from "@/constants/menu";
+import { MenuItems } from "@/constants/menu";
 import ConnectWallet from "../Button/ConnectWallet";
 import { Button, Drawer, Menu, Navbar } from "react-daisyui";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import Item from "@/components/Menu/item";
 
 const Header = () => {
-  const router = useRouter();
   const [visible, setVisible] = useState(false);
 
   const toggleVisible = () => {
@@ -35,7 +33,7 @@ const Header = () => {
         className="font-sans"
       >
         <Navbar className="justify-between">
-          <div className="flex-none md:hidden">
+          <div className="flex-none min-[860px]:hidden">
             <Button shape="square" color="ghost" onClick={toggleVisible}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -62,7 +60,7 @@ const Header = () => {
           </div>
           <div className="flex">
             <div
-              className="hidden md:block flex-1 mx-2 cursor-pointer w-52 h-12"
+              className="hidden min-[860px]:block flex-1 mx-2 cursor-pointer w-52 h-12"
               style={{
                 backgroundImage: "url(/assets/logo/logo.png)",
                 backgroundSize: "cover",
@@ -70,7 +68,7 @@ const Header = () => {
               onClick={() => (window.location.href = "/")}
             ></div>
           </div>
-          <div className="hidden md:block">
+          <div className="hidden min-[860px]:block">
             <Menu horizontal={true} className="flex flex-grow gap-6 ">
               {MenuItems.map((item, index) => (
                 <Item key={index} link={item.link} name={item.name} />

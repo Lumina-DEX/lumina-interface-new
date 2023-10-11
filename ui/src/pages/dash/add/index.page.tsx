@@ -1,9 +1,8 @@
 import Layout from "@/components/Layout";
 import TokenSelector from "@/components/Selector/TokenSelector";
 import useTokens from "@/states/useTokens";
-import clsx from "classnames";
 import React, { useEffect, useMemo, useState, ReactElement } from "react";
-import { Button, Tabs } from "react-daisyui";
+import { Button } from "react-daisyui";
 import CurrencyFormat from "react-currency-format";
 import useAccount from "@/states/useAccount";
 import Decimal from "decimal.js";
@@ -14,14 +13,10 @@ import type { NextPageWithLayout } from "@/pages/_app.page";
 
 const AddLiquidityPanel: NextPageWithLayout = () => {
   const router = useRouter();
-
-  const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const tokens = useTokens((state) => state.tokens);
   const balances = useAccount((state) => state.balances);
-  const [tabValue, setTabValue] = useState(0);
-  const [tmpToken, setTmpToken] = useState<Token>(tokens[0]);
 
   const [fromToken, setFromToken] = useState<Token>(tokens[0]);
   const [fromAmount, setFromAmount] = useState("");
