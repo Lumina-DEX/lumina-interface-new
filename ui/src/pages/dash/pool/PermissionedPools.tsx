@@ -52,7 +52,7 @@ const PermissionedPools: React.FC<Props> = ({ pools }) => {
   }
 
   return (
-    <div className="py-2">
+    <div className=" pt-2 pb-4">
       {kycVerified ? (
         <Table className="rounded-box px-8" zebra>
           <Table.Head className="text-base text-default">
@@ -126,7 +126,7 @@ const PermissionedPools: React.FC<Props> = ({ pools }) => {
         <div className="flex justify-center">
           <Link
             href="/dash/kyc"
-            className="btn h-8 min-h-0 shadow-md btn-primary w-[110px] "
+            className="btn py-2 shadow-md btn-primary w-[160px] text-lg"
           >
             Start KYC
           </Link>

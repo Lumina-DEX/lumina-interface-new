@@ -15,7 +15,7 @@ const Layout: React.FC<PropsWithChildren> = ({ children }) => {
         value={{ isLoading, setLoading, loadingMessage, setLoadingMessage }}
       >
         <Header />
-        <div className="absolute w-full min-h-screen h-auto flex flex-col items-center justify-center bg-lumina bg-cover bg-no-repeat overflow-x-hidden py-40">
+        <div className="absolute w-full min-h-screen h-auto flex flex-col items-center justify-center bg-lumina bg-cover bg-no-repeat overflow-x-hidden py-40 px-2">
           {children}
         </div>
         <Footer />

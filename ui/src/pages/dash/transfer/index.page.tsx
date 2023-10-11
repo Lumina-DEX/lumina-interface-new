@@ -84,7 +84,7 @@ const TransferPage: NextPageWithLayout = () => {
       </div>
 
       {/* Recipient */}
-      <div className="w-full bg-light-200 py-6 px-10 text-black">
+      <div className="w-full bg-light-200 py-6 px-10 text-black rounded-b-3xl">
         <div className="flex flex-col w-full gap-4">
           <h2 className="text-lg">Recipient</h2>
           <Input

@@ -17,32 +17,47 @@ const PoolPage: NextPageWithLayout = () => {
 
   return (
     <div className="px-4">
-      <div className="card max-w-3xl">
-        <div className="flex justify-between items-center px-12 py-6">
-          <Tabs size="lg" value={tabValue} onChange={setTabValue}>
+      <div className="card">
+        <div
+          className={clsx(
+            "flex justify-between items-center rounded-t-[18px]",
+            {
+              "bg-light-100": tabValue === 1,
+              "bg-light-200": tabValue !== 1,
+            }
+          )}
+        >
+          <Tabs
+            size="lg"
+            value={tabValue}
+            onChange={setTabValue}
+            className="flex-nowrap"
+          >
             <Tabs.Tab
-              className={clsx("font-medium", {
-                "text-primary text-2xl ": tabValue === 0,
-                "text-default text-xl": tabValue !== 0,
+              style={{ lineHeight: "8px" }}
+              className={clsx("font-medium rounded-tl-[18px]  pr-16 py-7", {
+                "text-primary text-2xl bg-light-100": tabValue === 0,
+                "text-default text-xl bg-light-200": tabValue !== 0,
               })}
               value={0}
             >
               Public
             </Tabs.Tab>
             <Tabs.Tab
-              className={clsx("font-medium", {
-                "text-primary text-2xl ": tabValue === 1,
-                "text-default text-xl": tabValue !== 1,
-              })}
+              style={{ lineHeight: "8px" }}
+              className={clsx(
+                "font-medium rounded-tl-[18px]  ml-[-10px] py-7 leading-[8px]",
+                {
+                  "text-primary text-2xl bg-light-100": tabValue === 1,
+                  "text-default text-xl bg-light-200": tabValue !== 1,
+                }
+              )}
               value={1}
             >
               Permissioned
             </Tabs.Tab>
           </Tabs>
         </div>
-
-        <Divider className="bg-primary h-1 m-0" />
-
         <div className="w-full">
           {tabValue === 0 && <PermissionLessPools pools={pools} />}
           {tabValue === 1 && <PermissionedPools pools={pools} />}

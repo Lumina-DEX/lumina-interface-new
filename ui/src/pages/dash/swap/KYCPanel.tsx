@@ -10,7 +10,7 @@ const KYCPanel = () => {
       <div className="flex justify-center">
         <Link
           href="/dash/kyc"
-          className="btn h-8 min-h-0 shadow-md btn-primary w-[110px] "
+          className="btn w-full min-h-0 shadow-md btn-primary text-lg"
         >
           Start KYC
         </Link>

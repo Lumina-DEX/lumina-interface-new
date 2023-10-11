@@ -10,6 +10,8 @@ import { RxExit } from "react-icons/rx";
 import { MdOutlineDarkMode } from "react-icons/md";
 import { AiOutlineRight } from "react-icons/ai";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import { connect } from "@/lib/wallet";
+
 import Link from "next/link";
 
 const ConnectWallet = () => {
@@ -20,7 +22,7 @@ const ConnectWallet = () => {
   const address = useAccount((state) => state.publicKeyBase58);
 
   const handleConnectWallet = async () => {
-    // connect();
+    connect();
   };
 
   const toggleTheme = () => {

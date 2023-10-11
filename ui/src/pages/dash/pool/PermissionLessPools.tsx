@@ -11,7 +11,8 @@ interface Props {
 }
 
 const PermissionLessPools: React.FC<Props> = ({ pools }) => {
-  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const [screenWidth, setScreenWidth] = useState(1024);
+
   useEffect(() => {
     window.addEventListener(
       "resize",
@@ -25,7 +26,7 @@ const PermissionLessPools: React.FC<Props> = ({ pools }) => {
   return (
     <div>
       {screenWidth > 700 ? (
-        <div className="flex flex-col gap-y-4 py-2">
+        <div className="flex flex-col gap-y-4 pt-2 pb-4">
           <Table className="rounded-box" zebra>
             <Table.Head className="text-base text-default">
               <div className="flex items-center gap-4">
@@ -101,9 +102,9 @@ const PermissionLessPools: React.FC<Props> = ({ pools }) => {
           <div className="flex justify-center">
             <Link
               href="/dash/add"
-              className="btn h-8 min-h-0 shadow-md btn-primary w-[120px] "
+              className="btn py-2 shadow-md btn-primary w-[160px] text-lg"
             >
-              +New Pool
+              + New Pool
             </Link>
           </div>
         </div>

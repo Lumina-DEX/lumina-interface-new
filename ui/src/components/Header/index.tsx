@@ -3,8 +3,11 @@ import { Logo, MenuItems } from "@/constants/menu";
 import ConnectWallet from "../Button/ConnectWallet";
 import { Button, Drawer, Menu, Navbar } from "react-daisyui";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import Item from "@/components/Menu/item";
 
 const Header = () => {
+  const router = useRouter();
   const [visible, setVisible] = useState(false);
 
   const toggleVisible = () => {
@@ -70,13 +73,7 @@ const Header = () => {
           <div className="hidden md:block">
             <Menu horizontal={true} className="flex flex-grow gap-6 ">
               {MenuItems.map((item, index) => (
-                <Link
-                  key={index}
-                  href={item.link}
-                  className="focus:font-bold font-primary text-xl active:font-bold visited:font-bold"
-                >
-                  {item.name}
-                </Link>
+                <Item key={index} link={item.link} name={item.name} />
               ))}
             </Menu>
           </div>
