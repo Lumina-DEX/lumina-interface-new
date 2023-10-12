@@ -23,8 +23,8 @@ const PermissionLessPools: React.FC<Props> = ({ pools }) => {
                   placeholder="Search"
                 />
               </div>
-              <span className="max-md:hidden">Your Liquidity</span>
-              <span className="max-sm:hidden">Total Liquidity</span>
+              <span>Your Liquidity</span>
+              <span>Total Liquidity</span>
               <span>APR</span>
             </Table.Head>
 
@@ -60,14 +60,14 @@ const PermissionLessPools: React.FC<Props> = ({ pools }) => {
                     </div>
                     <CurrencyFormat
                       displayType="text"
-                      className="font-secondary text-left text-base max-md:hidden"
+                      className="font-secondary text-left text-base "
                       thousandSeparator
                       decimalScale={2}
                       value={0}
                     />
                     <CurrencyFormat
                       displayType="text"
-                      className="font-secondary text-left text-base max-sm:hidden"
+                      className="font-secondary text-left text-base"
                       thousandSeparator
                       decimalScale={2}
                       value={pool.liquidity}
@@ -79,7 +79,6 @@ const PermissionLessPools: React.FC<Props> = ({ pools }) => {
                       suffix="%"
                       value={pool.apr}
                     />
-                    <span />
                   </Table.Row>
                 );
               })}
@@ -98,7 +97,7 @@ const PermissionLessPools: React.FC<Props> = ({ pools }) => {
       </div>
       <div className="block md:hidden">
         {pools.map((pool, index) => (
-          <Collapse checkbox>
+          <Collapse checkbox icon="arrow">
             <Collapse.Title className="text-xl font-medium">
               <div className="flex items-center gap-2">
                 <Avatar.Group>

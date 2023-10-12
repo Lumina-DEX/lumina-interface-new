@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import SearchInput from "@/components/Input/SearchInput";
 import CurrencyFormat from "react-currency-format";
-import { Avatar, Table } from "react-daisyui";
+import { Avatar, Table, Button } from "react-daisyui";
 import { Pool } from "@/types/pool";
 import useAccount from "@/states/useAccount";
 import { useRouter } from "next/router";
 import useSupabaseFunctions from "@/services/supabase";
 import { CgUnavailable } from "react-icons/cg";
 import Link from "next/link";
+import { connect } from "@/lib/wallet";
 interface Props {
   pools: Pool[];
 }
@@ -46,9 +47,9 @@ const PermissionedPools: React.FC<Props> = ({ pools }) => {
     router.push({ pathname: "/dash/kyc", query: { address } });
   };
 
-  if (checkingAttestation) {
-    return <>Loading...</>;
-  }
+  const handleConnectWallet = async () => {
+    connect();
+  };
 
   return (
     <div className=" pt-2 pb-4">
@@ -121,7 +122,9 @@ const PermissionedPools: React.FC<Props> = ({ pools }) => {
             })}
           </Table.Body>
         </Table>
-      ) : (
+      ) : checkingAttestation ? (
+        <div className="text-center">Loading...</div>
+      ) : walletConnected ? (
         <div className="flex justify-center">
           <Link
             href="/dash/kyc"
@@ -129,6 +132,15 @@ const PermissionedPools: React.FC<Props> = ({ pools }) => {
           >
             Start KYC
           </Link>
+        </div>
+      ) : (
+        <div className="flex justify-center">
+          <Button
+            className="btn-primary text-white"
+            onClick={handleConnectWallet}
+          >
+            Connect Wallet
+          </Button>
         </div>
       )}
     </div>

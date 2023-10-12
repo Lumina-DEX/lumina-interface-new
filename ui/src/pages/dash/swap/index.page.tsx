@@ -3,14 +3,17 @@ import React, { ReactElement } from "react";
 import CoinPriceChart from "./CoinPriceChart";
 import SwapPanel from "./SwapPanel";
 import KYCPane from "./KYCPanel";
+import useAccount from "@/states/useAccount";
 
 function SwapPage() {
+  const walletConnected = useAccount((state) => state.hasBeenSetup);
+
   return (
     <div className="flex flex-col gap-y-12 container max-sm:mt-0 ">
       <div className="w-full flex flex-row justify-between gap-x-10 max-lg:justify-center">
         <div className="flex flex-col gap-y-4">
           <SwapPanel />
-          <KYCPane />
+          {walletConnected ? <KYCPane /> : <></>}
         </div>
 
         <div className="w-full flex flex-col grow bg-light-100 rounded-3xl shadow-lg px-4 flex-1 max-lg:hidden overflow-hidden h-[494px]">
