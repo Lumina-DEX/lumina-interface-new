@@ -10,21 +10,9 @@ interface Props {
 }
 
 const PermissionLessPools: React.FC<Props> = ({ pools }) => {
-  const [screenWidth, setScreenWidth] = useState(1024);
-
-  useEffect(() => {
-    window.addEventListener(
-      "resize",
-      function (event) {
-        setScreenWidth(window.innerWidth);
-      },
-      true
-    );
-  }, []);
-
   return (
     <div>
-      {screenWidth > 700 ? (
+      <div className="hidden md:block">
         <div className="flex flex-col gap-y-4 pt-2 pb-4">
           <Table className="rounded-box" zebra>
             <Table.Head className="text-base text-default">
@@ -107,67 +95,66 @@ const PermissionLessPools: React.FC<Props> = ({ pools }) => {
             </Link>
           </div>
         </div>
-      ) : (
-        <div>
-          {pools.map((pool, index) => (
-            <Collapse checkbox>
-              <Collapse.Title className="text-xl font-medium">
-                <div className="flex items-center gap-2">
-                  <Avatar.Group>
-                    <Avatar
-                      className="border-0"
-                      src={pool.x.icon}
-                      shape="circle"
-                      size={30}
-                    />
-                    <Avatar
-                      className="border-0"
-                      src={pool.y.icon}
-                      shape="circle"
-                      size={30}
-                    />
-                  </Avatar.Group>
-                  <span className="uppercase text-base">
-                    {pool.x.symbol} / {pool.y.symbol}
-                  </span>
-                </div>
-              </Collapse.Title>
-              <Collapse.Content>
-                <div className="flex justify-between">
-                  <div>Your Liquidity</div>
-                  <CurrencyFormat
-                    displayType="text"
-                    className="font-secondary text-left text-base"
-                    thousandSeparator
-                    decimalScale={2}
-                    value={0}
+      </div>
+      <div className="block md:hidden">
+        {pools.map((pool, index) => (
+          <Collapse checkbox>
+            <Collapse.Title className="text-xl font-medium">
+              <div className="flex items-center gap-2">
+                <Avatar.Group>
+                  <Avatar
+                    className="border-0"
+                    src={pool.x.icon}
+                    shape="circle"
+                    size={30}
                   />
-                </div>
-                <div className="flex justify-between">
-                  <div>Total Liquidity</div>
-                  <CurrencyFormat
-                    displayType="text"
-                    className="font-secondary text-left text-base"
-                    thousandSeparator
-                    decimalScale={2}
-                    value={pool.liquidity}
+                  <Avatar
+                    className="border-0"
+                    src={pool.y.icon}
+                    shape="circle"
+                    size={30}
                   />
-                </div>
-                <div className="flex justify-between">
-                  <div>APR</div>
-                  <CurrencyFormat
-                    displayType="text"
-                    className="font-secondary text-left text-base"
-                    decimalScale={2}
-                    suffix="%"
-                    value={pool.apr}
-                  />
-                </div>
-              </Collapse.Content>
-            </Collapse>
-          ))}
-        </div>
-      )}
+                </Avatar.Group>
+                <span className="uppercase text-base">
+                  {pool.x.symbol} / {pool.y.symbol}
+                </span>
+              </div>
+            </Collapse.Title>
+            <Collapse.Content>
+              <div className="flex justify-between">
+                <div>Your Liquidity</div>
+                <CurrencyFormat
+                  displayType="text"
+                  className="font-secondary text-left text-base"
+                  thousandSeparator
+                  decimalScale={2}
+                  value={0}
+                />
+              </div>
+              <div className="flex justify-between">
+                <div>Total Liquidity</div>
+                <CurrencyFormat
+                  displayType="text"
+                  className="font-secondary text-left text-base"
+                  thousandSeparator
+                  decimalScale={2}
+                  value={pool.liquidity}
+                />
+              </div>
+              <div className="flex justify-between">
+                <div>APR</div>
+                <CurrencyFormat
+                  displayType="text"
+                  className="font-secondary text-left text-base"
+                  decimalScale={2}
+                  suffix="%"
+                  value={pool.apr}
+                />
+              </div>
+            </Collapse.Content>
+          </Collapse>
+        ))}
+      </div>
     </div>
   );
 };
