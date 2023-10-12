@@ -4,7 +4,7 @@
 
 @layer components {
   .card {
-    @apply bg-light-100 rounded-3xl shadow-lg flex flex-col w-full;
+    @apply bg-light-100 rounded-3xl shadow-2xl flex flex-col w-full;
   }
 }
 

@@ -25,7 +25,7 @@ const Header = () => {
   );
 
   return (
-    <div className="fixed top-0 left-0 h-[64px] w-full z-[2] bg-background-l1 shadow-10 px-4">
+    <div className="fixed top-0 left-0 h-[64px] w-full z-[2] bg-white shadow-10 px-4">
       <Drawer
         side={drawerSide}
         open={visible}
