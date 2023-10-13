@@ -96,7 +96,7 @@ const PermissionLessPools: React.FC<Props> = ({ pools }) => {
       </div>
       <div className="block md:hidden">
         {pools.map((pool, index) => (
-          <Collapse checkbox icon="arrow">
+          <Collapse checkbox icon="arrow" key={index}>
             <Collapse.Title className="text-xl font-medium">
               <div className="flex items-center gap-2">
                 <Avatar.Group>
