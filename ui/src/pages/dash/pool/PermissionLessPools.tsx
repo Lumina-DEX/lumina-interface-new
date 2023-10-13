@@ -32,27 +32,26 @@ const PermissionLessPools: React.FC<Props> = ({ pools }) => {
               {pools.map((pool, index) => {
                 return (
                   <Table.Row key={index} className="text-disabled">
-                    <div className="flex items-center gap-2">
-                      <Avatar.Group>
-                        <Avatar
-                          className="border-0"
-                          src={pool.x.icon}
-                          shape="circle"
-                          size={30}
-                        />
-                        <Avatar
-                          className="border-0"
-                          src={pool.y.icon}
-                          shape="circle"
-                          size={30}
-                        />
-                      </Avatar.Group>
-                      <span className="uppercase text-base">
-                        {pool.x.symbol} / {pool.y.symbol}
-                      </span>
-                      {/* <div className="flex flex-row items-center">
-                    <CgUnavailable className="text-rose-500" /> Restricted
-                  </div> */}
+                    <div className="flex justify-between">
+                      <div className="flex items-center gap-2">
+                        <Avatar.Group>
+                          <Avatar
+                            className="border-0"
+                            src={pool.x.icon}
+                            shape="circle"
+                            size={30}
+                          />
+                          <Avatar
+                            className="border-0"
+                            src={pool.y.icon}
+                            shape="circle"
+                            size={30}
+                          />
+                        </Avatar.Group>
+                        <span className="uppercase text-base">
+                          {pool.x.symbol} / {pool.y.symbol}
+                        </span>
+                      </div>
                       <div className="flex flex-row items-center gap-x-1">
                         <BsCircle className="text-green-300 font-bold" />{" "}
                         Available

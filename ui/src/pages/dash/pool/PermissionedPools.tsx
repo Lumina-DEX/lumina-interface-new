@@ -4,8 +4,6 @@ import CurrencyFormat from "react-currency-format";
 import { Avatar, Table, Button } from "react-daisyui";
 import { Pool } from "@/types/pool";
 import useAccount from "@/states/useAccount";
-import { useRouter } from "next/router";
-import useSupabaseFunctions from "@/services/supabase";
 import { CgUnavailable } from "react-icons/cg";
 import Link from "next/link";
 import { connect } from "@/lib/wallet";
@@ -14,39 +12,10 @@ interface Props {
 }
 
 const PermissionedPools: React.FC<Props> = ({ pools }) => {
-  const router = useRouter();
-  const { address, walletConnected, kycVerified, accountUpdate } = useAccount(
-    (state) => ({
-      address: state.publicKeyBase58,
-      walletConnected: state.hasBeenSetup,
-      kycVerified: state.kycVerified,
-      accountUpdate: state.update,
-    })
-  );
-  const { getPermissioned } = useSupabaseFunctions();
-  const [checkingAttestation, setCheckingAttestation] = useState(false);
-
-  useEffect(() => {
-    if (address) {
-      setCheckingAttestation(true);
-      getPermissioned(address).then((response) => {
-        const { status, data } = response;
-        if (status === 200 && data) {
-          accountUpdate({ kycVerified: !!data[0] });
-        }
-        setCheckingAttestation(false);
-      });
-    }
-    return () => {
-      accountUpdate({ kycVerified: false });
-      setCheckingAttestation(false);
-    };
-  }, [address]);
-
-  const verify = () => {
-    router.push({ pathname: "/dash/kyc", query: { address } });
-  };
-
+  const { walletConnected, kycVerified } = useAccount((state) => ({
+    walletConnected: state.hasBeenSetup,
+    kycVerified: state.kycVerified,
+  }));
   const handleConnectWallet = async () => {
     connect();
   };
@@ -56,7 +25,6 @@ const PermissionedPools: React.FC<Props> = ({ pools }) => {
       {kycVerified ? (
         <Table className="rounded-box px-8" zebra>
           <Table.Head className="text-base text-default">
-            <span />
             <div className="flex items-center gap-4">
               <span>Name</span>
               <SearchInput
@@ -67,33 +35,35 @@ const PermissionedPools: React.FC<Props> = ({ pools }) => {
             <span className="max-md:hidden">Your Liquidity</span>
             <span className="max-sm:hidden">Total Liquidity</span>
             <span>APR</span>
-            <span />
           </Table.Head>
 
           <Table.Body>
             {pools.map((pool, index) => {
               return (
                 <Table.Row key={index} className="text-disabled">
-                  <span />
-                  <div className="flex items-center gap-2">
-                    <Avatar.Group>
-                      <Avatar
-                        className="border-0"
-                        src={pool.x.icon}
-                        shape="circle"
-                        size={30}
-                      />
-                      <Avatar
-                        className="border-0"
-                        src={pool.y.icon}
-                        shape="circle"
-                        size={30}
-                      />
-                    </Avatar.Group>
-                    <span className="uppercase text-base">
-                      {pool.x.symbol} / {pool.y.symbol}
-                    </span>
-                    <CgUnavailable />
+                  <div className="flex justify-between">
+                    <div className="flex items-center gap-2">
+                      <Avatar.Group>
+                        <Avatar
+                          className="border-0"
+                          src={pool.x.icon}
+                          shape="circle"
+                          size={30}
+                        />
+                        <Avatar
+                          className="border-0"
+                          src={pool.y.icon}
+                          shape="circle"
+                          size={30}
+                        />
+                      </Avatar.Group>
+                      <span className="uppercase text-base">
+                        {pool.x.symbol} / {pool.y.symbol}
+                      </span>
+                    </div>
+                    <div className="flex flex-row items-center">
+                      <CgUnavailable className="text-rose-500" /> Restricted
+                    </div>
                   </div>
                   <CurrencyFormat
                     displayType="text"
@@ -116,14 +86,11 @@ const PermissionedPools: React.FC<Props> = ({ pools }) => {
                     suffix="%"
                     value={pool.apr}
                   />
-                  <span />
                 </Table.Row>
               );
             })}
           </Table.Body>
         </Table>
-      ) : checkingAttestation ? (
-        <div className="text-center">Loading...</div>
       ) : walletConnected ? (
         <div className="flex justify-center">
           <Link

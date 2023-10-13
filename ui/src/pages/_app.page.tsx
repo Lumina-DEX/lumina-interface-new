@@ -34,7 +34,7 @@ export default function App({
         initialSession={pageProps.initialSession}
       >
         {getLayout(<Component {...pageProps} />)}
-        {/* <Updaters /> */}
+        <Updaters />
       </SessionContextProvider>
     </>
   );

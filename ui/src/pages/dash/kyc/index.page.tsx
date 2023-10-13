@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useState, useEffect } from "react";
 import ZKPid from "@/services/zkpid";
 import { useSearchParams } from "next/navigation";
 import Layout from "@/components/Layout";
@@ -6,13 +6,19 @@ import { Button } from "react-daisyui";
 import { NextPageWithLayout } from "@/pages/_app.page";
 import { FaTimes } from "react-icons/fa";
 import { useRouter } from "next/router";
+import useAccount from "@/states/useAccount";
 
 const KYCPage: NextPageWithLayout = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
-
-  const address = searchParams.get("address");
+  const { address } = useAccount((state) => ({
+    address: state.publicKeyBase58,
+  }));
   const [url, setUrl] = useState("");
+
+  useEffect(() => {
+    router.push({ pathname: "/dash/kyc", query: { address } });
+  }, []);
 
   const handleStartVerification = () => {
     getUrl();
@@ -20,6 +26,7 @@ const KYCPage: NextPageWithLayout = () => {
   };
 
   const getUrl = async () => {
+    const address = searchParams.get("address");
     if (!address) {
       console.error("Address is null!");
       return;

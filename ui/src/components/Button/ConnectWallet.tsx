@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { AppContext } from "@/contexts/AppContext";
 import { shortenAddress } from "@/utils/address";
 import { toggleHTMLClass } from "@/utils/theme";
@@ -24,6 +24,10 @@ const ConnectWallet = () => {
   const handleConnectWallet = async () => {
     connect();
   };
+
+  useEffect(() => {
+    console.log("balances.mina", balances);
+  }, [balances]);
 
   const toggleTheme = () => {
     setDarkMode(!darkMode);
