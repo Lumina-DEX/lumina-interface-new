@@ -33,43 +33,16 @@ const AddLiquidityPanel: NextPageWithLayout = () => {
   );
 
   useEffect(() => {
-    setFromAmount("0");
-    if (fromToken === toToken) {
-      setFromToken(toToken);
-      setToToken(
-        tokens.find((token) => token.symbol === searchParams.get("fromToken"))!
-      );
-    }
-    const newSearchParams = new URLSearchParams();
-    newSearchParams.append("fromToken", fromToken.symbol);
-    newSearchParams.append("toToken", toToken.symbol);
-
-    router.push({
-      pathname: router.pathname,
-      search: newSearchParams.toString(),
-    });
-  }, [fromToken]);
-
-  useEffect(() => {
-    setFromAmount("0");
-    if (fromToken === toToken) {
-      setFromToken(
-        tokens.find((token) => token.symbol === searchParams.get("toToken"))!
-      );
-      setToToken(fromToken);
-    }
-    const newSearchParams = new URLSearchParams();
-    newSearchParams.append("fromToken", fromToken.symbol);
-    newSearchParams.append("toToken", toToken.symbol);
-
-    router.push({
-      pathname: router.pathname,
-      search: newSearchParams.toString(),
-    });
-  }, [toToken]);
+    setFromToken(
+      tokens.find((token) => token.tokenId === searchParams.get("fromToken"))!
+    );
+    setToToken(
+      tokens.find((token) => token.tokenId === searchParams.get("toToken"))!
+    );
+  }, []);
 
   return (
-    <div className="bg-light-200 rounded-3xl shadow-2xl flex flex-col w-[470px] overflow-hidden max-[500px]:w-[400px] max-[420px]:w-[300px]">
+    <div className="bg-light-200 card w-[470px] overflow-hidden max-[500px]:w-[400px] max-[420px]:w-[300px]">
       {/* from */}
       <div className="w-full p-8 bg-light-100">
         <div className="flex flex-col w-full gap-4">

@@ -13,7 +13,10 @@ const PermissionLessPools: React.FC<Props> = ({ pools }) => {
   return (
     <div>
       <div className="hidden md:block">
-        <div className="flex flex-col gap-y-4 pt-2 pb-4">
+        <div className="flex flex-col gap-y-4 py-4">
+          <div className="text-center font-bold text-black">
+            Select an existing pool to manage liquidity or click ‘+New Pool’
+          </div>
           <Table className="rounded-box" zebra>
             <Table.Head className="text-base text-default">
               <div className="flex items-center gap-4">
@@ -33,27 +36,32 @@ const PermissionLessPools: React.FC<Props> = ({ pools }) => {
                 return (
                   <Table.Row key={index} className="text-disabled">
                     <div className="flex justify-between">
-                      <div className="flex items-center gap-2">
-                        <Avatar.Group>
-                          <Avatar
-                            className="border-0"
-                            src={pool.x.icon}
-                            shape="circle"
-                            size={30}
-                          />
-                          <Avatar
-                            className="border-0"
-                            src={pool.y.icon}
-                            shape="circle"
-                            size={30}
-                          />
-                        </Avatar.Group>
-                        <span className="uppercase text-base">
-                          {pool.x.symbol} / {pool.y.symbol}
-                        </span>
-                      </div>
+                      <Link
+                        href={`/dash/add?fromToken=${pool.x.tokenId}&toToken=${pool.y.tokenId}`}
+                      >
+                        <div className="flex items-center gap-2">
+                          <Avatar.Group>
+                            <Avatar
+                              className="border-0"
+                              src={pool.x.icon}
+                              shape="circle"
+                              size={30}
+                            />
+                            <Avatar
+                              className="border-0"
+                              src={pool.y.icon}
+                              shape="circle"
+                              size={30}
+                            />
+                          </Avatar.Group>
+                          <span className="uppercase text-base">
+                            {pool.x.symbol} / {pool.y.symbol}
+                          </span>
+                        </div>
+                      </Link>
+
                       <div className="flex flex-row items-center gap-x-1">
-                        <BsCircle className="text-green-300 font-bold" />{" "}
+                        <BsCircle className="text-emerald-400 font-bold" />{" "}
                         Available
                       </div>
                     </div>

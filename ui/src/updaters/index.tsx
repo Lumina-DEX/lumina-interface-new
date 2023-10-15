@@ -7,7 +7,7 @@ export default function Updaters() {
   return (
     <>
       {router.pathname.startsWith("/dash") && <AccountUpdater />}
-      <KycUpdater />
+      {/* <KycUpdater /> */}
     </>
   );
 }

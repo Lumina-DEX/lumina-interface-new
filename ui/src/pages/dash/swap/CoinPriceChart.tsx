@@ -2,7 +2,17 @@ import { createChart, ColorType, PriceScaleMode } from "lightweight-charts";
 import React, { useEffect, useRef } from "react";
 
 const initialData = [
-  { time: "2018-05-23", value: 50.11 },
+  { time: "2018-01-03", value: 10.11 },
+  { time: "2018-02-02", value: 30.11 },
+  { time: "2018-03-13", value: 50.11 },
+  { time: "2018-04-23", value: 30.11 },
+  { time: "2018-05-05", value: 70.11 },
+  { time: "2018-05-07", value: 10.11 },
+  { time: "2018-05-21", value: 50.11 },
+  { time: "2018-05-22", value: 50.11 },
+  { time: "2018-05-23", value: 70.11 },
+  { time: "2018-05-24", value: 50.11 },
+  { time: "2018-05-25", value: 50.11 },
   { time: "2018-06-24", value: 100.02 },
   { time: "2018-07-25", value: 40.32 },
   { time: "2018-08-26", value: 60.17 },

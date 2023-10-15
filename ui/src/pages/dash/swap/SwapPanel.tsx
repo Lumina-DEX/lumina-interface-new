@@ -75,7 +75,7 @@ const SwapPanel = () => {
   }, [toToken]);
 
   return (
-    <div className="bg-light-200 rounded-3xl shadow-2xl flex flex-col w-[400px] overflow-hidden max-[420px]:w-[300px]">
+    <div className="bg-light-200 card w-[400px] overflow-hidden max-[420px]:w-[300px]">
       <Tabs
         className="w-full"
         variant="lifted"

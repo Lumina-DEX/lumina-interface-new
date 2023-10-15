@@ -22,7 +22,22 @@ export default function useSupabaseFunctions() {
     [supabase]
   );
 
+  const getPools = useCallback(
+    () =>
+      supabase.from("pools").select(
+        `
+          id,
+          total_liquidity, 
+          apr, 
+          from_token(id, symbol, icon, usd_price, price_change, day_volume, liquidity), 
+          to_token(id, symbol, icon, usd_price, price_change, day_volume, liquidity)
+        `
+      ),
+    [supabase]
+  );
+
   return {
     getPermissioned,
+    getPools,
   };
 }

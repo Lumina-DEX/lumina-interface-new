@@ -6,19 +6,12 @@ import { Button } from "react-daisyui";
 import { NextPageWithLayout } from "@/pages/_app.page";
 import { FaTimes } from "react-icons/fa";
 import { useRouter } from "next/router";
-import useAccount from "@/states/useAccount";
 
 const KYCPage: NextPageWithLayout = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { address } = useAccount((state) => ({
-    address: state.publicKeyBase58,
-  }));
-  const [url, setUrl] = useState("");
 
-  useEffect(() => {
-    router.push({ pathname: "/dash/kyc", query: { address } });
-  }, []);
+  const [url, setUrl] = useState("");
 
   const handleStartVerification = () => {
     getUrl();

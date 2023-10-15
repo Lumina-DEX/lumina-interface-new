@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const KYCPanel = () => {
   return (
-    <div className="p-8 bg-light-100 rounded-3xl shadow-2xl flex flex-col gap-y-4 w-[400px] overflow-hidden max-[420px]:w-[300px]">
+    <div className="p-8 card gap-y-4 w-[400px] overflow-hidden max-[420px]:w-[300px]">
       <p className="text-black">
         Complete KYC to access additional liquidity on Lumina
       </p>

@@ -56,7 +56,6 @@ export default async function handler(
     const decodedJwt: any = jwt_decode(jwt);
     const walletAddress = decodedJwt.credentialSubject["wallet-address"];
     const zkp = decodedJwt.credentialSubject.zkp;
-
     const result = await supabase.from("permissions").insert({
       wallet_address: walletAddress,
       zkp,
