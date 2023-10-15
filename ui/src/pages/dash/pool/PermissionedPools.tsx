@@ -9,12 +9,13 @@ import Link from "next/link";
 import { connect } from "@/lib/wallet";
 import useSupabaseFunctions from "@/services/supabase";
 import { BsCircle } from "react-icons/bs";
+import { Database } from "@/lib/database.types";
 interface Props {
   pools: Pool[];
 }
 
 const PermissionedPools: React.FC<Props> = () => {
-  const [pools, setPools] = useState([]);
+  const [pools, setPools] = useState<any[]>([]);
   const { getPools } = useSupabaseFunctions();
   const { walletConnected, kycVerified } = useAccount((state) => ({
     walletConnected: state.hasBeenSetup,
@@ -22,9 +23,11 @@ const PermissionedPools: React.FC<Props> = () => {
   }));
 
   useEffect(() => {
-    console.log("pools", pools.length);
-    getPools().then((res) => {
-      setPools(res.data);
+    getPools().then((response) => {
+      const { status, data } = response;
+      if (status === 200 && data) {
+        setPools(data);
+      }
     });
   }, []);
 

@@ -29,8 +29,9 @@ export default function useSupabaseFunctions() {
           id,
           total_liquidity, 
           apr, 
-          from_token(id, symbol, icon, usd_price, price_change, day_volume, liquidity), 
-          to_token(id, symbol, icon, usd_price, price_change, day_volume, liquidity)
+          from_token(id, symbol, icon), 
+          to_token(id, symbol, icon),
+          created_at
         `
       ),
     [supabase]
