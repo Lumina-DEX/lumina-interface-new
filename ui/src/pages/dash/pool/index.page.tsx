@@ -1,18 +1,27 @@
 import Layout from "@/components/Layout";
 import { Tabs } from "react-daisyui";
 import { useRouter } from "next/router";
-import { ReactElement, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import clsx from "classnames";
-import usePools from "@/states/usePools";
-import { Pool } from "@/types/pool";
 import PermissionedPools from "./PermissionedPools";
 import PermissionLessPools from "./PermissionLessPools";
 import type { NextPageWithLayout } from "@/pages/_app.page";
+import useSupabaseFunctions from "@/services/supabase";
 
 const PoolPage: NextPageWithLayout = () => {
   const router = useRouter();
+  const [pools, setPools] = useState<any[]>([]);
+  const { getPools } = useSupabaseFunctions();
 
-  const pools: Pool[] = usePools((state) => state.pools);
+  useEffect(() => {
+    getPools().then((response) => {
+      const { status, data } = response;
+      if (status === 200 && data) {
+        setPools(data);
+      }
+    });
+  }, []);
+
   const [tabValue, setTabValue] = useState(0);
 
   return (

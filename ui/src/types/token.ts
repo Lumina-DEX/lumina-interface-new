@@ -1,5 +1,5 @@
 export interface Token {
-  tokenId: string;
+  id: string;
   symbol: string;
   icon?: string;
   usdPrice?: string;

@@ -25,15 +25,15 @@ const SwapPanel = () => {
   const [fromToken, setFromToken] = useState<Token>(tokens[0]);
   const [fromAmount, setFromAmount] = useState("");
   const fromTokenBalance = useMemo(
-    () => balances[fromToken!.tokenId] || 0,
-    [balances, fromToken!.tokenId]
+    () => balances[fromToken!.id] || 0,
+    [balances, fromToken!.id]
   );
 
   const [toToken, setToToken] = useState<Token>(tokens[1]);
   const [toAmount, setToAmount] = useState("0.0");
   const toTokenBalance = useMemo(
-    () => balances[toToken!.tokenId] || 0,
-    [balances, toToken!.tokenId]
+    () => balances[toToken!.id] || 0,
+    [balances, toToken!.id]
   );
 
   const [slippagePercent, setSlippagePercent] = useState<Percent>(0);

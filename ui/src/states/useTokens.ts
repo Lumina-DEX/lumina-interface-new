@@ -9,7 +9,7 @@ interface TokenState {
 const useTokens = create<TokenState>((set) => ({
   tokens: [
     {
-      tokenId: "id1",
+      id: "id1",
       symbol: "mina1",
       icon: "/assets/tokens/lumina.png",
       usdPrice: "1.3",
@@ -18,7 +18,7 @@ const useTokens = create<TokenState>((set) => ({
       liquidity: 512345673,
     },
     {
-      tokenId: "id2",
+      id: "id2",
       symbol: "dai2",
       icon: "/assets/tokens/dai.png",
       usdPrice: "0.07",
@@ -27,7 +27,7 @@ const useTokens = create<TokenState>((set) => ({
       liquidity: 512345673,
     },
     {
-      tokenId: "id3",
+      id: "id3",
       symbol: "mina3",
       icon: "/assets/tokens/dai.png",
       usdPrice: "0.07",
@@ -36,7 +36,7 @@ const useTokens = create<TokenState>((set) => ({
       liquidity: 512345673,
     },
     {
-      tokenId: "id4",
+      id: "id4",
       symbol: "mina4",
       icon: "/assets/tokens/dai.png",
       usdPrice: "0.07",
@@ -45,7 +45,7 @@ const useTokens = create<TokenState>((set) => ({
       liquidity: 512345673,
     },
     {
-      tokenId: "id5",
+      id: "id5",
       symbol: "mina5",
       icon: "/assets/tokens/dai.png",
       usdPrice: "0.07",
@@ -54,7 +54,7 @@ const useTokens = create<TokenState>((set) => ({
       liquidity: 512345673,
     },
     {
-      tokenId: "id6",
+      id: "id6",
       symbol: "dai6",
       icon: "/assets/tokens/dai.png",
       usdPrice: "0.07",
@@ -63,7 +63,7 @@ const useTokens = create<TokenState>((set) => ({
       liquidity: 512345673,
     },
     {
-      tokenId: "id7",
+      id: "id7",
       symbol: "dai7",
       icon: "/assets/tokens/dai.png",
       usdPrice: "0.07",
@@ -72,7 +72,7 @@ const useTokens = create<TokenState>((set) => ({
       liquidity: 512345673,
     },
     {
-      tokenId: "id8",
+      id: "id8",
       symbol: "dai8",
       icon: "/assets/tokens/dai.png",
       usdPrice: "0.07",
@@ -81,7 +81,7 @@ const useTokens = create<TokenState>((set) => ({
       liquidity: 512345673,
     },
     {
-      tokenId: "id9",
+      id: "id9",
       symbol: "dai9",
       icon: "/assets/tokens/dai.png",
       usdPrice: "0.07",
@@ -90,7 +90,7 @@ const useTokens = create<TokenState>((set) => ({
       liquidity: 512345673,
     },
     {
-      tokenId: "id10",
+      id: "id10",
       symbol: "dai10",
       icon: "/assets/tokens/dai.png",
       usdPrice: "0.07",
@@ -99,7 +99,7 @@ const useTokens = create<TokenState>((set) => ({
       liquidity: 512345673,
     },
     {
-      tokenId: "id11",
+      id: "id11",
       symbol: "dai11",
       icon: "/assets/tokens/dai.png",
       usdPrice: "0.07",
@@ -108,7 +108,7 @@ const useTokens = create<TokenState>((set) => ({
       liquidity: 512345673,
     },
     {
-      tokenId: "id12",
+      id: "id12",
       symbol: "mina12",
       icon: "/assets/tokens/lumina.png",
       usdPrice: "1.3",
@@ -117,7 +117,7 @@ const useTokens = create<TokenState>((set) => ({
       liquidity: 512345673,
     },
     {
-      tokenId: "id13",
+      id: "id13",
       symbol: "mina13",
       icon: "/assets/tokens/lumina.png",
       usdPrice: "1.3",
@@ -126,7 +126,7 @@ const useTokens = create<TokenState>((set) => ({
       liquidity: 512345673,
     },
     {
-      tokenId: "id14",
+      id: "id14",
       symbol: "mina14",
       icon: "/assets/tokens/lumina.png",
       usdPrice: "1.3",
@@ -135,7 +135,7 @@ const useTokens = create<TokenState>((set) => ({
       liquidity: 512345673,
     },
     {
-      tokenId: "id15",
+      id: "id15",
       symbol: "mina15",
       icon: "/assets/tokens/lumina.png",
       usdPrice: "1.3",

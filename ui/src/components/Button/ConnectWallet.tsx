@@ -53,7 +53,8 @@ const ConnectWallet = () => {
               href={`/dash/kyc?address=${address}`}
               className="btn w-full min-h-0 shadow-md btn-primary text-lg h-7 text-white"
             >
-              Start KYC
+              <p className="block max-sm:hidden">Start KYC</p>
+              <p className="hidden max-sm:block">KYC</p>
             </Link>
           )
         ) : (
@@ -112,12 +113,17 @@ const ConnectWallet = () => {
                   <MdOutlineDarkMode size={18} />
                 </div>
               </Dropdown.Item>
+
               <Dropdown.Item>
                 <Form.Label
-                  title="Real KYC/Test KYC"
+                  title="Real / Test(KYC)"
                   className="text-[12px] w-100"
                 >
-                  <Toggle defaultChecked color="primary" />
+                  <Toggle
+                    defaultChecked
+                    color="primary"
+                    className="ml-[14px]"
+                  />
                 </Form.Label>
               </Dropdown.Item>
             </Dropdown.Menu>

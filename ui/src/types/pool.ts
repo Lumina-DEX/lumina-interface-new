@@ -1,9 +1,9 @@
 import { Token } from "./token";
 
 export interface Pool {
-  x: Token;
-  y: Token;
+  from_token: Token;
+  to_token: Token;
   lqxy: Token;
-  liquidity: string;
+  total_liquidity: string;
   apr: number;
 }

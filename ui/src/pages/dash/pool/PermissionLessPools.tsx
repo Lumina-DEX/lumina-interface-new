@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from "react";
 import SearchInput from "@/components/Input/SearchInput";
 import CurrencyFormat from "react-currency-format";
-import { Avatar, Table, Collapse } from "react-daisyui";
+import { Avatar, Table, Collapse, Loading } from "react-daisyui";
 import { Pool } from "@/types/pool";
 import { BsCircle } from "react-icons/bs";
 import Link from "next/link";
+import { CgUnavailable } from "react-icons/cg";
+import useAccount from "@/states/useAccount";
 interface Props {
   pools: Pool[];
 }
 
 const PermissionLessPools: React.FC<Props> = ({ pools }) => {
+  const { walletConnected, kycVerified } = useAccount((state) => ({
+    walletConnected: state.hasBeenSetup,
+    kycVerified: state.kycVerified,
+  }));
+
   return (
     <div>
       <div className="hidden md:block">
@@ -17,89 +24,99 @@ const PermissionLessPools: React.FC<Props> = ({ pools }) => {
           <div className="text-center font-bold text-black">
             Select an existing pool to manage liquidity or click ‘+New Pool’
           </div>
-          <Table className="rounded-box" zebra>
-            <Table.Head className="text-base text-default">
-              <div className="flex items-center gap-4">
-                <span>Name</span>
-                <SearchInput
-                  className="bg-transparent font-secondary py-2 px-3 h-auto pr-8"
-                  placeholder="Search"
-                />
-              </div>
-              <span>Your Liquidity</span>
-              <span>Total Liquidity</span>
-              <span>APR</span>
-            </Table.Head>
+          {pools.length ? (
+            <Table className="rounded-box px-8" zebra>
+              <Table.Head className="text-base text-default">
+                <div className="flex items-center gap-4">
+                  <span>Name</span>
+                  <SearchInput
+                    className="bg-transparent font-secondary py-2 px-3 h-auto pr-8"
+                    placeholder="Search"
+                  />
+                </div>
+                <span className="max-md:hidden">Your Liquidity</span>
+                <span className="max-sm:hidden">Total Liquidity</span>
+                <span>APR</span>
+              </Table.Head>
 
-            <Table.Body>
-              {pools.map((pool, index) => {
-                return (
-                  <Table.Row key={index} className="text-disabled">
-                    <div className="flex justify-between">
-                      <Link
-                        href={`/dash/add?fromToken=${pool.x.tokenId}&toToken=${pool.y.tokenId}`}
-                      >
-                        <div className="flex items-center gap-2">
-                          <Avatar.Group>
-                            <Avatar
-                              className="border-0"
-                              src={pool.x.icon}
-                              shape="circle"
-                              size={30}
-                            />
-                            <Avatar
-                              className="border-0"
-                              src={pool.y.icon}
-                              shape="circle"
-                              size={30}
-                            />
-                          </Avatar.Group>
-                          <span className="uppercase text-base">
-                            {pool.x.symbol} / {pool.y.symbol}
-                          </span>
-                        </div>
-                      </Link>
-
-                      <div className="flex flex-row items-center gap-x-1">
-                        <BsCircle className="text-emerald-400 font-bold" />{" "}
-                        Available
+              <Table.Body>
+                {pools.map((pool, index) => {
+                  return (
+                    <Table.Row key={index} className="text-disabled">
+                      <div className="flex justify-between">
+                        <Link
+                          href={`/dash/add?fromToken=${pool.from_token.id}&toToken=${pool.to_token.id}`}
+                        >
+                          <div className="flex items-center gap-2">
+                            <Avatar.Group>
+                              <Avatar
+                                className="border-0"
+                                src={pool.from_token.icon}
+                                shape="circle"
+                                size={30}
+                              />
+                              <Avatar
+                                className="border-0"
+                                src={pool.to_token.icon}
+                                shape="circle"
+                                size={30}
+                              />
+                            </Avatar.Group>
+                            <span className="uppercase text-base">
+                              {pool.from_token.symbol} / {pool.to_token.symbol}
+                            </span>
+                          </div>
+                        </Link>
+                        {kycVerified ? (
+                          index ? (
+                            <div className="flex flex-row items-center gap-x-1 w-28 justify-start">
+                              <CgUnavailable className="text-rose-500 text-[18px]" />
+                              Restricted
+                            </div>
+                          ) : (
+                            <div className="flex flex-row items-center gap-x-1 w-28 justify-start">
+                              <BsCircle className="text-emerald-400 font-bold" />
+                              Available
+                            </div>
+                          )
+                        ) : (
+                          <div className="flex flex-row items-center gap-x-1 w-28 justify-start">
+                            <CgUnavailable className="text-rose-500 text-[18px]" />
+                            Restricted
+                          </div>
+                        )}
                       </div>
-                    </div>
-                    <CurrencyFormat
-                      displayType="text"
-                      className="font-secondary text-left text-base "
-                      thousandSeparator
-                      decimalScale={2}
-                      value={0}
-                    />
-                    <CurrencyFormat
-                      displayType="text"
-                      className="font-secondary text-left text-base"
-                      thousandSeparator
-                      decimalScale={2}
-                      value={pool.liquidity}
-                    />
-                    <CurrencyFormat
-                      displayType="text"
-                      className="font-secondary text-left text-base"
-                      decimalScale={2}
-                      suffix="%"
-                      value={pool.apr}
-                    />
-                  </Table.Row>
-                );
-              })}
-            </Table.Body>
-          </Table>
-
-          <div className="flex justify-center">
-            <Link
-              href="/dash/add"
-              className="btn py-2 shadow-md btn-primary w-[160px] text-lg"
-            >
-              + New Pool
-            </Link>
-          </div>
+                      <CurrencyFormat
+                        displayType="text"
+                        className="font-secondary text-left text-base max-md:hidden"
+                        thousandSeparator
+                        decimalScale={2}
+                        value={0}
+                      />
+                      <CurrencyFormat
+                        displayType="text"
+                        className="font-secondary text-left text-base max-sm:hidden"
+                        thousandSeparator
+                        decimalScale={2}
+                        value={pool.total_liquidity}
+                      />
+                      <CurrencyFormat
+                        displayType="text"
+                        className="font-secondary text-left text-base"
+                        decimalScale={2}
+                        suffix="%"
+                        value={pool.apr}
+                      />
+                    </Table.Row>
+                  );
+                })}
+              </Table.Body>
+            </Table>
+          ) : (
+            <div className="text-center">
+              <Loading variant="dots" />
+            </div>
+          )}
         </div>
       </div>
       <div className="block md:hidden">
@@ -110,23 +127,41 @@ const PermissionLessPools: React.FC<Props> = ({ pools }) => {
                 <Avatar.Group>
                   <Avatar
                     className="border-0"
-                    src={pool.x.icon}
+                    src={pool.from_token.icon}
                     shape="circle"
                     size={30}
                   />
                   <Avatar
                     className="border-0"
-                    src={pool.y.icon}
+                    src={pool.to_token.icon}
                     shape="circle"
                     size={30}
                   />
                 </Avatar.Group>
                 <span className="uppercase text-base">
-                  {pool.x.symbol} / {pool.y.symbol}
+                  {pool.from_token.symbol} / {pool.to_token.symbol}
                 </span>
               </div>
             </Collapse.Title>
             <Collapse.Content>
+              {kycVerified ? (
+                index ? (
+                  <div className="flex flex-row items-center gap-x-1 w-28 justify-start">
+                    <CgUnavailable className="text-rose-500 text-[18px]" />
+                    Restricted
+                  </div>
+                ) : (
+                  <div className="flex flex-row items-center gap-x-1 w-28 justify-start">
+                    <BsCircle className="text-emerald-400 font-bold" />
+                    Available
+                  </div>
+                )
+              ) : (
+                <div className="flex flex-row items-center gap-x-1 w-28 justify-start">
+                  <CgUnavailable className="text-rose-500 text-[18px]" />
+                  Restricted
+                </div>
+              )}
               <div className="flex justify-between">
                 <div>Your Liquidity</div>
                 <CurrencyFormat
@@ -144,7 +179,7 @@ const PermissionLessPools: React.FC<Props> = ({ pools }) => {
                   className="font-secondary text-left text-base"
                   thousandSeparator
                   decimalScale={2}
-                  value={pool.liquidity}
+                  value={pool.total_liquidity}
                 />
               </div>
               <div className="flex justify-between">
@@ -160,6 +195,14 @@ const PermissionLessPools: React.FC<Props> = ({ pools }) => {
             </Collapse.Content>
           </Collapse>
         ))}
+      </div>
+      <div className="flex justify-center mb-4">
+        <Link
+          href="/dash/add"
+          className="btn py-2 shadow-md btn-primary w-[160px] text-lg"
+        >
+          + New Pool
+        </Link>
       </div>
     </div>
   );

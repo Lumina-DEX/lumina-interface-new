@@ -10,7 +10,7 @@ const usePools = create<PoolState>((set) => ({
   pools: [
     {
       x: {
-        tokenId: "id1",
+        id: "id1",
         symbol: "mina1",
         icon: "/assets/tokens/lumina.png",
         usdPrice: "1.3",
@@ -19,7 +19,7 @@ const usePools = create<PoolState>((set) => ({
         liquidity: 512345673,
       },
       y: {
-        tokenId: "id2",
+        id: "id2",
         symbol: "dai2",
         icon: "/assets/tokens/dai.png",
         usdPrice: "0.07",
@@ -28,7 +28,7 @@ const usePools = create<PoolState>((set) => ({
         liquidity: 512345673,
       },
       lqxy: {
-        tokenId: "id1id2",
+        id: "id1id2",
         symbol: "",
         usdPrice: "0.07",
         priceChange: 1,
@@ -40,7 +40,7 @@ const usePools = create<PoolState>((set) => ({
     },
     {
       x: {
-        tokenId: "id3",
+        id: "id3",
         symbol: "mina3",
         icon: "/assets/tokens/dai.png",
         usdPrice: "0.07",
@@ -49,7 +49,7 @@ const usePools = create<PoolState>((set) => ({
         liquidity: 512345673,
       },
       y: {
-        tokenId: "id4",
+        id: "id4",
         symbol: "mina4",
         icon: "/assets/tokens/dai.png",
         usdPrice: "0.07",
@@ -58,7 +58,7 @@ const usePools = create<PoolState>((set) => ({
         liquidity: 512345673,
       },
       lqxy: {
-        tokenId: "id1id2",
+        id: "id1id2",
         symbol: "",
         usdPrice: "0.07",
         priceChange: 1,
@@ -70,7 +70,7 @@ const usePools = create<PoolState>((set) => ({
     },
     {
       x: {
-        tokenId: "id5",
+        id: "id5",
         symbol: "mina5",
         icon: "/assets/tokens/dai.png",
         usdPrice: "0.07",
@@ -79,7 +79,7 @@ const usePools = create<PoolState>((set) => ({
         liquidity: 512345673,
       },
       y: {
-        tokenId: "id6",
+        id: "id6",
         symbol: "dai6",
         icon: "/assets/tokens/dai.png",
         usdPrice: "0.07",
@@ -88,7 +88,7 @@ const usePools = create<PoolState>((set) => ({
         liquidity: 512345673,
       },
       lqxy: {
-        tokenId: "id1id2",
+        id: "id1id2",
         symbol: "",
         usdPrice: "0.07",
         priceChange: 1,

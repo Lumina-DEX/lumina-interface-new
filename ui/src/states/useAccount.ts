@@ -14,7 +14,7 @@ interface AccountModel {
   creatingTransaction: boolean;
   //
   network: null | string;
-  balances: { [tokenId: string]: number };
+  balances: { [id: string]: number };
   kycVerified: boolean;
 }
 

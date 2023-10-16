@@ -14,22 +14,11 @@ interface Props {
   pools: Pool[];
 }
 
-const PermissionedPools: React.FC<Props> = () => {
-  const [pools, setPools] = useState<any[]>([]);
-  const { getPools } = useSupabaseFunctions();
+const PermissionedPools: React.FC<Props> = ({ pools }) => {
   const { walletConnected, kycVerified } = useAccount((state) => ({
     walletConnected: state.hasBeenSetup,
     kycVerified: state.kycVerified,
   }));
-
-  useEffect(() => {
-    getPools().then((response) => {
-      const { status, data } = response;
-      if (status === 200 && data) {
-        setPools(data);
-      }
-    });
-  }, []);
 
   const handleConnectWallet = async () => {
     connect();
@@ -136,30 +125,6 @@ const PermissionedPools: React.FC<Props> = () => {
               <Loading variant="dots" />
             </div>
           )}
-
-          {walletConnected ? (
-            kycVerified ? (
-              <div className="flex justify-center">
-                <Link
-                  href="/dash/kyc"
-                  className="btn py-2 shadow-md btn-primary w-[160px] text-lg"
-                >
-                  Start KYC
-                </Link>
-              </div>
-            ) : (
-              <></>
-            )
-          ) : (
-            <div className="flex justify-center">
-              <Button
-                className="btn-primary text-white"
-                onClick={handleConnectWallet}
-              >
-                Connect Wallet
-              </Button>
-            </div>
-          )}
           <div className="text-center font-bold text-black">
             Permissioned pool creation and management only available <br />
             to Enterprise users who complete KYB
@@ -191,6 +156,24 @@ const PermissionedPools: React.FC<Props> = () => {
               </div>
             </Collapse.Title>
             <Collapse.Content>
+              {kycVerified ? (
+                index ? (
+                  <div className="flex flex-row items-center gap-x-1 w-28 justify-start">
+                    <CgUnavailable className="text-rose-500 text-[18px]" />
+                    Restricted
+                  </div>
+                ) : (
+                  <div className="flex flex-row items-center gap-x-1 w-28 justify-start">
+                    <BsCircle className="text-emerald-400 font-bold" />
+                    Available
+                  </div>
+                )
+              ) : (
+                <div className="flex flex-row items-center gap-x-1 w-28 justify-start">
+                  <CgUnavailable className="text-rose-500 text-[18px]" />
+                  Restricted
+                </div>
+              )}
               <div className="flex justify-between">
                 <div>Your Liquidity</div>
                 <CurrencyFormat
@@ -208,7 +191,7 @@ const PermissionedPools: React.FC<Props> = () => {
                   className="font-secondary text-left text-base"
                   thousandSeparator
                   decimalScale={2}
-                  value={pool.liquidity}
+                  value={pool.total_liquidity}
                 />
               </div>
               <div className="flex justify-between">
@@ -225,6 +208,29 @@ const PermissionedPools: React.FC<Props> = () => {
           </Collapse>
         ))}
       </div>
+      {walletConnected ? (
+        !kycVerified ? (
+          <div className="flex justify-center mb-4">
+            <Link
+              href="/dash/kyc"
+              className="btn py-2 shadow-md btn-primary w-[160px] text-lg"
+            >
+              Start KYC
+            </Link>
+          </div>
+        ) : (
+          <></>
+        )
+      ) : (
+        <div className="flex justify-center mb-4">
+          <Button
+            className="btn-primary text-white"
+            onClick={handleConnectWallet}
+          >
+            Connect Wallet
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
