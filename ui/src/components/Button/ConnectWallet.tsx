@@ -3,7 +3,7 @@ import { AppContext } from "@/contexts/AppContext";
 import { shortenAddress } from "@/utils/address";
 import { toggleHTMLClass } from "@/utils/theme";
 import { WalletDropdownList } from "@/constants/menu";
-import { Button, Dropdown, Toggle } from "react-daisyui";
+import { Button, Dropdown, Form, Toggle } from "react-daisyui";
 import useAccount from "@/states/useAccount";
 import { FiCopy } from "react-icons/fi";
 import { RxExit } from "react-icons/rx";
@@ -112,8 +112,13 @@ const ConnectWallet = () => {
                   <MdOutlineDarkMode size={18} />
                 </div>
               </Dropdown.Item>
-              <Dropdown.Item className="flex justify-between">
-                <Toggle defaultChecked color="primary" />
+              <Dropdown.Item>
+                <Form.Label
+                  title="Real KYC/Test KYC"
+                  className="text-[12px] w-100"
+                >
+                  <Toggle defaultChecked color="primary" />
+                </Form.Label>
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
