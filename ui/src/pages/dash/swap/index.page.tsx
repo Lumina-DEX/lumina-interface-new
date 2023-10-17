@@ -2,8 +2,8 @@ import Layout from "@/components/Layout";
 import React, { ReactElement, useEffect } from "react";
 import CoinPriceChart from "./CoinPriceChart";
 import SwapPanel from "./SwapPanel";
-import KYCPane from "./KYCPanel";
 import useAccount from "@/states/useAccount";
+
 function SwapPage() {
   const { walletConnected, kycVerified } = useAccount((state) => ({
     walletConnected: state.hasBeenSetup,

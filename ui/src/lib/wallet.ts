@@ -37,36 +37,40 @@ async function handleAccountsChanged(accounts: string[]) {
 
   if (accounts?.length > 0) {
     publicKeyBase58 = accounts[0];
-    console.log("handleAccountsChanged", { publicKeyBase58 });
-    // await setupWorkerClient(publicKeyBase58);
+    await setupWorkerClient(publicKeyBase58);
     walletConnected = true;
   } else {
     localStorage.setItem(WALLET_CONNECTED_BEFORE_FLAG, "false");
   }
   useAccount.setState(() => ({
     publicKeyBase58,
-    // hasBeenSetup: walletConnected,
+    hasBeenSetup: walletConnected,
   }));
 }
 
-// async function setupWorkerClient(publicKeyBase58: string) {
-//   try {
-//     // check if connected user account exists or not
-//     const res = await zkClient.fetchAccount({ publicKeyBase58 });
-//     const accountExists = !res.error;
-//     useAccount.setState((state) => ({ accountExists }));
+async function setupWorkerClient(publicKeyBase58: string) {
+  try {
+    const state = useAccount.getState();
+    // check if connected user account exists or not
+    const res = await state.zkappWorkerClient!.fetchAccount({
+      publicKeyBase58,
+    });
+    const accountExists = !res.error;
+    useAccount.setState((state) => ({ accountExists }));
 
-//     // get account balance if account exists
-//     if (accountExists) {
-//       const balance = await zkClient.getBalance(publicKeyBase58);
-//       useAccount.setState((state) => ({
-//         ...state,
-//         balances: { mina: Number(balance.toString()) / MINA_SUB_DECIMAL },
-//       }));
-//     } else {
-//       throw res;
-//     }
-//   } catch (e: any) {
-//     console.error("setupWorkerClient", e);
-//   }
-// }
+    // get account balance if account exists
+    if (accountExists) {
+      const balance = await state.zkappWorkerClient!.getBalance(
+        publicKeyBase58
+      );
+      useAccount.setState((state) => ({
+        ...state,
+        balances: { mina: Number(balance.toString()) / MINA_SUB_DECIMAL },
+      }));
+    } else {
+      throw res;
+    }
+  } catch (e: any) {
+    console.error("setupWorkerClient", e);
+  }
+}

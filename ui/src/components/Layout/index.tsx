@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useState } from "react";
+import React, { PropsWithChildren, useState, useEffect } from "react";
 import Header from "../Header";
 import Footer from "../Footer";
 import { AppContext } from "@/contexts/AppContext";

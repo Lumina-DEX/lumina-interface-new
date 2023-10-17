@@ -33,13 +33,52 @@ const AddLiquidityPanel: NextPageWithLayout = () => {
   );
 
   useEffect(() => {
-    setFromToken(
-      tokens.find((token) => token.id === searchParams.get("fromToken"))!
-    );
-    setToToken(
-      tokens.find((token) => token.id === searchParams.get("toToken"))!
-    );
+    if (!searchParams.get("fromToken")) {
+      setFromToken(tokens[0]);
+      setToToken(tokens[1]);
+    } else {
+      setFromToken(
+        tokens.find((token) => token.id === searchParams.get("fromToken"))!
+      );
+      setToToken(
+        tokens.find((token) => token.id === searchParams.get("toToken"))!
+      );
+    }
   }, []);
+
+  useEffect(() => {
+    if (fromToken === toToken) {
+      setFromToken(toToken);
+      setToToken(
+        tokens.find((token) => token.id === searchParams.get("fromToken"))!
+      );
+    }
+    const newSearchParams = new URLSearchParams();
+    newSearchParams.append("fromToken", fromToken.id);
+    newSearchParams.append("toToken", toToken.id);
+
+    router.push({
+      pathname: router.pathname,
+      search: newSearchParams.toString(),
+    });
+  }, [fromToken]);
+
+  useEffect(() => {
+    if (fromToken === toToken) {
+      setFromToken(
+        tokens.find((token) => token.id === searchParams.get("toToken"))!
+      );
+      setToToken(fromToken);
+    }
+    const newSearchParams = new URLSearchParams();
+    newSearchParams.append("fromToken", fromToken.id);
+    newSearchParams.append("toToken", toToken.id);
+
+    router.push({
+      pathname: router.pathname,
+      search: newSearchParams.toString(),
+    });
+  }, [toToken]);
 
   return (
     <div className="bg-light-200 card w-[470px] overflow-hidden max-[500px]:w-[400px] max-[420px]:w-[300px]">

@@ -3,7 +3,6 @@ export default class ZKPid {
   private zkPidMainUrl;
   private customerId;
   private secretKey;
-  private testMode;
 
   private token;
 
@@ -12,7 +11,6 @@ export default class ZKPid {
     this.zkPidMainUrl = process.env.NEXT_PUBLIC_ZKPID_URL;
     this.customerId = process.env.NEXT_PUBLIC_ZKPID_CUSTOMER_ID;
     this.secretKey = process.env.NEXT_PUBLIC_ZKPID_SECRET_KEY;
-    this.testMode = process.env.NEXT_PUBLIC_ZKPID_TEST_MODE;
     this.token = "";
   }
 
@@ -43,7 +41,11 @@ export default class ZKPid {
     this.token = token;
   }
 
-  async startkyc(req: { address: string; uid: string }) {
+  async startkyc(req: {
+    address: string;
+    uid: string;
+    test: string | undefined;
+  }) {
     if (!this.zkPidMainUrl) {
       throw new Error("ZKPID_URL is missing in env");
     }
@@ -62,7 +64,7 @@ export default class ZKPid {
         body: JSON.stringify({
           address: req.address,
           uid: req.uid,
-          test: this.testMode,
+          test: req.test,
         }),
       })
     ).json();

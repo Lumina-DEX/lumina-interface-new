@@ -13,6 +13,8 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import { connect } from "@/lib/wallet";
 import Link from "next/link";
 import { BiSolidCheckCircle } from "react-icons/bi";
+import useTestMode from "@/states/useTestMode";
+import useLoad from "@/states/useLoad";
 
 const ConnectWallet = () => {
   const { darkMode, setDarkMode } = useContext(AppContext);
@@ -21,6 +23,15 @@ const ConnectWallet = () => {
   const kycVerified = useAccount((state) => state.kycVerified);
   const balances = useAccount((state) => state.balances);
   const address = useAccount((state) => state.publicKeyBase58);
+
+  const { testMode, updateTestMode } = useTestMode((state) => ({
+    testMode: state.state,
+    updateTestMode: state.update,
+  }));
+
+  const { loadState } = useLoad((state) => ({
+    loadState: state.state,
+  }));
 
   const handleConnectWallet = async () => {
     connect();
@@ -35,13 +46,24 @@ const ConnectWallet = () => {
     console.log("connect wallet dropdown");
   };
 
+  const setTestMode = () => {
+    updateTestMode({ state: !testMode });
+    localStorage.setItem("TestMode", String(!testMode));
+  };
+
+  useEffect(() => {
+    const flag = localStorage.getItem("TestMode");
+    flag === "true"
+      ? updateTestMode({ state: true })
+      : updateTestMode({ state: false });
+  }, []);
   return (
     // {walletConnected && (
     //   <Button size="sm">{balances.mina ?? 0} Mina</Button>
     //
     <div className="flex gap-2 max-sm:fixed max-sm:bottom-0 max-sm:left-0 max-sm:h-14 max-sm:w-full max-sm:z-[2] max-sm:bg-background-l1 max-sm:shadow-10 max-sm:px-4 max-sm:justify-start max-sm:items-center max-sm:flex">
       <div>
-        {walletConnected ? (
+        {address ? (
           kycVerified ? (
             <div className="text-emerald-400 font-bold flex flex-row items-center">
               <BiSolidCheckCircle />
@@ -51,7 +73,7 @@ const ConnectWallet = () => {
           ) : (
             <Link
               href={`/dash/kyc?address=${address}`}
-              className="btn w-full min-h-0 shadow-md btn-primary text-lg h-7 text-white"
+              className="btn w-full min-h-0 shadow-md btn-primary text-lg text-white h-7"
             >
               <p className="block max-sm:hidden">Start KYC</p>
               <p className="hidden max-sm:block">KYC</p>
@@ -61,7 +83,7 @@ const ConnectWallet = () => {
           <></>
         )}
       </div>
-      {walletConnected && <Button size="sm">{balances.mina ?? 0} Mina</Button>}
+      {address && <Button size="sm">{balances.mina ?? 0} Mina</Button>}
       <div className="font-primary ">
         {address ? (
           // <Button text={shortenAddress(accounts[0])} variant="secondary" onClick={() => setOpen(!open)} />
@@ -84,9 +106,9 @@ const ConnectWallet = () => {
 
               {WalletDropdownList.map(
                 (link: { label: string; href: string }, index: number) => (
-                  <Dropdown.Item key={index}>
+                  <li key={index}>
                     <Link href={link.label}>{link.label}</Link>
-                  </Dropdown.Item>
+                  </li>
                 )
               )}
 
@@ -119,19 +141,29 @@ const ConnectWallet = () => {
                   title="Real / Test(KYC)"
                   className="text-[12px] w-100"
                 >
-                  <Toggle
-                    defaultChecked
-                    color="primary"
-                    className="ml-[14px]"
-                  />
+                  {testMode ? (
+                    <Toggle
+                      defaultChecked
+                      color="primary"
+                      className="ml-[14px]"
+                      onChange={setTestMode}
+                    />
+                  ) : (
+                    <Toggle
+                      color="primary"
+                      className="ml-[14px]"
+                      onChange={setTestMode}
+                    />
+                  )}
                 </Form.Label>
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         ) : (
           <Button
-            className="btn-primary text-white"
+            className="btn w-full min-h-0 shadow-md btn-primary h-7 text-white "
             onClick={handleConnectWallet}
+            disabled={!loadState}
           >
             Connect Wallet
           </Button>

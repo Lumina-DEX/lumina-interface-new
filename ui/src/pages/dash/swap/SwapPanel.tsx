@@ -11,6 +11,7 @@ import { Button, Dropdown, Tabs } from "react-daisyui";
 import { BiCog } from "react-icons/bi";
 import { useRouter } from "next/router";
 import { useSearchParams } from "next/navigation";
+import useLoad from "@/states/useLoad";
 
 type Percent = number | string;
 
@@ -38,17 +39,21 @@ const SwapPanel = () => {
 
   const [slippagePercent, setSlippagePercent] = useState<Percent>(0);
 
+  const { loadState } = useLoad((state) => ({
+    loadState: state.state,
+  }));
+
   useEffect(() => {
     setFromAmount("0");
     if (fromToken === toToken) {
       setFromToken(toToken);
       setToToken(
-        tokens.find((token) => token.symbol === searchParams.get("fromToken"))!
+        tokens.find((token) => token.id === searchParams.get("fromToken"))!
       );
     }
     const newSearchParams = new URLSearchParams();
-    newSearchParams.append("fromToken", fromToken.symbol);
-    newSearchParams.append("toToken", toToken.symbol);
+    newSearchParams.append("fromToken", fromToken.id);
+    newSearchParams.append("toToken", toToken.id);
 
     router.push({
       pathname: router.pathname,
@@ -60,13 +65,13 @@ const SwapPanel = () => {
     setFromAmount("0");
     if (fromToken === toToken) {
       setFromToken(
-        tokens.find((token) => token.symbol === searchParams.get("toToken"))!
+        tokens.find((token) => token.id === searchParams.get("toToken"))!
       );
       setToToken(fromToken);
     }
     const newSearchParams = new URLSearchParams();
-    newSearchParams.append("fromToken", fromToken.symbol);
-    newSearchParams.append("toToken", toToken.symbol);
+    newSearchParams.append("fromToken", fromToken.id);
+    newSearchParams.append("toToken", toToken.id);
 
     router.push({
       pathname: router.pathname,
@@ -235,6 +240,7 @@ const SwapPanel = () => {
             className="w-full h-[60px] min-h-0 shadow-md"
             color="primary"
             size="lg"
+            disabled={!loadState}
           >
             Swap
           </Button>

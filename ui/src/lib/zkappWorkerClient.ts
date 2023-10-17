@@ -10,7 +10,6 @@ export default class ZkappWorkerClient {
   // ---------------------------------------------------------------------------------------
 
   setActiveInstanceToBerkeley() {
-    console.log(11111111111);
     return this._call("setActiveInstanceToBerkeley", {});
   }
 

@@ -2,18 +2,31 @@ import { Database } from "@/lib/database.types";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { useCallback } from "react";
+import useTestMode from "@/states/useTestMode";
+import React, { useContext, useEffect } from "react";
 
 export default function useSupabaseFunctions() {
   const supabase: SupabaseClient<Database> = useSupabaseClient();
+  const { testMode, updateTestMode } = useTestMode((state) => ({
+    testMode: state.state,
+    updateTestMode: state.update,
+  }));
+
+  useEffect(() => {
+    const flag = localStorage.getItem("TestMode");
+    flag === "true"
+      ? updateTestMode({ state: true })
+      : updateTestMode({ state: false });
+  }, []);
 
   const getPermissioned = useCallback(
     (walletAddress: string) =>
-      process.env.NEXT_PUBLIC_ZKPID_TEST_MODE
+      testMode
         ? supabase
             .from("permissions")
             .select("*")
             .eq("wallet_address", walletAddress)
-            .eq("mode", process.env.NEXT_PUBLIC_ZKPID_TEST_MODE)
+            .eq("mode", "APPROVED")
         : supabase
             .from("permissions")
             .select("*")

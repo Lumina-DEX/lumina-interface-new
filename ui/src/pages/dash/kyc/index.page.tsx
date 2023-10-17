@@ -6,12 +6,25 @@ import { Button } from "react-daisyui";
 import { NextPageWithLayout } from "@/pages/_app.page";
 import { FaTimes } from "react-icons/fa";
 import { useRouter } from "next/router";
+import useTestMode from "@/states/useTestMode";
 
 const KYCPage: NextPageWithLayout = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
 
   const [url, setUrl] = useState("");
+
+  const { testMode, updateTestMode } = useTestMode((state) => ({
+    testMode: state.state,
+    updateTestMode: state.update,
+  }));
+
+  useEffect(() => {
+    const flag = localStorage.getItem("TestMode");
+    flag === "true"
+      ? updateTestMode({ state: true })
+      : updateTestMode({ state: false });
+  }, []);
 
   const handleStartVerification = () => {
     getUrl();
@@ -30,6 +43,7 @@ const KYCPage: NextPageWithLayout = () => {
     const url = await zkpid.startkyc({
       address,
       uid: "unique session",
+      test: testMode ? "APPROVED" : undefined,
     });
     setUrl(url);
   };

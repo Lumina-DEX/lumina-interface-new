@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { MenuItems } from "@/constants/menu";
 import ConnectWallet from "../Button/ConnectWallet";
 import { Button, Drawer, Menu, Navbar } from "react-daisyui";
 import Link from "next/link";
 import Item from "@/components/Menu/item";
-import useAccount from "@/states/useAccount";
 
 const Header = () => {
   const [visible, setVisible] = useState(false);

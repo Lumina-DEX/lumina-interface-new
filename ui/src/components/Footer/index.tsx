@@ -1,9 +1,26 @@
-import React from 'react'
+import React from "react";
+import useLoad from "@/states/useLoad";
+import { Loading } from "react-daisyui";
 
 const Footer = () => {
+  const { loadMsg, loadState } = useLoad((state) => ({
+    loadMsg: state.msg,
+    loadState: state.state,
+  }));
+
   return (
-    <div></div>
-  )
-}
+    <div className="absolute bottom-14 w-full min-[630px]:bottom-2">
+      <div className="flex justify-center text-primary text-xl min-[630px]:text-2xl">
+        {loadState ? (
+          <div> success </div>
+        ) : (
+          <div className="flex flex-row">
+            <p>{loadMsg}</p> <Loading color="primary" />
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
 
 export default Footer;
