@@ -14,9 +14,11 @@ export default function useSupabaseFunctions() {
 
   useEffect(() => {
     const flag = localStorage.getItem("TestMode");
+    console.log("flag", flag);
     flag === "true"
       ? updateTestMode({ state: true })
       : updateTestMode({ state: false });
+    console.log("TestMode", testMode);
   }, []);
 
   const getPermissioned = useCallback(

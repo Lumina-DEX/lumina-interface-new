@@ -2,13 +2,7 @@ import Layout from "@/components/Layout";
 import React, { ReactElement, useEffect, useReducer } from "react";
 import CoinPriceChart from "./CoinPriceChart";
 import SwapPanel from "./SwapPanel";
-import useAccount from "@/states/useAccount";
 function SwapPage() {
-  const { walletConnected, kycVerified } = useAccount((state) => ({
-    walletConnected: state.hasBeenSetup,
-    kycVerified: state.kycVerified,
-  }));
-
   return (
     <div className="flex flex-col gap-y-12 container max-sm:mt-0 ">
       <div className="w-full flex flex-row justify-between gap-x-10 max-lg:justify-center">

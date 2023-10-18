@@ -5,6 +5,7 @@ import { AppContext } from "@/contexts/AppContext";
 import { LoadingContext } from "@/contexts/LoadingContext";
 import { toast, ToastContainer } from "react-toastify";
 import useLoad from "@/states/useLoad";
+import { AiFillInfoCircle } from "react-icons/ai";
 
 const Layout: React.FC<PropsWithChildren> = ({ children }) => {
   const [isLoading, setLoading] = useState(true);
@@ -19,6 +20,9 @@ const Layout: React.FC<PropsWithChildren> = ({ children }) => {
     if (loadMsg && !loadState) {
       console.log("loadState", loadState);
       toast.info(loadMsg, {
+        icon: ({ theme, type }) => (
+          <AiFillInfoCircle className="text-primary text-2xl" />
+        ),
         position: "top-right",
         autoClose: false,
         hideProgressBar: true,

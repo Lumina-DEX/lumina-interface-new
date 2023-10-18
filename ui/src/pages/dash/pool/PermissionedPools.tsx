@@ -30,7 +30,7 @@ const PermissionedPools: React.FC<Props> = ({ pools }) => {
   };
 
   return (
-    <div className="flex flex-col gap-y-4 pt-4">
+    <div className="flex flex-col gap-y-4 py-4">
       <div className="text-center font-bold text-black px-2 text-base sm:text-base min-[320px]:text-[13px]">
         Connect Wallet and Complete KYC to access permissioned liquidity on
         Lumina

@@ -15,14 +15,23 @@ import Link from "next/link";
 import { BiSolidCheckCircle } from "react-icons/bi";
 import useTestMode from "@/states/useTestMode";
 import useLoad from "@/states/useLoad";
+import useSupabaseFunctions from "@/services/supabase";
 
 const ConnectWallet = () => {
   const { darkMode, setDarkMode } = useContext(AppContext);
 
-  const walletConnected = useAccount((state) => state.hasBeenSetup);
-  const kycVerified = useAccount((state) => state.kycVerified);
-  const balances = useAccount((state) => state.balances);
-  const address = useAccount((state) => state.publicKeyBase58);
+  const { walletConnected, kycVerified, balances, accountUpdate } = useAccount(
+    (state) => ({
+      walletConnected: state.hasBeenSetup,
+      kycVerified: state.kycVerified,
+      balances: state.balances,
+      accountUpdate: state.update,
+    })
+  );
+
+  const address: string | any = useAccount((state) => state.publicKeyBase58);
+
+  const { getPermissioned } = useSupabaseFunctions();
 
   const { testMode, updateTestMode } = useTestMode((state) => ({
     testMode: state.state,
@@ -49,6 +58,12 @@ const ConnectWallet = () => {
   const setTestMode = () => {
     updateTestMode({ state: !testMode });
     localStorage.setItem("TestMode", String(!testMode));
+    getPermissioned(address).then((response) => {
+      const { status, data } = response;
+      if (status === 200 && data) {
+        accountUpdate({ kycVerified: !!data[0] });
+      }
+    });
   };
 
   useEffect(() => {
