@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import SearchInput from "@/components/Input/SearchInput";
 import CurrencyFormat from "react-currency-format";
 import { Avatar, Table, Button, Collapse, Loading } from "react-daisyui";
