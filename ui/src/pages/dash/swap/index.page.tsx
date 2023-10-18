@@ -16,7 +16,7 @@ function SwapPage() {
           <SwapPanel />
         </div>
 
-        <div className="w-full grow card px-4 flex-1 max-lg:hidden overflow-hidden h-[494px]">
+        <div className="w-full grow card px-4 flex-1 max-lg:hidden overflow-hidden h-[494px] z-1">
           <div className="flex flex-row justify-between w-full h-16 pl-8 pb-3 pr-32 items-end max-2xl:pr-10 ">
             <div className="font-bold text-xl">ETH/MINA</div>
             <div className="text-emerald-400 text-sm"> 2000 </div>
