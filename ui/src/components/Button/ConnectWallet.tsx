@@ -48,6 +48,11 @@ const ConnectWallet = () => {
     console.log("connect wallet dropdown");
   };
 
+  useEffect(() => {
+    const testMode = localStorage.getItem("TestMode");
+    setTestFlag(String(testMode));
+  }, []);
+
   const setTestMode = () => {
     const testMode = localStorage.getItem("TestMode");
     console.log("testMode", testMode);

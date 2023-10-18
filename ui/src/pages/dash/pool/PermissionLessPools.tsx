@@ -80,21 +80,6 @@ const PermissionLessPools: React.FC<Props> = ({ pools }) => {
                           </span>
                         </div>
                       </Link>
-                      {kycVerified ? (
-                        index ? (
-                          <div className="flex flex-row items-center gap-x-1 w-28 justify-start">
-                            <CgUnavailable className="text-rose-500 text-[18px]" />
-                            Restricted
-                          </div>
-                        ) : (
-                          <div className="flex flex-row items-center gap-x-1 w-28 justify-start">
-                            <BsCircle className="text-emerald-400 font-bold" />
-                            Available
-                          </div>
-                        )
-                      ) : (
-                        <></>
-                      )}
                     </div>
                     <CurrencyFormat
                       displayType="text"

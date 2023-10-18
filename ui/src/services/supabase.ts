@@ -31,7 +31,8 @@ export default function useSupabaseFunctions() {
           apr, 
           from_token(id, symbol, icon), 
           to_token(id, symbol, icon),
-          created_at
+          created_at,
+          US
         `
       ),
     [supabase]

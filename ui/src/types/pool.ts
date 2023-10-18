@@ -6,4 +6,5 @@ export interface Pool {
   lqxy: Token;
   total_liquidity: string;
   apr: number;
+  US: boolean;
 }

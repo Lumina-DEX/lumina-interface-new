@@ -16,6 +16,7 @@ interface AccountModel {
   network: null | string;
   balances: { [id: string]: number };
   kycVerified: boolean;
+  location: null | string;
 }
 
 interface AccountState extends AccountModel {
@@ -32,11 +33,10 @@ const useAccount = create<AccountState>((set) => ({
   publicKeyBase58: null,
   zkappPublicKey: null,
   creatingTransaction: false,
-
   network: null,
   balances: {},
   kycVerified: false,
-
+  location: null,
   update: (value: Partial<AccountModel>) => {
     set((state) => ({ ...state, ...value }));
   },

@@ -16,7 +16,10 @@ export default function KycUpdater() {
       getPermissioned(address, testMode || null).then((response) => {
         const { status, data } = response;
         if (status === 200 && data) {
-          accountUpdate({ kycVerified: !!data[0] });
+          accountUpdate({
+            kycVerified: !!data[0],
+            location: !!data[0] ? data[0].location : null,
+          });
         }
       });
     }

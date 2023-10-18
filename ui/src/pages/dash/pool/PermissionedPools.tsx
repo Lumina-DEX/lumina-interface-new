@@ -7,17 +7,15 @@ import useAccount from "@/states/useAccount";
 import { CgUnavailable } from "react-icons/cg";
 import Link from "next/link";
 import { connect } from "@/lib/wallet";
-import useSupabaseFunctions from "@/services/supabase";
 import { BsCircle } from "react-icons/bs";
-import { Database } from "@/lib/database.types";
 import useLoad from "@/states/useLoad";
 interface Props {
   pools: Pool[];
 }
 
 const PermissionedPools: React.FC<Props> = ({ pools }) => {
-  const { walletConnected, kycVerified, address } = useAccount((state) => ({
-    walletConnected: state.hasBeenSetup,
+  const { location, kycVerified, address } = useAccount((state) => ({
+    location: state.location,
     kycVerified: state.kycVerified,
     address: state.publicKeyBase58,
   }));
@@ -80,7 +78,19 @@ const PermissionedPools: React.FC<Props> = ({ pools }) => {
                         </div>
                       </Link>
                       {kycVerified ? (
-                        index ? (
+                        location === "US" ? (
+                          pool.US ? (
+                            <div className="flex flex-row items-center gap-x-1 w-28 justify-start">
+                              <BsCircle className="text-emerald-400 font-bold" />
+                              Available
+                            </div>
+                          ) : (
+                            <div className="flex flex-row items-center gap-x-1 w-28 justify-start">
+                              <CgUnavailable className="text-rose-500 text-[18px]" />
+                              Restricted
+                            </div>
+                          )
+                        ) : pool.US ? (
                           <div className="flex flex-row items-center gap-x-1 w-28 justify-start">
                             <CgUnavailable className="text-rose-500 text-[18px]" />
                             Restricted
@@ -92,7 +102,10 @@ const PermissionedPools: React.FC<Props> = ({ pools }) => {
                           </div>
                         )
                       ) : (
-                        <></>
+                        <div className="flex flex-row items-center gap-x-1 w-28 justify-start">
+                          <CgUnavailable className="text-rose-500 text-[18px]" />
+                          Restricted
+                        </div>
                       )}
                     </div>
                     <CurrencyFormat
