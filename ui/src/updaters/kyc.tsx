@@ -12,7 +12,9 @@ export default function KycUpdater() {
 
   useEffect(() => {
     if (address) {
-      const testMode = localStorage.getItem("TestMode");
+      const testMode =
+        typeof window !== "undefined" &&
+        window.localStorage.getItem("TestMode");
       getPermissioned(address, testMode || null).then((response) => {
         const { status, data } = response;
         if (status === 200 && data) {
@@ -26,6 +28,7 @@ export default function KycUpdater() {
     return () => {
       accountUpdate({ kycVerified: false });
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address]);
 
   return <></>;

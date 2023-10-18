@@ -18,6 +18,7 @@ const PoolPage: NextPageWithLayout = () => {
         setPools(data);
       }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [tabValue, setTabValue] = useState(0);

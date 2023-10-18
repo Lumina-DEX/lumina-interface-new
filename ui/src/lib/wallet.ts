@@ -10,7 +10,8 @@ export async function connect() {
   await requestNetwork();
   await requestAccounts();
 
-  localStorage.setItem(WALLET_CONNECTED_BEFORE_FLAG, "true");
+  typeof window !== "undefined" &&
+    window.localStorage.setItem(WALLET_CONNECTED_BEFORE_FLAG, "true");
 }
 
 async function requestNetwork() {
@@ -40,7 +41,8 @@ async function handleAccountsChanged(accounts: string[]) {
     await setupWorkerClient(publicKeyBase58);
     walletConnected = true;
   } else {
-    localStorage.setItem(WALLET_CONNECTED_BEFORE_FLAG, "false");
+    typeof window !== "undefined" &&
+      window.localStorage.setItem(WALLET_CONNECTED_BEFORE_FLAG, "false");
   }
   useAccount.setState(() => ({
     publicKeyBase58,

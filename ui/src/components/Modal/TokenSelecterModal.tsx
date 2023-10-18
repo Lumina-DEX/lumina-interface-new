@@ -19,6 +19,7 @@ const TokenSelecterModal = (props: Props) => {
   useEffect(() => {
     setVisible(props.visible);
     setSearchTokens(tokens.filter((token: Token) => token !== props.token));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props]);
 
   const toggleExit = () => {

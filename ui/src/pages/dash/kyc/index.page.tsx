@@ -6,14 +6,14 @@ import { Button } from "react-daisyui";
 import { NextPageWithLayout } from "@/pages/_app.page";
 import { FaTimes } from "react-icons/fa";
 import { useRouter } from "next/router";
-import useTestMode from "@/states/useTestMode";
 
 const KYCPage: NextPageWithLayout = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
 
   const [url, setUrl] = useState("");
-  const testMode = localStorage.getItem("TestMode");
+  const testMode =
+    typeof window !== "undefined" && window.localStorage.getItem("TestMode");
 
   const handleStartVerification = () => {
     getUrl();

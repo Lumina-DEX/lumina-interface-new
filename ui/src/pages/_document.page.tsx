@@ -7,11 +7,11 @@ export default class MyDocument extends Document {
         <Head>
           <meta name="theme-color" content="#311d72" />
           <link
-            href="https://fonts.googleapis.com/css?family=Orbitron"
+            href="https://fonts.googleapis.com/css?family=Orbitron&display=optional"
             rel="stylesheet"
           />
           <link
-            href="https://fonts.googleapis.com/css?family=Cutive Mono"
+            href="https://fonts.googleapis.com/css?family=Cutive Mono&display=optional"
             rel="stylesheet"
           />
         </Head>
