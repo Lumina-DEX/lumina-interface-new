@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/google-font-display */
 import Document, { Html, Head, Main, NextScript } from "next/document";
 
 export default class MyDocument extends Document {
@@ -7,11 +8,11 @@ export default class MyDocument extends Document {
         <Head>
           <meta name="theme-color" content="#311d72" />
           <link
-            href="https://fonts.googleapis.com/css?family=Orbitron&display=optional"
+            href="https://fonts.googleapis.com/css?family=Orbitron"
             rel="stylesheet"
           />
           <link
-            href="https://fonts.googleapis.com/css?family=Cutive Mono&display=optional"
+            href="https://fonts.googleapis.com/css?family=Cutive Mono"
             rel="stylesheet"
           />
         </Head>
