@@ -13,18 +13,7 @@ const KYCPage: NextPageWithLayout = () => {
   const router = useRouter();
 
   const [url, setUrl] = useState("");
-
-  const { testMode, updateTestMode } = useTestMode((state) => ({
-    testMode: state.state,
-    updateTestMode: state.update,
-  }));
-
-  useEffect(() => {
-    const flag = localStorage.getItem("TestMode");
-    flag === "true"
-      ? updateTestMode({ state: true })
-      : updateTestMode({ state: false });
-  }, []);
+  const testMode = localStorage.getItem("TestMode");
 
   const handleStartVerification = () => {
     getUrl();
@@ -43,7 +32,7 @@ const KYCPage: NextPageWithLayout = () => {
     const url = await zkpid.startkyc({
       address,
       uid: "unique session",
-      test: testMode ? "APPROVED" : undefined,
+      test: testMode === "true" ? "APPROVED" : undefined,
     });
     setUrl(url);
   };

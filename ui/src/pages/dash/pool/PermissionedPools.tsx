@@ -79,7 +79,7 @@ const PermissionedPools: React.FC<Props> = ({ pools }) => {
                           </span>
                         </div>
                       </Link>
-                      {address ? (
+                      {kycVerified ? (
                         index ? (
                           <div className="flex flex-row items-center gap-x-1 w-28 justify-start">
                             <CgUnavailable className="text-rose-500 text-[18px]" />
@@ -92,10 +92,7 @@ const PermissionedPools: React.FC<Props> = ({ pools }) => {
                           </div>
                         )
                       ) : (
-                        <div className="flex flex-row items-center gap-x-1 w-28 justify-start">
-                          <CgUnavailable className="text-rose-500 text-[18px]" />
-                          Restricted
-                        </div>
+                        <></>
                       )}
                     </div>
                     <CurrencyFormat

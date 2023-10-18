@@ -18,7 +18,6 @@ const Layout: React.FC<PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     if (loadMsg && !loadState) {
-      console.log("loadState", loadState);
       toast.info(loadMsg, {
         icon: ({ theme, type }) => (
           <AiFillInfoCircle className="text-primary text-2xl" />

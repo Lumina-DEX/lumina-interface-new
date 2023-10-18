@@ -12,7 +12,8 @@ export default function KycUpdater() {
 
   useEffect(() => {
     if (address) {
-      getPermissioned(address).then((response) => {
+      const testMode = localStorage.getItem("TestMode");
+      getPermissioned(address, testMode || null).then((response) => {
         const { status, data } = response;
         if (status === 200 && data) {
           accountUpdate({ kycVerified: !!data[0] });

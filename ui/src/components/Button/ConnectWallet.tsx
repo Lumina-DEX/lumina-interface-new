@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "@/contexts/AppContext";
 import { shortenAddress } from "@/utils/address";
 import { toggleHTMLClass } from "@/utils/theme";
@@ -13,7 +13,6 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import { connect } from "@/lib/wallet";
 import Link from "next/link";
 import { BiSolidCheckCircle } from "react-icons/bi";
-import useTestMode from "@/states/useTestMode";
 import useLoad from "@/states/useLoad";
 import useSupabaseFunctions from "@/services/supabase";
 
@@ -30,17 +29,11 @@ const ConnectWallet = () => {
   );
 
   const address: string | any = useAccount((state) => state.publicKeyBase58);
-
   const { getPermissioned } = useSupabaseFunctions();
-
-  const { testMode, updateTestMode } = useTestMode((state) => ({
-    testMode: state.state,
-    updateTestMode: state.update,
-  }));
-
   const { loadState } = useLoad((state) => ({
     loadState: state.state,
   }));
+  const [testMode, setTestFlag] = useState("false");
 
   const handleConnectWallet = async () => {
     connect();
@@ -56,22 +49,26 @@ const ConnectWallet = () => {
   };
 
   const setTestMode = () => {
-    updateTestMode({ state: !testMode });
-    localStorage.setItem("TestMode", String(!testMode));
-    getPermissioned(address).then((response) => {
-      const { status, data } = response;
-      if (status === 200 && data) {
-        accountUpdate({ kycVerified: !!data[0] });
+    const testMode = localStorage.getItem("TestMode");
+    console.log("testMode", testMode);
+    if (testMode === "true") {
+      localStorage.setItem("TestMode", "false");
+      setTestFlag("false");
+    } else {
+      console.log("else testMode", testMode);
+      localStorage.setItem("TestMode", "true");
+      setTestFlag("true");
+    }
+    getPermissioned(address, localStorage.getItem("TestMode")).then(
+      (response) => {
+        const { status, data } = response;
+        if (status === 200 && data) {
+          accountUpdate({ kycVerified: !!data[0] });
+        }
       }
-    });
+    );
   };
 
-  useEffect(() => {
-    const flag = localStorage.getItem("TestMode");
-    flag === "true"
-      ? updateTestMode({ state: true })
-      : updateTestMode({ state: false });
-  }, []);
   return (
     // {walletConnected && (
     //   <Button size="sm">{balances.mina ?? 0} Mina</Button>
@@ -156,7 +153,7 @@ const ConnectWallet = () => {
                   title="Real / Test(KYC)"
                   className="text-[12px] w-100"
                 >
-                  {testMode ? (
+                  {testMode === "true" ? (
                     <Toggle
                       defaultChecked
                       color="primary"
