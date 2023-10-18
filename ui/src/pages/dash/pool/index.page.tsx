@@ -1,6 +1,5 @@
 import Layout from "@/components/Layout";
 import { Tabs } from "react-daisyui";
-import { useRouter } from "next/router";
 import { ReactElement, useEffect, useState } from "react";
 import clsx from "classnames";
 import PermissionedPools from "./PermissionedPools";
@@ -9,7 +8,6 @@ import type { NextPageWithLayout } from "@/pages/_app.page";
 import useSupabaseFunctions from "@/services/supabase";
 
 const PoolPage: NextPageWithLayout = () => {
-  const router = useRouter();
   const [pools, setPools] = useState<any[]>([]);
   const { getPools } = useSupabaseFunctions();
 
@@ -20,6 +18,7 @@ const PoolPage: NextPageWithLayout = () => {
         setPools(data);
       }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [tabValue, setTabValue] = useState(0);

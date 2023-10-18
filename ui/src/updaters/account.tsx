@@ -1,5 +1,4 @@
 import useAccount from "@/states/useAccount";
-import GradientBG from "@/components/GradientBG";
 import { PublicKey } from "snarkyjs";
 import ZkappWorkerClient from "@/lib/zkappWorkerClient";
 import { useEffect, useState } from "react";
@@ -79,6 +78,7 @@ export default function AccountUpdater() {
         loadUpdate({ state: true });
       }
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // -------------------------------------------------------

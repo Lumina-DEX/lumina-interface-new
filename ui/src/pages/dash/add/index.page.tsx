@@ -44,7 +44,7 @@ const AddLiquidityPanel: NextPageWithLayout = () => {
         tokens.find((token) => token.id === searchParams.get("toToken"))!
       );
     }
-  }, []);
+  }, [searchParams, tokens]);
 
   useEffect(() => {
     if (fromToken === toToken) {
@@ -61,6 +61,7 @@ const AddLiquidityPanel: NextPageWithLayout = () => {
       pathname: router.pathname,
       search: newSearchParams.toString(),
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fromToken]);
 
   useEffect(() => {
@@ -78,6 +79,7 @@ const AddLiquidityPanel: NextPageWithLayout = () => {
       pathname: router.pathname,
       search: newSearchParams.toString(),
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [toToken]);
 
   return (

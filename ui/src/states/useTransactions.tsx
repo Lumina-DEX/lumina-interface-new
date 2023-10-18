@@ -6,7 +6,7 @@ interface TransactionState {
   update: (transactions: Transaction[]) => void;
 }
 
-const usePools = create<TransactionState>((set) => ({
+const useTransactions = create<TransactionState>((set) => ({
   transactions: [
     {
       fromToken: "CELO",
@@ -59,4 +59,4 @@ const usePools = create<TransactionState>((set) => ({
   },
 }));
 
-export default usePools;
+export default useTransactions;

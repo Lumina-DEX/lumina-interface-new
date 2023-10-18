@@ -12,7 +12,7 @@ const Item = (props: any) => {
     if (curPath.search(props.link) >= 0) {
       setFlag(1);
     }
-  }, [router.asPath]);
+  }, [props.link, router.asPath]);
 
   return (
     <Link

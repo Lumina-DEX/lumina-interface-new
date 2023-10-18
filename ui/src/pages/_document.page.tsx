@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/google-font-display */
 import Document, { Html, Head, Main, NextScript } from "next/document";
 
 export default class MyDocument extends Document {

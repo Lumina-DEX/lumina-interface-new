@@ -49,22 +49,26 @@ const ConnectWallet = () => {
   };
 
   useEffect(() => {
-    const testMode = localStorage.getItem("TestMode");
+    const testMode =
+      typeof window !== "undefined" && window.localStorage.getItem("TestMode");
     setTestFlag(String(testMode));
   }, []);
 
   const setTestMode = () => {
-    const testMode = localStorage.getItem("TestMode");
+    if (typeof window === "undefined") {
+      return;
+    }
+    const testMode = window.localStorage.getItem("TestMode");
     console.log("testMode", testMode);
     if (testMode === "true") {
-      localStorage.setItem("TestMode", "false");
+      window.localStorage.setItem("TestMode", "false");
       setTestFlag("false");
     } else {
       console.log("else testMode", testMode);
-      localStorage.setItem("TestMode", "true");
+      window.localStorage.setItem("TestMode", "true");
       setTestFlag("true");
     }
-    getPermissioned(address, localStorage.getItem("TestMode")).then(
+    getPermissioned(address, window.localStorage.getItem("TestMode")).then(
       (response) => {
         const { status, data } = response;
         if (status === 200 && data) {

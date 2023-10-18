@@ -29,14 +29,14 @@ const SwapPanel = () => {
   const [fromAmount, setFromAmount] = useState("");
   const fromTokenBalance = useMemo(
     () => balances[fromToken!.id] || 0,
-    [balances, fromToken!.id]
+    [balances, fromToken]
   );
 
   const [toToken, setToToken] = useState<Token>(tokens[1]);
   const [toAmount, setToAmount] = useState("0.0");
   const toTokenBalance = useMemo(
     () => balances[toToken!.id] || 0,
-    [balances, toToken!.id]
+    [balances, toToken]
   );
 
   const [slippagePercent, setSlippagePercent] = useState<Percent>(0);
@@ -61,6 +61,7 @@ const SwapPanel = () => {
       pathname: router.pathname,
       search: newSearchParams.toString(),
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fromToken]);
 
   useEffect(() => {
@@ -79,6 +80,7 @@ const SwapPanel = () => {
       pathname: router.pathname,
       search: newSearchParams.toString(),
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [toToken]);
 
   const handleConnectWallet = async () => {
