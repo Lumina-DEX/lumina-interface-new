@@ -12,6 +12,7 @@ import { BiCog } from "react-icons/bi";
 import { useRouter } from "next/router";
 import { useSearchParams } from "next/navigation";
 import useLoad from "@/states/useLoad";
+import { connect } from "@/lib/wallet";
 
 type Percent = number | string;
 
@@ -21,6 +22,7 @@ const SwapPanel = () => {
   const searchParams = useSearchParams();
   const tokens = useTokens((state) => state.tokens);
   const balances = useAccount((state) => state.balances);
+  const address = useAccount((state) => state.publicKeyBase58);
   const [tabValue, setTabValue] = useState(0);
 
   const [fromToken, setFromToken] = useState<Token>(tokens[0]);
@@ -78,6 +80,10 @@ const SwapPanel = () => {
       search: newSearchParams.toString(),
     });
   }, [toToken]);
+
+  const handleConnectWallet = async () => {
+    connect();
+  };
 
   return (
     <div className="bg-light-200 card w-[400px] overflow-hidden max-[420px]:w-[300px]">
@@ -235,15 +241,24 @@ const SwapPanel = () => {
                 : "Invalid"}
             </p>
           </div>
-
-          <Button
-            className="w-full h-[60px] min-h-0 shadow-md"
-            color="primary"
-            size="lg"
-            disabled={!loadState}
-          >
-            Swap
-          </Button>
+          {address ? (
+            <Button
+              className="w-full h-[60px] min-h-0 shadow-md"
+              color="primary"
+              size="lg"
+              disabled={!loadState}
+            >
+              Swap
+            </Button>
+          ) : (
+            <Button
+              className="btn-primary text-white"
+              onClick={handleConnectWallet}
+              disabled={!loadState}
+            >
+              Connect Wallet
+            </Button>
+          )}
         </div>
       </div>
     </div>

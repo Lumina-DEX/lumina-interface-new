@@ -9,6 +9,24 @@ interface TokenState {
 const useTokens = create<TokenState>((set) => ({
   tokens: [
     {
+      id: "iw1",
+      symbol: "mina12",
+      icon: "/assets/tokens/lumina.png",
+      usdPrice: "1.3",
+      priceChange: 4.09,
+      dayVolume: 342156,
+      liquidity: 52345673,
+    },
+    {
+      id: "iw2",
+      symbol: "mina13",
+      icon: "/assets/tokens/lumina.png",
+      usdPrice: "1.3",
+      priceChange: 5.09,
+      dayVolume: 32156,
+      liquidity: 5345673,
+    },
+    {
       id: "id1",
       symbol: "mina1",
       icon: "/assets/tokens/lumina.png",
@@ -53,33 +71,7 @@ const useTokens = create<TokenState>((set) => ({
       dayVolume: 3342156,
       liquidity: 512345673,
     },
-    {
-      id: "id6",
-      symbol: "dai6",
-      icon: "/assets/tokens/dai.png",
-      usdPrice: "0.07",
-      priceChange: 3.09,
-      dayVolume: 3342156,
-      liquidity: 512345673,
-    },
-    {
-      id: "id7",
-      symbol: "dai7",
-      icon: "/assets/tokens/dai.png",
-      usdPrice: "0.07",
-      priceChange: 3.09,
-      dayVolume: 3342156,
-      liquidity: 512345673,
-    },
-    {
-      id: "id8",
-      symbol: "dai8",
-      icon: "/assets/tokens/dai.png",
-      usdPrice: "0.07",
-      priceChange: 3.09,
-      dayVolume: 3342156,
-      liquidity: 512345673,
-    },
+
     {
       id: "id9",
       symbol: "dai9",
