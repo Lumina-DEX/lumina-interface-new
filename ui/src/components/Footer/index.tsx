@@ -10,15 +10,7 @@ const Footer = () => {
 
   return (
     <div className="absolute bottom-14 w-full min-[630px]:bottom-2">
-      <div className="flex justify-center text-primary text-xl min-[630px]:text-2xl">
-        {loadState ? (
-          <div> success </div>
-        ) : (
-          <div className="flex flex-row">
-            <p>{loadMsg}</p> <Loading color="primary" />
-          </div>
-        )}
-      </div>
+      <div className="flex justify-center text-primary text-xl min-[630px]:text-2xl"></div>
     </div>
   );
 };

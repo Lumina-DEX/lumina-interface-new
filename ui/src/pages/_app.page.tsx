@@ -10,6 +10,8 @@ import { NextPage } from "next";
 import Updaters from "@/updaters";
 import Head from "next/head";
 
+import "react-toastify/dist/ReactToastify.css";
+
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
 };
