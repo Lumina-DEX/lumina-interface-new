@@ -15,12 +15,12 @@ export async function connect() {
 }
 
 export async function disconnect() {
-  if (!mina) return;
-  await requestNetwork();
-  await requestAccounts();
-
-  typeof window !== "undefined" &&
-    window.localStorage.setItem(WALLET_CONNECTED_BEFORE_FLAG, "false");
+  useAccount.setState(() => ({
+    balances: {},
+    hasBeenSetup: false,
+    publicKeyBase58: null,
+    kycVerified: false,
+  }));
 }
 
 async function requestNetwork() {
