@@ -113,7 +113,7 @@ const AddLiquidityPanel: NextPageWithLayout = () => {
                 thousandSeparator={true}
                 decimalScale={2}
                 prefix="~$"
-                value={new Decimal(fromToken?.usdPrice || "0")
+                value={new Decimal(fromToken?.usd_price || "0")
                   .times(fromAmount || "0")
                   .toString()}
               />
@@ -167,7 +167,7 @@ const AddLiquidityPanel: NextPageWithLayout = () => {
                 thousandSeparator={true}
                 decimalScale={2}
                 prefix="~$"
-                value={new Decimal(toToken?.usdPrice || "0")
+                value={new Decimal(toToken?.usd_price || "0")
                   .times(fromAmount || "0")
                   .toString()}
               />

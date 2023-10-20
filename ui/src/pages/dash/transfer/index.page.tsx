@@ -55,7 +55,7 @@ const TransferPage: NextPageWithLayout = () => {
                   thousandSeparator={true}
                   decimalScale={2}
                   prefix="~$"
-                  value={new Decimal(token!.usdPrice || "0")
+                  value={new Decimal(token!.usd_price || "0")
                     .times(amount || "0")
                     .toString()}
                 />
