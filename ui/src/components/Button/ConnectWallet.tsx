@@ -10,7 +10,7 @@ import { RxExit } from "react-icons/rx";
 import { MdOutlineDarkMode } from "react-icons/md";
 import { AiOutlineRight } from "react-icons/ai";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import { connect } from "@/lib/wallet";
+import { disconnect, connect } from "@/lib/wallet";
 import Link from "next/link";
 import { BiSolidCheckCircle } from "react-icons/bi";
 import useLoad from "@/states/useLoad";
@@ -78,6 +78,10 @@ const ConnectWallet = () => {
     );
   };
 
+  const disconnectWallet = () => {
+    disconnect();
+  };
+
   return (
     // {walletConnected && (
     //   <Button size="sm">{balances.mina ?? 0} Mina</Button>
@@ -133,7 +137,10 @@ const ConnectWallet = () => {
                 )
               )}
 
-              <Dropdown.Item className="flex justify-between">
+              <Dropdown.Item
+                className="flex justify-between"
+                onClick={disconnectWallet}
+              >
                 <div>Disconnect</div>
                 <div className="flex justify-end">
                   <RxExit size={18} />

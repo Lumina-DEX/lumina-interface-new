@@ -14,6 +14,15 @@ export async function connect() {
     window.localStorage.setItem(WALLET_CONNECTED_BEFORE_FLAG, "true");
 }
 
+export async function disconnect() {
+  if (!mina) return;
+  await requestNetwork();
+  await requestAccounts();
+
+  typeof window !== "undefined" &&
+    window.localStorage.setItem(WALLET_CONNECTED_BEFORE_FLAG, "false");
+}
+
 async function requestNetwork() {
   await mina
     .requestNetwork()

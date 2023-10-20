@@ -1,3 +1,4 @@
+import useAccount from "@/states/useAccount";
 import useTokens from "@/states/useTokens";
 import { Token } from "@/types/token";
 import React, { useEffect, useState } from "react";
@@ -15,6 +16,7 @@ const TokenSelecterModal = (props: Props) => {
   const tokens = useTokens((state) => state.tokens);
   const [visible, setVisible] = useState<boolean>(false);
   const [searchTokens, setSearchTokens] = useState(tokens);
+  const balances = useAccount((state) => state.balances);
 
   useEffect(() => {
     setVisible(props.visible);
@@ -56,19 +58,28 @@ const TokenSelecterModal = (props: Props) => {
           <div className="border-y border-slate-300 mt-4 h-[450px] overflow-y-scroll">
             {searchTokens.map((token, index) => (
               <div
-                className="flex hover:bg-light-100 cursor-pointer"
+                className="flex hover:bg-light-100 cursor-pointer justify-between pr-2"
                 key={index}
                 onClick={() => setCurrentToken(token)}
               >
-                <div className="flex-none grid w-12 justify-items-center items-center">
-                  <div
-                    className="w-8 h-8 bg-no-repeat bg-contain"
-                    style={{ backgroundImage: `url(${token.icon})` }}
-                  ></div>
+                <div className="flex">
+                  <div className="flex-none grid w-12 justify-items-center items-center">
+                    <div
+                      className="w-8 h-8 bg-no-repeat bg-contain"
+                      style={{ backgroundImage: `url(${token.icon})` }}
+                    ></div>
+                  </div>
+                  <div className="grow grid content-between px-2">
+                    <div className="text-black text-xl">{token.symbol}</div>
+                    <div className="text-gray text-xs">MINA</div>
+                  </div>
                 </div>
-                <div className="grow grid  content-between px-2">
-                  <div className="text-black text-xl">{token.symbol}</div>
-                  <div className="text-gray text-xs">bbbb</div>
+                <div>
+                  {token.symbol === "mina"
+                    ? balances.mina
+                      ? balances.mina
+                      : 0
+                    : 0}
                 </div>
               </div>
             ))}
