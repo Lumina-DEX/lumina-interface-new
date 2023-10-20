@@ -217,10 +217,17 @@ const PermissionedPools: React.FC<Props> = ({ pools }) => {
           </Collapse>
         ))}
       </div>
-      <div className="text-center font-bold text-black px-2 text-base sm:text-base min-[320px]:text-[13px]">
-        Permissioned pool creation and management only available <br />
-        to Enterprise users who complete KYB
-      </div>
+      {kycVerified ? (
+        <div className="text-center font-bold text-black px-2 text-base sm:text-base min-[320px]:text-[13px]">
+          Permissioned pool creation and management reserved for <br />
+          Enterprise users who complete KYB
+        </div>
+      ) : (
+        <div className="text-center font-bold text-black px-2 text-base sm:text-base min-[320px]:text-[13px]">
+          Complete KYC to access additional permissioned pool liquidity
+        </div>
+      )}
+
       {address ? (
         !kycVerified ? (
           <div className="flex justify-center mb-4">

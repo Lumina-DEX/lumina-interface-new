@@ -21,8 +21,11 @@ const SwapPanel = () => {
 
   const searchParams = useSearchParams();
   const tokens = useTokens((state) => state.tokens);
-  const balances = useAccount((state) => state.balances);
-  const address = useAccount((state) => state.publicKeyBase58);
+  const { kycVerified, address, balances } = useAccount((state) => ({
+    kycVerified: state.kycVerified,
+    address: state.publicKeyBase58,
+    balances: state.balances,
+  }));
   const [tabValue, setTabValue] = useState(0);
 
   const [fromToken, setFromToken] = useState<Token>(tokens[0]);
@@ -158,7 +161,7 @@ const SwapPanel = () => {
                     thousandSeparator={true}
                     decimalScale={2}
                     prefix="~$"
-                    value={new Decimal(fromToken!.usdPrice || "0")
+                    value={new Decimal(fromToken!.usd_price || "0")
                       .times(fromAmount || "0")
                       .toString()}
                   />
@@ -220,7 +223,7 @@ const SwapPanel = () => {
                     thousandSeparator={true}
                     decimalScale={2}
                     prefix="~$"
-                    value={new Decimal(toToken!.usdPrice || "0")
+                    value={new Decimal(toToken!.usd_price || "0")
                       .times(toAmount || "0")
                       .toString()}
                   />
@@ -244,14 +247,23 @@ const SwapPanel = () => {
             </p>
           </div>
           {address ? (
-            <Button
-              className="w-full h-[60px] min-h-0 shadow-md"
-              color="primary"
-              size="lg"
-              disabled={!loadState}
-            >
-              Swap
-            </Button>
+            <div className="flex flex-col gap-y-4">
+              <Button
+                className="w-full h-[60px] min-h-0 shadow-md"
+                color="primary"
+                size="lg"
+                disabled={!loadState}
+              >
+                Swap
+              </Button>
+              {kycVerified ? (
+                <></>
+              ) : (
+                <div>
+                  Complete KYC to access additional permissioned pool liquidity
+                </div>
+              )}
+            </div>
           ) : (
             <Button
               className="btn-primary text-white"

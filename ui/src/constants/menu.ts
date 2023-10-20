@@ -18,7 +18,7 @@ export const MenuItems = [
   },
   {
     name: "Enterprise",
-    link: "Enterprise",
+    link: "https://getstarted.luminadex.com/",
   },
 ];
 

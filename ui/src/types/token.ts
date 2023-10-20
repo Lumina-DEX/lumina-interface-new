@@ -1,9 +1,9 @@
 export interface Token {
-  id: string;
-  symbol: string;
-  icon?: string;
-  usdPrice?: string;
-  priceChange: number;
-  dayVolume: number;
-  liquidity: number;
+  id: string | any;
+  symbol: string | any;
+  icon?: string | any;
+  usd_price?: string | any;
+  price_change: number | any;
+  day_volume: number | any;
+  liquidity: number | any;
 }

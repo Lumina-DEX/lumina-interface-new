@@ -24,8 +24,10 @@ export default function useSupabaseFunctions() {
 
   const getPools = useCallback(
     () =>
-      supabase.from("pools").select(
-        `
+      supabase
+        .from("pools")
+        .select(
+          `
           id,
           total_liquidity, 
           apr, 
@@ -34,6 +36,23 @@ export default function useSupabaseFunctions() {
           created_at,
           US
         `
+        )
+        .order("US", { ascending: true }),
+    [supabase]
+  );
+
+  const getTokens = useCallback(
+    () =>
+      supabase.from("tokens").select(
+        `
+          id,
+          symbol, 
+          usd_price, 
+          price_change, 
+          day_volume,
+          liquidity,
+          icon
+        `
       ),
     [supabase]
   );
@@ -41,5 +60,6 @@ export default function useSupabaseFunctions() {
   return {
     getPermissioned,
     getPools,
+    getTokens,
   };
 }
