@@ -17,6 +17,15 @@ const useTokens = create<TokenState>((set) => ({
       day_volume: 3342156,
       liquidity: 512345673,
     },
+    {
+      id: "45845269-b641-4270-977b-14a6241ce0b8",
+      symbol: "dai",
+      icon: "/assets/tokens/dai.png",
+      usd_price: 0.07,
+      price_change: 3.09,
+      day_volume: 3342156,
+      liquidity: 512345673,
+    },
   ],
   update: (tokens: Token[]) => {
     set(() => ({ tokens }));
