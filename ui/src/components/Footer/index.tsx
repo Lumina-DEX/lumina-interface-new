@@ -15,7 +15,7 @@ const Footer = () => {
           <div> success </div>
         ) : (
           <div className="flex flex-row gap-x-2">
-            <Loading color="primary" /> loadMsg
+            <Loading color="primary" /> {loadMsg}
           </div>
         )}
       </div>
