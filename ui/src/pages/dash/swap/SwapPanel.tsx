@@ -18,7 +18,6 @@ type Percent = number | string;
 
 const SwapPanel = () => {
   const router = useRouter();
-
   const searchParams = useSearchParams();
   const tokens = useTokens((state) => state.tokens);
   const { kycVerified, address, balances } = useAccount((state) => ({
