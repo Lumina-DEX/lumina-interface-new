@@ -18,6 +18,7 @@ const Item = (props: any) => {
     <Link
       key={props.index}
       href={props.link}
+      target={props.target ? "_blank" : ""}
       className={clsx("font-primary text-xl", {
         "font-bold": flag === 1,
       })}

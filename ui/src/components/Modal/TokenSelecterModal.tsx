@@ -74,13 +74,7 @@ const TokenSelecterModal = (props: Props) => {
                     <div className="text-gray text-xs">MINA</div>
                   </div>
                 </div>
-                <div>
-                  {token.symbol === "mina"
-                    ? balances.mina
-                      ? balances.mina
-                      : 0
-                    : 0}
-                </div>
+                <div>{balances[token!.symbol] || 0}</div>
               </div>
             ))}
           </div>

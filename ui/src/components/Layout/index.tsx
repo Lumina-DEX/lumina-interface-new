@@ -1,5 +1,6 @@
 import React, { PropsWithChildren, useState, useEffect } from "react";
 import Header from "../Header";
+import LoadingState from "../LoadingState";
 import Footer from "../Footer";
 import { AppContext } from "@/contexts/AppContext";
 import { LoadingContext } from "@/contexts/LoadingContext";
@@ -35,6 +36,7 @@ const Layout: React.FC<PropsWithChildren> = ({ children }) => {
         value={{ isLoading, setLoading, loadingMessage, setLoadingMessage }}
       >
         <Header />
+        <LoadingState />
         <div className="absolute w-full min-h-screen h-auto flex flex-col items-center justify-center bg-lumina bg-cover bg-no-repeat overflow-x-hidden py-40 px-2">
           {children}
         </div>

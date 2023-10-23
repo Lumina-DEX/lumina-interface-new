@@ -71,7 +71,12 @@ const Header = () => {
           <div className="block max-lg:hidden">
             <Menu horizontal={true} className="flex flex-grow gap-6 ">
               {MenuItems.map((item, index) => (
-                <Item key={index} link={item.link} name={item.name} />
+                <Item
+                  key={index}
+                  link={item.link}
+                  name={item.name}
+                  target={item.name === "Enterprise" ? 1 : 0}
+                />
               ))}
             </Menu>
           </div>

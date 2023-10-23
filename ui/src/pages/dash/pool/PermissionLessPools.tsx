@@ -60,8 +60,8 @@ const PermissionLessPools: React.FC<Props> = ({ pools }) => {
                       <Link
                         href={`/dash/add?fromToken=${pool.from_token.id}&toToken=${pool.to_token.id}`}
                       >
-                        <div className="flex items-center gap-2">
-                          <Avatar.Group>
+                        <div className="flex items-center gap-3">
+                          <Avatar.Group className="overflow-visible">
                             <Avatar
                               className="border-0"
                               src={pool.from_token.icon}
@@ -69,7 +69,7 @@ const PermissionLessPools: React.FC<Props> = ({ pools }) => {
                               size={30}
                             />
                             <Avatar
-                              className="border-0"
+                              className="border-0 translate-x-2"
                               src={pool.to_token.icon}
                               shape="circle"
                               size={30}

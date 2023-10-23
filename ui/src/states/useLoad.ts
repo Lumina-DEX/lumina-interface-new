@@ -8,6 +8,7 @@ interface LoadState extends Load {
 const useLoad = create<LoadState>((set) => ({
   msg: "",
   state: false,
+  process: 0,
   update: (value: Partial<Load>) => {
     set((state) => ({ ...state, ...value }));
   },

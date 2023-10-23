@@ -15,7 +15,7 @@ const TransferPage: NextPageWithLayout = () => {
 
   const [token, setToken] = useState<Token>(tokens[0]);
   const tokenBalance = useMemo(
-    () => (token ? balances[token!.id] || 0 : 0),
+    () => (token ? balances[token!.symbol] || 0 : 0),
     [balances, token]
   );
   const [amount, setAmount] = useState("");
@@ -34,9 +34,7 @@ const TransferPage: NextPageWithLayout = () => {
             <div className="flex flex-col w-full gap-4">
               <div className="flex justify-between items-center w-full">
                 <TokenSelector token={token} setToken={setToken} />
-                <span className="font-secondary">
-                  Balance {tokenBalance.toString(2)}
-                </span>
+                <span className="font-secondary">Balance {tokenBalance}</span>
               </div>
               <div className="flex justify-between items-center w-full flex-row gap-2">
                 <div className="flex flex-row items-baseline gap-2 justify-between">

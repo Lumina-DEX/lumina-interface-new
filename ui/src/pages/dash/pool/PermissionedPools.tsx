@@ -54,55 +54,63 @@ const PermissionedPools: React.FC<Props> = ({ pools }) => {
                 return (
                   <Table.Row key={index} className="text-disabled">
                     <div className="flex justify-between">
-                      <Link
-                        href={`/dash/add?fromToken=${pool.from_token.id}&toToken=${pool.to_token.id}`}
-                      >
-                        <div className="flex items-center gap-2">
-                          <Avatar.Group>
-                            <Avatar
-                              className="border-0"
-                              src={pool.from_token.icon}
-                              shape="circle"
-                              size={30}
-                            />
-                            <Avatar
-                              className="border-0"
-                              src={pool.to_token.icon}
-                              shape="circle"
-                              size={30}
-                            />
-                          </Avatar.Group>
-                          <span className="uppercase text-base">
-                            {pool.from_token.symbol} / {pool.to_token.symbol}
-                          </span>
-                        </div>
-                      </Link>
+                      <div className="flex items-center gap-3">
+                        <Avatar.Group className="overflow-visible">
+                          <Avatar
+                            className="border-0"
+                            src={pool.from_token.icon}
+                            shape="circle"
+                            size={30}
+                          />
+                          <Avatar
+                            className="border-0 translate-x-2"
+                            src={pool.to_token.icon}
+                            shape="circle"
+                            size={30}
+                          />
+                        </Avatar.Group>
+                        <span className="uppercase text-base">
+                          {pool.from_token.symbol} / {pool.to_token.symbol}
+                        </span>
+                      </div>
                       {kycVerified ? (
                         location === "US" ? (
                           pool.US ? (
-                            <div className="flex flex-row items-center gap-x-1 w-28 justify-start">
-                              <BsCircle className="text-emerald-400 font-bold" />
-                              Available
+                            <div className="flex flex-row gap-x-2">
+                              <div className="flex flex-row items-center gap-x-1   justify-start">
+                                <BsCircle className="text-emerald-400 font-bold" />
+                                Swap
+                              </div>
+                              <div className="flex flex-row items-center gap-x-1   justify-start">
+                                <CgUnavailable className="text-rose-500 text-[18px]" />
+                                Pool
+                              </div>
                             </div>
                           ) : (
-                            <div className="flex flex-row items-center gap-x-1 w-28 justify-start">
+                            <div className="flex flex-row items-center gap-x-1   justify-start">
                               <CgUnavailable className="text-rose-500 text-[18px]" />
                               Restricted
                             </div>
                           )
                         ) : pool.US ? (
-                          <div className="flex flex-row items-center gap-x-1 w-28 justify-start">
+                          <div className="flex flex-row items-center gap-x-1   justify-start">
                             <CgUnavailable className="text-rose-500 text-[18px]" />
                             Restricted
                           </div>
                         ) : (
-                          <div className="flex flex-row items-center gap-x-1 w-28 justify-start">
-                            <BsCircle className="text-emerald-400 font-bold" />
-                            Available
+                          <div className="flex flex-row gap-x-2">
+                            <div className="flex flex-row items-center gap-x-1   justify-start">
+                              <BsCircle className="text-emerald-400 font-bold" />
+                              Swap
+                            </div>
+                            <div className="flex flex-row items-center gap-x-1   justify-start">
+                              <CgUnavailable className="text-rose-500 text-[18px]" />
+                              Pool
+                            </div>
                           </div>
                         )
                       ) : (
-                        <div className="flex flex-row items-center gap-x-1 w-28 justify-start">
+                        <div className="flex flex-row items-center gap-x-1   justify-start">
                           <CgUnavailable className="text-rose-500 text-[18px]" />
                           Restricted
                         </div>
@@ -144,8 +152,8 @@ const PermissionedPools: React.FC<Props> = ({ pools }) => {
         {pools.map((pool, index) => (
           <Collapse checkbox icon="arrow" key={index}>
             <Collapse.Title className="text-xl font-medium">
-              <div className="flex items-center gap-2">
-                <Avatar.Group>
+              <div className="flex items-center gap-3">
+                <Avatar.Group className="overflow-visible">
                   <Avatar
                     className="border-0"
                     src={pool.from_token.icon}
@@ -153,7 +161,7 @@ const PermissionedPools: React.FC<Props> = ({ pools }) => {
                     size={30}
                   />
                   <Avatar
-                    className="border-0"
+                    className="border-0 translate-x-2"
                     src={pool.to_token.icon}
                     shape="circle"
                     size={30}
@@ -166,19 +174,43 @@ const PermissionedPools: React.FC<Props> = ({ pools }) => {
             </Collapse.Title>
             <Collapse.Content>
               {kycVerified ? (
-                index ? (
-                  <div className="flex flex-row items-center gap-x-1 w-28 justify-start">
+                location === "US" ? (
+                  pool.US ? (
+                    <div className="flex flex-row gap-x-2">
+                      <div className="flex flex-row items-center gap-x-1   justify-start">
+                        <BsCircle className="text-emerald-400 font-bold" />
+                        Swap
+                      </div>
+                      <div className="flex flex-row items-center gap-x-1   justify-start">
+                        <CgUnavailable className="text-rose-500 text-[18px]" />
+                        Pool
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex flex-row items-center gap-x-1   justify-start">
+                      <CgUnavailable className="text-rose-500 text-[18px]" />
+                      Restricted
+                    </div>
+                  )
+                ) : pool.US ? (
+                  <div className="flex flex-row items-center gap-x-1   justify-start">
                     <CgUnavailable className="text-rose-500 text-[18px]" />
                     Restricted
                   </div>
                 ) : (
-                  <div className="flex flex-row items-center gap-x-1 w-28 justify-start">
-                    <BsCircle className="text-emerald-400 font-bold" />
-                    Available
+                  <div className="flex flex-row gap-x-2">
+                    <div className="flex flex-row items-center gap-x-1   justify-start">
+                      <BsCircle className="text-emerald-400 font-bold" />
+                      Swap
+                    </div>
+                    <div className="flex flex-row items-center gap-x-1   justify-start">
+                      <CgUnavailable className="text-rose-500 text-[18px]" />
+                      Pool
+                    </div>
                   </div>
                 )
               ) : (
-                <div className="flex flex-row items-center gap-x-1 w-28 justify-start">
+                <div className="flex flex-row items-center gap-x-1   justify-start">
                   <CgUnavailable className="text-rose-500 text-[18px]" />
                   Restricted
                 </div>

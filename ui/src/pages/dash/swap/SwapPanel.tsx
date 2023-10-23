@@ -30,15 +30,14 @@ const SwapPanel = () => {
 
   const [fromToken, setFromToken] = useState<Token>(tokens[0]);
   const [fromAmount, setFromAmount] = useState("");
-  const fromTokenBalance = useMemo(
-    () => balances[fromToken!.id] || 0,
-    [balances, fromToken]
-  );
+  const fromTokenBalance = useMemo(() => {
+    return balances[fromToken!.symbol] || 0;
+  }, [balances, fromToken]);
 
   const [toToken, setToToken] = useState<Token>(tokens[1]);
   const [toAmount, setToAmount] = useState("0.0");
   const toTokenBalance = useMemo(
-    () => balances[toToken!.id] || 0,
+    () => balances[toToken!.symbol] || 0,
     [balances, toToken]
   );
 
@@ -137,9 +136,7 @@ const SwapPanel = () => {
         <div className="flex flex-col w-full gap-4">
           <div className="flex justify-between items-center w-full">
             <TokenSelector token={fromToken} setToken={setFromToken} />
-            <span className="font-secondary">
-              Balance {fromTokenBalance.toString(2)}
-            </span>
+            <span className="font-secondary">Balance {fromTokenBalance}</span>
           </div>
           <div className="flex justify-between items-center w-full flex-row">
             <div className="basis-1/2">
@@ -199,9 +196,7 @@ const SwapPanel = () => {
         <div className="flex flex-col w-full gap-4">
           <div className="flex justify-between items-center w-full">
             <TokenSelector token={toToken} setToken={setToToken} />
-            <span className="font-secondary">
-              Balance {toTokenBalance.toString(2)}
-            </span>
+            <span className="font-secondary">Balance {toTokenBalance}</span>
           </div>
           <div className="flex flex-row">
             <div className="basis-1/2">
