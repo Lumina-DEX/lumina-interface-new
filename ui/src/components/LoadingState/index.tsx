@@ -20,7 +20,7 @@ const LoadingState = () => {
   }, [loadState]);
 
   return visible ? (
-    <div className="fixed top-[80px] w-full flex justify-center z-10">
+    <div className="fixed top-[80px] w-full flex justify-center z-[1]">
       <div className="w-[300px] text-xl min-[630px]:text-2xl">
         <ProgressBar completed={process} />
         <div className="w-full flex justify-center">
