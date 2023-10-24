@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useState, useEffect } from "react";
 import ZKPid from "@/services/zkpid";
 import { useSearchParams } from "next/navigation";
 import Layout from "@/components/Layout";
@@ -11,8 +11,9 @@ const KYCPage: NextPageWithLayout = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const address = searchParams.get("address");
   const [url, setUrl] = useState("");
+  const testMode =
+    typeof window !== "undefined" && window.localStorage.getItem("TestMode");
 
   const handleStartVerification = () => {
     getUrl();
@@ -20,6 +21,7 @@ const KYCPage: NextPageWithLayout = () => {
   };
 
   const getUrl = async () => {
+    const address = searchParams.get("address");
     if (!address) {
       console.error("Address is null!");
       return;
@@ -30,6 +32,7 @@ const KYCPage: NextPageWithLayout = () => {
     const url = await zkpid.startkyc({
       address,
       uid: "unique session",
+      test: testMode === "true" ? "APPROVED" : undefined,
     });
     setUrl(url);
   };

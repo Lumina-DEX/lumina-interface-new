@@ -19,7 +19,6 @@ const functions = {
     const Berkeley = Mina.Network(
       "https://proxy.berkeley.minaexplorer.com/graphql"
     );
-    console.log("Berkeley Instance Created");
     Mina.setActiveInstance(Berkeley);
   },
   loadContract: async (args: {}) => {
@@ -89,5 +88,3 @@ if (typeof window !== "undefined") {
     }
   );
 }
-
-console.log("Web Worker Successfully Initialized.");

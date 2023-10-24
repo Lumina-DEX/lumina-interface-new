@@ -1,16 +1,19 @@
 import useAccount from "@/states/useAccount";
-import GradientBG from "@/components/GradientBG";
 import { PublicKey } from "snarkyjs";
 import ZkappWorkerClient from "@/lib/zkappWorkerClient";
 import { useEffect, useState } from "react";
 import { MINA_SUB_DECIMAL } from "@/lib/wallet";
+import useLoad from "@/states/useLoad";
 
 export default function AccountUpdater() {
   const state = useAccount();
 
   const [displayText, setDisplayText] = useState("");
   const [transactionlink, setTransactionLink] = useState("");
-
+  const { loadUpdate, process } = useLoad((state) => ({
+    process: state.process,
+    loadUpdate: state.update,
+  }));
   // -------------------------------------------------------
   // Do Setup
 
@@ -25,13 +28,11 @@ export default function AccountUpdater() {
 
     (async () => {
       if (!state.hasBeenSetup) {
-        setDisplayText("Loading web worker...");
-        console.log("Loading web worker...");
+        loadUpdate({ msg: "Loading web worker...", process: 20 });
         const zkappWorkerClient = new ZkappWorkerClient();
         await timeout(5);
 
-        setDisplayText("Done loading web worker");
-        console.log("Done loading web worker");
+        loadUpdate({ msg: "Done loading web worker", process: 40 });
 
         await zkappWorkerClient.setActiveInstanceToBerkeley();
 
@@ -42,27 +43,23 @@ export default function AccountUpdater() {
           return;
         }
 
-        const publicKeyBase58: string = (await mina.requestAccounts())[0];
-        const publicKey = PublicKey.fromBase58(publicKeyBase58);
+        // const publicKeyBase58: string = (await mina.requestAccounts())[0];
+        // const publicKey = PublicKey.fromBase58(publicKeyBase58);
 
-        console.log(`Using key:${publicKey.toBase58()}`);
-        setDisplayText(`Using key:${publicKey.toBase58()}`);
+        // loadUpdate({ msg: `Using key:${publicKey.toBase58()}` });
 
-        setDisplayText("Checking if fee payer account exists...");
-        console.log("Checking if fee payer account exists...");
+        // loadUpdate({ msg: "Checking if fee payer account exists..." });
 
-        const res = await zkappWorkerClient.fetchAccount({
-          publicKeyBase58: publicKeyBase58!,
-        });
-        const accountExists = res.error == null;
+        // const res = await zkappWorkerClient.fetchAccount({
+        //   publicKeyBase58: publicKeyBase58!,
+        // });
+        // const accountExists = res.error == null;
 
         await zkappWorkerClient.loadContract();
 
-        console.log("Compiling zkApp...");
-        setDisplayText("Compiling zkApp...");
+        loadUpdate({ msg: "Compiling zkApp...", process: 60 });
         await zkappWorkerClient.compileContract();
-        console.log("zkApp compiled");
-        setDisplayText("zkApp compiled...");
+        loadUpdate({ msg: "zkApp compiled...", process: 80 });
 
         const zkappPublicKey = PublicKey.fromBase58(
           "B62qjshG3cddKthD6KjCzHZP4oJM2kGuC8qRHN3WZmKH5B74V9Uddwu"
@@ -74,100 +71,92 @@ export default function AccountUpdater() {
           zkappWorkerClient,
           hasWallet: true,
           hasBeenSetup: true,
-          publicKey,
-          publicKeyBase58,
+          publicKey: null,
+          publicKeyBase58: "",
           zkappPublicKey,
-          accountExists,
+          accountExists: false,
         });
+        loadUpdate({ state: true, process: 100 });
       }
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // -------------------------------------------------------
   // Wait for account to exist, if it didn't
 
-  useEffect(() => {
-    (async () => {
-      if (state.hasBeenSetup && !state.accountExists) {
-        for (;;) {
-          setDisplayText("Checking if fee payer account exists...");
-          console.log("Checking if fee payer account exists...");
-          const res = await state.zkappWorkerClient!.fetchAccount({
-            publicKeyBase58: state.publicKeyBase58!,
-          });
-          const accountExists = res.error == null;
-          if (accountExists) {
-            break;
-          }
-          await new Promise((resolve) => setTimeout(resolve, 5000));
-        }
-        state.update({ accountExists: true });
-      } else if (state.hasBeenSetup && state.accountExists) {
-        const balance = await state.zkappWorkerClient!.getBalance(
-          state.publicKeyBase58!
-        );
-        state.update({
-          balances: { mina: Number(balance.toString()) / MINA_SUB_DECIMAL },
-        });
-      }
-    })();
-  }, [state.hasBeenSetup]);
+  // useEffect(() => {
+  //   (async () => {
+  //     if (state.hasBeenSetup && !state.accountExists) {
+  //       // for (;;) {
+  //       //   const res = await state.zkappWorkerClient!.fetchAccount({
+  //       //     publicKeyBase58: state.publicKeyBase58!,
+  //       //   });
+  //       //   const accountExists = res.error == null;
+  //       //   if (accountExists) {
+  //       //     break;
+  //       //   }
+  //       //   await new Promise((resolve) => setTimeout(resolve, 5000));
+  //       // }
+  //       // state.update({ accountExists: true });
+  //     } else if (state.hasBeenSetup && state.accountExists) {
+  //       const balance = await state.zkappWorkerClient!.getBalance(
+  //         state.publicKeyBase58!
+  //       );
+  //       state.update({
+  //         balances: { mina: Number(balance.toString()) / MINA_SUB_DECIMAL },
+  //       });
+  //     }
+  //   })();
+  // }, [state.hasBeenSetup]);
 
   // -------------------------------------------------------
   // Create UI elements
+  return null;
 
-  let hasWallet;
-  if (state.hasWallet != null && !state.hasWallet) {
-    const auroLink = "https://www.aurowallet.com/";
-    const auroLinkElem = (
-      <a href={auroLink} target="_blank" rel="noreferrer">
-        Install Auro wallet here
-      </a>
-    );
-    hasWallet = <div>Could not find a wallet. {auroLinkElem}</div>;
-  }
+  // let hasWallet;
+  // if (state.hasWallet != null && !state.hasWallet) {
+  //   const auroLink = "https://www.aurowallet.com/";
+  //   const auroLinkElem = (
+  //     <a href={auroLink} target="_blank" rel="noreferrer">
+  //       Install Auro wallet here
+  //     </a>
+  //   );
+  //   hasWallet = <div>Could not find a wallet. {auroLinkElem}</div>;
+  // }
 
-  const stepDisplay = transactionlink ? (
-    <a href={displayText} target="_blank" rel="noreferrer">
-      View transaction
-    </a>
-  ) : (
-    displayText
-  );
+  // const stepDisplay = transactionlink ? (
+  //   <a href={displayText} target="_blank" rel="noreferrer">
+  //     View transaction
+  //   </a>
+  // ) : (
+  //   displayText
+  // );
 
-  let setup = (
-    <div className="leading-5 font-bold text-2xl">
-      {stepDisplay}
-      {hasWallet}
-    </div>
-  );
+  // let setup = (
+  //   <div className="leading-5 font-bold text-2xl">
+  //     {stepDisplay}
+  //     {hasWallet}
+  //   </div>
+  // );
 
-  let accountDoesNotExist;
-  if (state.hasBeenSetup && !state.accountExists) {
-    const faucetLink =
-      "https://faucet.minaprotocol.com/?address=" + state.publicKey!.toBase58();
-    accountDoesNotExist = (
-      <div>
-        Account does not exist.
-        <a href={faucetLink} target="_blank" rel="noreferrer">
-          Visit the faucet to fund this fee payer account
-        </a>
-      </div>
-    );
-  }
+  // let accountDoesNotExist;
+  // if (state.hasBeenSetup && !state.accountExists) {
+  //   const faucetLink =
+  //     "https://faucet.minaprotocol.com/?address=" + state.publicKey!.toBase58();
+  //   accountDoesNotExist = (
+  //     <div>
+  //       Account does not exist.
+  //       <a href={faucetLink} target="_blank" rel="noreferrer">
+  //         Visit the faucet to fund this fee payer account
+  //       </a>
+  //     </div>
+  //   );
+  // }
 
-  if (state.hasBeenSetup && state.accountExists) {
-    return null;
-  }
+  // if (state.hasBeenSetup && state.accountExists) {
+  //   return null;
+  // }
 
-  return (
-    <GradientBG>
-      <div className="flex flex-col justify-around items-center p-10 min-h-screen">
-        <div className="flex flex-col justify-center items-center relative">
-          {setup}
-          {accountDoesNotExist}
-        </div>
-      </div>
-    </GradientBG>
-  );
+  // return null;
 }

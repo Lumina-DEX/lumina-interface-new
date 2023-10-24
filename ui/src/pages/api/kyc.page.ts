@@ -56,14 +56,14 @@ export default async function handler(
     const decodedJwt: any = jwt_decode(jwt);
     const walletAddress = decodedJwt.credentialSubject["wallet-address"];
     const zkp = decodedJwt.credentialSubject.zkp;
-
+    const location = decodedJwt.credentialSubject.nationality;
     const result = await supabase.from("permissions").insert({
       wallet_address: walletAddress,
       zkp,
+      location,
       mode: test,
     });
-
-    console.log({
+    decodedJwt.console.log({
       record: { walletAddress, zkp, mode: test },
       result,
     });

@@ -1,8 +1,9 @@
-import React, { useState } from "react";
-import { Logo, MenuItems } from "@/constants/menu";
+import React, { useState, useEffect } from "react";
+import { MenuItems } from "@/constants/menu";
 import ConnectWallet from "../Button/ConnectWallet";
 import { Button, Drawer, Menu, Navbar } from "react-daisyui";
 import Link from "next/link";
+import Item from "@/components/Menu/item";
 
 const Header = () => {
   const [visible, setVisible] = useState(false);
@@ -24,7 +25,7 @@ const Header = () => {
   );
 
   return (
-    <div className="fixed top-0 left-0 h-[64px] w-full z-[2] bg-background-l1 shadow-10 px-4">
+    <div className="fixed top-0 left-0 h-[64px] w-full z-[2] bg-white shadow-10 px-4">
       <Drawer
         side={drawerSide}
         open={visible}
@@ -32,7 +33,7 @@ const Header = () => {
         className="font-sans"
       >
         <Navbar className="justify-between">
-          <div className="flex-none lg:hidden">
+          <div className="hidden max-lg:flex">
             <Button shape="square" color="ghost" onClick={toggleVisible}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -49,34 +50,35 @@ const Header = () => {
               </svg>
             </Button>
             <div
-              className="font-primary flex-1 px-2 mx-2 text-[38px] font-bold cursor-pointer"
-              onClick={() => (window.location.href = "/trade")}
-            >
-              {Logo.title}
-            </div>
+              className="flex-1 mx-2 cursor-pointer w-52 h-12"
+              style={{
+                backgroundImage: "url(/assets/logo/logo.png)",
+                backgroundSize: "cover",
+              }}
+              onClick={() => (window.location.href = "/")}
+            ></div>
           </div>
-          <div className="flex gap-x-6">
+          <div className="flex">
             <div
-              className="font-primary hidden lg:block flex-1 px-2 mx-2 text-[38px] font-bold cursor-pointer"
-              onClick={() => (window.location.href = "/trade")}
-            >
-              {Logo.title}
-            </div>
-            <div className="flex-none hidden lg:block">
-              <div className="relative top-2">
-                <Menu horizontal={true} className="flex flex-grow gap-6 ">
-                  {MenuItems.map((item, index) => (
-                    <Link
-                      key={index}
-                      href={item.link}
-                      className="text-black focus:font-bold font-primary text-xl"
-                    >
-                      {item.name}
-                    </Link>
-                  ))}
-                </Menu>
-              </div>
-            </div>
+              className="block max-lg:hidden flex-1 mx-2 cursor-pointer w-52 h-12"
+              style={{
+                backgroundImage: "url(/assets/logo/logo.png)",
+                backgroundSize: "cover",
+              }}
+              onClick={() => (window.location.href = "/")}
+            ></div>
+          </div>
+          <div className="block max-lg:hidden">
+            <Menu horizontal={true} className="flex flex-grow gap-6 ">
+              {MenuItems.map((item, index) => (
+                <Item
+                  key={index}
+                  link={item.link}
+                  name={item.name}
+                  target={item.name === "Enterprise" ? 1 : 0}
+                />
+              ))}
+            </Menu>
           </div>
           <ConnectWallet />
         </Navbar>

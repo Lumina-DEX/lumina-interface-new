@@ -5,7 +5,7 @@ import type { NextRequest } from "next/server";
 
 const middlewares = {
   // "/api": apiMiddleware,
-  "/dash": mainMiddleware,
+  // "/dash": mainMiddleware,
 } as const;
 
 export const config = {
@@ -22,16 +22,27 @@ export async function middleware(req: NextRequest) {
 
   if (req.nextUrl.pathname === "/dash") {
     const redirectUrl = req.nextUrl.clone();
-    redirectUrl.pathname = "/dash/pool";
+    redirectUrl.pathname = "/dash/swap";
 
     return NextResponse.redirect(redirectUrl);
   }
 
-  for (const [prefix, middleware] of Object.entries(middlewares)) {
-    if (req.nextUrl.pathname.startsWith(prefix)) {
-      return middleware(req);
+  if (req.nextUrl.pathname.startsWith("/dash")) {
+    const cookie = req.cookies.get("expired_at");
+    const expiredAt = cookie?.value;
+    const isAlive = !!expiredAt && Number(expiredAt) >= new Date().getTime();
+    if (!isAlive) {
+      return NextResponse.redirect(new URL("/lock", req.url));
     }
   }
+
+  return NextResponse.next();
+
+  // for (const [prefix, middleware] of Object.entries(middlewares)) {
+  //   if (req.nextUrl.pathname.startsWith(prefix)) {
+  //     return middleware(req);
+  //   }
+  // }
 }
 
 async function mainMiddleware(req: NextRequest) {

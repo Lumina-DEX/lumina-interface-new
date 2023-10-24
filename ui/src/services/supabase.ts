@@ -7,13 +7,13 @@ export default function useSupabaseFunctions() {
   const supabase: SupabaseClient<Database> = useSupabaseClient();
 
   const getPermissioned = useCallback(
-    (walletAddress: string) =>
-      process.env.NEXT_PUBLIC_ZKPID_TEST_MODE
+    (walletAddress: string, testMode: string | null) =>
+      testMode === "true"
         ? supabase
             .from("permissions")
             .select("*")
             .eq("wallet_address", walletAddress)
-            .eq("mode", process.env.NEXT_PUBLIC_ZKPID_TEST_MODE)
+            .eq("mode", "APPROVED")
         : supabase
             .from("permissions")
             .select("*")
@@ -22,7 +22,44 @@ export default function useSupabaseFunctions() {
     [supabase]
   );
 
+  const getPools = useCallback(
+    () =>
+      supabase
+        .from("pools")
+        .select(
+          `
+          id,
+          total_liquidity, 
+          apr, 
+          from_token(id, symbol, icon), 
+          to_token(id, symbol, icon),
+          created_at,
+          US
+        `
+        )
+        .order("US", { ascending: true }),
+    [supabase]
+  );
+
+  const getTokens = useCallback(
+    () =>
+      supabase.from("tokens").select(
+        `
+          id,
+          symbol, 
+          usd_price, 
+          price_change, 
+          day_volume,
+          liquidity,
+          icon
+        `
+      ),
+    [supabase]
+  );
+
   return {
     getPermissioned,
+    getPools,
+    getTokens,
   };
 }

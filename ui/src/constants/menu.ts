@@ -5,8 +5,8 @@ export const Logo = {
 
 export const MenuItems = [
   {
-    name: "Trade",
-    link: "trade",
+    name: "Swap",
+    link: "swap",
   },
   {
     name: "Pool",
@@ -17,8 +17,8 @@ export const MenuItems = [
     link: "transfer",
   },
   {
-    name: "Info",
-    link: "info",
+    name: "Enterprise",
+    link: "https://getstarted.luminadex.com/",
   },
 ];
 
