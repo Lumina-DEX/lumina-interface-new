@@ -55,7 +55,6 @@ async function handleAccountsChanged(accounts: string[]) {
   }
   useAccount.setState(() => ({
     publicKeyBase58,
-    hasBeenSetup: walletConnected,
   }));
 }
 

@@ -15,9 +15,7 @@ interface Props {
 }
 
 const PermissionLessPools: React.FC<Props> = ({ pools }) => {
-  const { walletConnected, kycVerified, address } = useAccount((state) => ({
-    walletConnected: state.hasBeenSetup,
-    kycVerified: state.kycVerified,
+  const { address } = useAccount((state) => ({
     address: state.publicKeyBase58,
   }));
 

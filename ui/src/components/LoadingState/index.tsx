@@ -24,7 +24,11 @@ const LoadingState = () => {
       <div className="w-[300px] text-xl min-[630px]:text-2xl">
         <ProgressBar completed={process} />
         <div className="w-full flex justify-center">
-          {loadState ? <p> success </p> : <div>{loadMsg}</div>}
+          {loadState ? (
+            <p> Success </p>
+          ) : (
+            <div dangerouslySetInnerHTML={{ __html: loadMsg }} />
+          )}
         </div>
       </div>
     </div>
