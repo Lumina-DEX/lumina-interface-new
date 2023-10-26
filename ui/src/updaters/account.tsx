@@ -28,11 +28,12 @@ export default function AccountUpdater() {
 
     (async () => {
       if (!state.hasBeenSetup) {
-        loadUpdate({ msg: "Loading web worker...", process: 20 });
+        loadUpdate({ msg: "Loading web worker...", process: 0 });
         const zkappWorkerClient = new ZkappWorkerClient();
         await timeout(5);
 
-        loadUpdate({ msg: "Done loading web worker", process: 40 });
+        loadUpdate({ msg: "Done loading web worker", process: 0.25 });
+        await timeout(5);
 
         await zkappWorkerClient.setActiveInstanceToBerkeley();
 
@@ -57,9 +58,10 @@ export default function AccountUpdater() {
 
         await zkappWorkerClient.loadContract();
 
-        loadUpdate({ msg: "Compiling zkApp...", process: 60 });
+        loadUpdate({ msg: "Compiling zkApp...", process: 0.5 });
         await zkappWorkerClient.compileContract();
-        loadUpdate({ msg: "zkApp compiled...", process: 80 });
+        loadUpdate({ msg: "zkApp compiled...", process: 0.75 });
+        await timeout(5);
 
         const zkappPublicKey = PublicKey.fromBase58(
           "B62qjshG3cddKthD6KjCzHZP4oJM2kGuC8qRHN3WZmKH5B74V9Uddwu"
@@ -76,7 +78,7 @@ export default function AccountUpdater() {
           zkappPublicKey,
           accountExists: false,
         });
-        loadUpdate({ state: true, process: 100 });
+        loadUpdate({ state: true, process: 1 });
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
