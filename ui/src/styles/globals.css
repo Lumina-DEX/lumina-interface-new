@@ -10,11 +10,13 @@
 }
 
 :root {
-  --primary-font: Orbitron;
-  --secondary-font: "Cutive Mono";
-
+  --primary-font: "Orbitron";
+  --secondary-font: "Metrophobic";
+  
   --primary-color: #351c75;
   --secondary-color: #f7f5de;
+  
+
 
   font-family: var(--primary-font), var(--secondary-font), Inter, system-ui,
     Avenir, Helvetica, Arial, sans-serif;
@@ -110,4 +112,12 @@ body {
     transform: translateX(0%);
     opacity: 0;
   }
+}
+
+.font-metrophobic {
+  font-family: "Metrophobic" !important;
+}
+
+.font-orbitron {
+  font-family: "Orbitron" !important;
 }

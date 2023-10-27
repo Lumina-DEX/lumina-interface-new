@@ -123,7 +123,7 @@ const SwapPanel = () => {
       </Tabs>
 
       {/* Swap from */}
-      <div className="relative w-full p-8 pt-12 bg-light-100">
+      <div className="relative w-full p-8 pt-12 bg-light-100 font-metrophobic">
         <div className="absolute top-3 right-3 cursor-pointer">
           <Dropdown horizontal="left" vertical="bottom">
             <Dropdown.Toggle className="[&>button]:p-0">
@@ -191,7 +191,7 @@ const SwapPanel = () => {
       </div>
 
       {/* Swap to */}
-      <div className="w-full p-8">
+      <div className="w-full p-8 font-metrophobic">
         <div className="flex flex-col w-full gap-4">
           <div className="flex justify-between items-center w-full">
             <TokenSelector token={toToken} setToken={setToToken} />
@@ -243,7 +243,7 @@ const SwapPanel = () => {
           {address ? (
             <div className="flex flex-col gap-y-4">
               <Button
-                className="w-full h-[60px] min-h-0 shadow-md"
+                className="w-full h-[60px] min-h-0 shadow-md font-orbitron"
                 color="primary"
                 size="lg"
                 disabled={!loadState}
@@ -260,7 +260,7 @@ const SwapPanel = () => {
             </div>
           ) : (
             <Button
-              className="btn-primary text-white"
+              className="btn-primary text-white font-orbitron"
               onClick={handleConnectWallet}
               disabled={!loadState}
             >
