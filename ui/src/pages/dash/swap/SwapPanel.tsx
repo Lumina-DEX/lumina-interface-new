@@ -30,13 +30,14 @@ const SwapPanel = () => {
   const [fromToken, setFromToken] = useState<Token>(tokens[0]);
   const [fromAmount, setFromAmount] = useState("");
   const fromTokenBalance = useMemo(() => {
-    return balances[fromToken!.symbol] || 0;
+    let tokenName = fromToken!.symbol;
+    return balances[tokenName.toLowerCase()] || 0;
   }, [balances, fromToken]);
 
   const [toToken, setToToken] = useState<Token>(tokens[1]);
   const [toAmount, setToAmount] = useState("0.0");
   const toTokenBalance = useMemo(
-    () => balances[toToken!.symbol] || 0,
+    () => balances[toToken!.symbol.toLowerCase()] || 0,
     [balances, toToken]
   );
 

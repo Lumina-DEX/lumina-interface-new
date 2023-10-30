@@ -15,7 +15,7 @@ const TransferPage: NextPageWithLayout = () => {
 
   const [token, setToken] = useState<Token>(tokens[0]);
   const tokenBalance = useMemo(
-    () => (token ? balances[token!.symbol] || 0 : 0),
+    () => (token ? balances[token!.symbol.toLowerCase()] || 0 : 0),
     [balances, token]
   );
   const [amount, setAmount] = useState("");

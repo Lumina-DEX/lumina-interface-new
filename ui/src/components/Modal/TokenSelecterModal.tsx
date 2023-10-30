@@ -74,7 +74,7 @@ const TokenSelecterModal = (props: Props) => {
                     <div className="text-gray text-xs">MINA</div>
                   </div>
                 </div>
-                <div>{balances[token!.symbol] || 0}</div>
+                <div>{balances[token!.symbol.toLowerCase()] || 0}</div>
               </div>
             ))}
           </div>
