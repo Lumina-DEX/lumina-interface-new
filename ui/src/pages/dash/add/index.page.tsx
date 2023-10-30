@@ -21,14 +21,14 @@ const AddLiquidityPanel: NextPageWithLayout = () => {
   const [fromToken, setFromToken] = useState<Token>(tokens[0]);
   const [fromAmount, setFromAmount] = useState("");
   const fromTokenBalance = useMemo(
-    () => balances[fromToken?.symbol || ""] || 0,
+    () => balances[fromToken?.symbol.toLowerCase() || ""] || 0,
     [balances, fromToken?.id]
   );
 
   const [toToken, setToToken] = useState<Token>(tokens[1]);
   const [toAmount, setToAmount] = useState("0.0");
   const toTokenBalance = useMemo(
-    () => balances[toToken?.symbol || ""] || 0,
+    () => balances[toToken?.symbol.toLowerCase() || ""] || 0,
     [balances, toToken?.id]
   );
 
