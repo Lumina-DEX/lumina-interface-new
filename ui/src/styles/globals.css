@@ -121,3 +121,7 @@ body {
 .font-orbitron {
   font-family: "Orbitron" !important;
 }
+
+a[target="_blank"]:hover {
+  text-decoration: underline;
+}

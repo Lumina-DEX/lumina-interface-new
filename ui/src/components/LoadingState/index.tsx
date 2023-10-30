@@ -24,7 +24,11 @@ const LoadingState = () => {
           <div className="absolute top-0 h-4 rounded-xl shim-primary bg-primary" style={{width: `${300 * process}px`}}></div>
         </div>
         <div className="w-full flex justify-center">
-          {loadState ? <p> success </p> : <div>{loadMsg}</div>}
+          {loadState ? (
+            <p> Success </p>
+          ) : (
+            <div dangerouslySetInnerHTML={{ __html: loadMsg }} />
+          )}
         </div>
       </div>
     </div>

@@ -19,14 +19,11 @@ import useSupabaseFunctions from "@/services/supabase";
 const ConnectWallet = () => {
   const { darkMode, setDarkMode } = useContext(AppContext);
 
-  const { walletConnected, kycVerified, balances, accountUpdate } = useAccount(
-    (state) => ({
-      walletConnected: state.hasBeenSetup,
-      kycVerified: state.kycVerified,
-      balances: state.balances,
-      accountUpdate: state.update,
-    })
-  );
+  const { kycVerified, balances, accountUpdate } = useAccount((state) => ({
+    kycVerified: state.kycVerified,
+    balances: state.balances,
+    accountUpdate: state.update,
+  }));
 
   const address: string | any = useAccount((state) => state.publicKeyBase58);
   const { getPermissioned } = useSupabaseFunctions();

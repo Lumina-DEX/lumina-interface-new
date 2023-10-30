@@ -10,8 +10,7 @@ export default function AccountUpdater() {
 
   const [displayText, setDisplayText] = useState("");
   const [transactionlink, setTransactionLink] = useState("");
-  const { loadUpdate, process } = useLoad((state) => ({
-    process: state.process,
+  const { loadUpdate } = useLoad((state) => ({
     loadUpdate: state.update,
   }));
   // -------------------------------------------------------
@@ -41,20 +40,12 @@ export default function AccountUpdater() {
 
         if (mina == null) {
           state.update({ hasWallet: false });
+          loadUpdate({
+            msg: `<a href="https://www.aurowallet.com/" target="_blank" rel="noreferrer">Install Auro wallet</a>`,
+            process: 60,
+          });
           return;
         }
-
-        // const publicKeyBase58: string = (await mina.requestAccounts())[0];
-        // const publicKey = PublicKey.fromBase58(publicKeyBase58);
-
-        // loadUpdate({ msg: `Using key:${publicKey.toBase58()}` });
-
-        // loadUpdate({ msg: "Checking if fee payer account exists..." });
-
-        // const res = await zkappWorkerClient.fetchAccount({
-        //   publicKeyBase58: publicKeyBase58!,
-        // });
-        // const accountExists = res.error == null;
 
         await zkappWorkerClient.loadContract();
 
