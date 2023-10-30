@@ -13,7 +13,7 @@ const Header = () => {
   };
 
   const drawerSide = (
-    <Menu className="p-4 w-40 h-full bg-base-200 text-base-content bg-light-100 font-primary">
+    <Menu className="p-4 w-40 h-full bg-base-200 text-base-content bg-light-100 font-primary z-10">
       {MenuItems.map((item, index) => (
         <Menu.Item key={index} onClick={toggleVisible}>
           <Link href={item.link} className="font-bold focus:text-black ">
