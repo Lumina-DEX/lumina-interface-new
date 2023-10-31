@@ -22,7 +22,7 @@ const TransferPage: NextPageWithLayout = () => {
   const [recipient, setRecipient] = useState("");
 
   return (
-    <div className="card max-w-md">
+    <div className="card max-w-md font-metrophobic">
       {tokens.length > 0 ? (
         <div>
           <div className="flex flex-col items-center pt-6">
@@ -30,7 +30,7 @@ const TransferPage: NextPageWithLayout = () => {
           </div>
 
           {/* Send */}
-          <div className="w-full bg-light-100 py-6 px-10">
+          <div className="w-full bg-light-100 py-6 px-10 max-[420px]:px-6">
             <div className="flex flex-col w-full gap-4">
               <div className="flex justify-between items-center w-full">
                 <TokenSelector token={token} setToken={setToken} />
@@ -86,7 +86,7 @@ const TransferPage: NextPageWithLayout = () => {
           </div>
 
           {/* Recipient */}
-          <div className="w-full bg-light-200 py-6 px-10 text-black rounded-b-3xl">
+          <div className="w-full bg-light-200 py-6 px-10 text-black rounded-b-3xl max-[420px]:px-6">
             <div className="flex flex-col w-full gap-4">
               <h2 className="text-lg">Recipient</h2>
               <Input

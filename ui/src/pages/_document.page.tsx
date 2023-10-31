@@ -15,6 +15,10 @@ export default class MyDocument extends Document {
             href="https://fonts.googleapis.com/css?family=Cutive Mono"
             rel="stylesheet"
           />
+          <link
+            href="https://fonts.googleapis.com/css?family=Metrophobic"
+            rel="stylesheet"
+          />
         </Head>
         <body className="lightmode">
           <Main />
