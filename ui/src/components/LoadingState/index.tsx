@@ -18,7 +18,7 @@ const LoadingState = () => {
   }, [loadState, process]);
 
   return visible ? (
-    <div className="fixed top-[80px] w-full flex justify-center z-[1]">
+    <div className="fixed top-[80px] w-full flex justify-center z-[1] font-metrophobic">
       <div className="w-[300px] text-xl">
         <div className="relative w-full bg-white rounded-xl">
           <div className="absolute top-0 h-4 rounded-xl shim-primary bg-primary" style={{width: `${300 * process}px`}}></div>

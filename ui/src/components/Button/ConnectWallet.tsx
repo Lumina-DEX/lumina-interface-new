@@ -89,8 +89,8 @@ const ConnectWallet = () => {
           kycVerified ? (
             <div className="text-emerald-400 font-bold flex flex-row items-center">
               <BiSolidCheckCircle />
-              <p className="block max-sm:hidden">KYC Passed</p>
-              <p className="hidden max-sm:block">KYC</p>
+              <p className="font-metrophobic block max-sm:hidden">KYC Passed</p>
+              <p className="font-metrophobic hidden max-sm:block">KYC</p>
             </div>
           ) : (
             <Link

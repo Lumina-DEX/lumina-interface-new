@@ -83,7 +83,7 @@ const AddLiquidityPanel: NextPageWithLayout = () => {
   }, [toToken]);
 
   return (
-    <div className="bg-light-200 card w-[470px] overflow-hidden max-[500px]:w-[400px] max-[420px]:w-[300px]">
+    <div className="font-metrophobic bg-light-200 card w-[470px] overflow-hidden max-[500px]:w-[400px] max-[420px]:w-[300px]">
       <div>
         <div className="w-full p-8 bg-light-100">
           <div className="flex flex-col w-full gap-4">

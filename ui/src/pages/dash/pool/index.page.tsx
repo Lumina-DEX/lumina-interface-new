@@ -25,7 +25,7 @@ const PoolPage: NextPageWithLayout = () => {
 
   return (
     <div className="px-4">
-      <div className="card">
+      <div className="card font-metrophobic">
         <div
           className={clsx(
             "flex justify-between items-center rounded-t-[18px]",
