@@ -77,7 +77,7 @@ const KYCPage: NextPageWithLayout = () => {
   }
 
   return (
-    <div className="card max-w-3xl p-6 gap-6">
+    <div className="card max-w-3xl p-6 gap-6 font-metrophobic">
       <div className="flex flex-col items-center">
         <h1 className="font-bold text-2xl">
           Welcome to ZKP-ID check connection
@@ -121,7 +121,7 @@ const KYCPage: NextPageWithLayout = () => {
       </div>
 
       <div className="w-full flex justify-center">
-        <Button color="primary" onClick={handleStartVerification}>
+        <Button className="font-orbitron" color="primary" onClick={handleStartVerification}>
           Start Verification
         </Button>
       </div>

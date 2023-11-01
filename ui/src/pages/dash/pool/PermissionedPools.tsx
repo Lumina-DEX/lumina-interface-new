@@ -265,7 +265,7 @@ const PermissionedPools: React.FC<Props> = ({ pools }) => {
           <div className="flex justify-center mb-4">
             <Link
               href={`/dash/kyc?address=${address}`}
-              className="btn py-2 shadow-md btn-primary w-[160px] text-lg"
+              className="btn py-2 shadow-md btn-primary w-[160px] text-lg font-orbitron"
             >
               Start KYC
             </Link>
@@ -276,7 +276,7 @@ const PermissionedPools: React.FC<Props> = ({ pools }) => {
       ) : (
         <div className="flex justify-center mb-4">
           <Button
-            className="btn-primary text-white"
+            className="btn-primary text-white font-orbitron"
             onClick={handleConnectWallet}
             disabled={!loadState}
           >
