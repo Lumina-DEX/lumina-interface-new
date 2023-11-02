@@ -43,7 +43,7 @@ const PoolPage: NextPageWithLayout = () => {
           >
             <Tabs.Tab
               style={{ lineHeight: "8px" }}
-              className={clsx("font-medium rounded-tl-[18px]  pr-16 py-7", {
+              className={clsx("font-orbitron rounded-tl-[18px]  pr-16 py-7", {
                 "text-primary text-lg bg-light-100 md:text-lg": tabValue === 0,
                 "text-default text-lg bg-light-200 md:text-lg": tabValue !== 0,
               })}
@@ -54,7 +54,7 @@ const PoolPage: NextPageWithLayout = () => {
             <Tabs.Tab
               style={{ lineHeight: "8px" }}
               className={clsx(
-                "font-medium rounded-t-[18px] ml-[-10px] py-7 leading-[8px]",
+                "font-orbitron rounded-t-[18px] ml-[-10px] py-7 leading-[8px]",
                 {
                   "text-primary  text-lg bg-light-100 md:text-lg":
                     tabValue === 1,

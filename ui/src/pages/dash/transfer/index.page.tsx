@@ -26,7 +26,7 @@ const TransferPage: NextPageWithLayout = () => {
       {tokens.length > 0 ? (
         <div>
           <div className="flex flex-col items-center pt-6">
-            <h1 className="font-bold text-2xl">Send</h1>
+            <h1 className="font-bold text-2xl font-orbitron">Send</h1>
           </div>
 
           {/* Send */}
@@ -98,7 +98,7 @@ const TransferPage: NextPageWithLayout = () => {
             </div>
 
             <Button
-              className="w-full h-[48px] min-h-0 shadow-md mt-6"
+              className="w-full h-[48px] min-h-0 shadow-md mt-6 font-orbitron"
               color="primary"
               size="lg"
               disabled={!recipient || !amount}

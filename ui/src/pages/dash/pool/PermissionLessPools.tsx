@@ -175,13 +175,13 @@ const PermissionLessPools: React.FC<Props> = ({ pools }) => {
         {address ? (
           <Link
             href={`/dash/add?fromToken=${tokens[0].id}&toToken=${tokens[1].id}`}
-            className="btn py-2 shadow-md btn-primary w-[160px] text-lg"
+            className="btn py-2 shadow-md btn-primary w-[160px] text-lg font-orbitron"
           >
             + New Pool
           </Link>
         ) : (
           <Button
-            className="btn-primary text-white"
+            className="btn-primary text-white font-orbitron"
             onClick={handleConnectWallet}
             disabled={!loadState}
           >
