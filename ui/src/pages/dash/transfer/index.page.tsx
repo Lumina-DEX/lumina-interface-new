@@ -110,7 +110,7 @@ const TransferPage: NextPageWithLayout = () => {
               <h2 className="text-lg">Recipient</h2>
               <Input
                 className="w-full bg-transparent"
-                placeholder="View on Minascan"
+                placeholder="Enter Wallet Address"
                 value={recipient}
                 onChange={(event) => setRecipient(event.target.value)}
               />
