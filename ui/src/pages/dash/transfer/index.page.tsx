@@ -4,10 +4,11 @@ import { NextPageWithLayout } from "@/pages/_app.page";
 import useAccount from "@/states/useAccount";
 import useTokens from "@/states/useTokens";
 import { Token } from "@/types/token";
-import React, { ReactElement, useMemo, useState } from "react";
+import React, { ReactElement, useEffect, useMemo, useState } from "react";
 import CurrencyFormat from "react-currency-format";
 import Decimal from "decimal.js";
 import { Button, Input, Loading } from "react-daisyui";
+import { mina } from "@/lib/wallet";
 
 const TransferPage: NextPageWithLayout = () => {
   const tokens = useTokens((state) => state.tokens);
@@ -20,6 +21,24 @@ const TransferPage: NextPageWithLayout = () => {
   );
   const [amount, setAmount] = useState("");
   const [recipient, setRecipient] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleSend = async () => {
+    try {
+      const { hash } = await mina.sendLegacyPayment({
+        amount: amount,
+        fee: 0.1,
+        to: recipient,
+      });
+      console.log(hash);
+    } catch (error: any) {
+      setErrorMessage(error.message);
+    }
+  };
+
+  useEffect(() => {
+    setErrorMessage("");
+  }, [recipient]);
 
   return (
     <div className="card max-w-md font-metrophobic">
@@ -102,9 +121,12 @@ const TransferPage: NextPageWithLayout = () => {
               color="primary"
               size="lg"
               disabled={!recipient || !amount}
+              onClick={handleSend}
             >
               Send
             </Button>
+
+            <p className="text-error">{errorMessage}</p>
           </div>
         </div>
       ) : (
