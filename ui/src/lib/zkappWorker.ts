@@ -1,4 +1,4 @@
-import { Mina, PublicKey, fetchAccount } from "snarkyjs";
+import { Mina, PrivateKey, PublicKey, UInt64, fetchAccount } from "snarkyjs";
 
 type Transaction = Awaited<ReturnType<typeof Mina.transaction>>;
 
@@ -51,8 +51,31 @@ const functions = {
     });
     state.transaction = transaction;
   },
-  proveUpdateTransaction: async (args: {}) => {
-    await state.transaction!.prove();
+  createTransferTransaction: async (args: {}) => {
+    const transaction = await Mina.transaction(() => {
+      state.zkapp!.transferToAddress(
+        PublicKey.fromBase58(
+          "B62qnhmGKDtNsXitJcqkckRxaUfjBGGFSK3dfPxyqSwYqesNspPyYky"
+        ),
+        PublicKey.fromBase58(
+          "B62qoEM26H9XzUhWQxjzpNN4B5ysMdAW7YnbRRbj3M3sStdyn3e8Npc"
+        ),
+        UInt64.from(1)
+      );
+    });
+    state.transaction = transaction;
+  },
+  proveTransaction: async (args: {}) => {
+    const tx = state.transaction!;
+    await tx.prove();
+
+    return await tx
+      .sign([
+        PrivateKey.fromBase58(
+          "EKErfsUVCf773SsUcYKZMZCTJpkikM7tAeAvHum1Y9xYnihDyTEv"
+        ),
+      ])
+      .send();
   },
   getTransactionJSON: async (args: {}) => {
     return state.transaction!.toJSON();

@@ -52,8 +52,12 @@ export default class ZkappWorkerClient {
     return this._call("createUpdateTransaction", {});
   }
 
-  proveUpdateTransaction() {
-    return this._call("proveUpdateTransaction", {});
+  createTransferTransaction() {
+    return this._call("createTransferTransaction", {});
+  }
+
+  proveTransaction() {
+    return this._call("proveTransaction", {});
   }
 
   async getTransactionJSON() {
