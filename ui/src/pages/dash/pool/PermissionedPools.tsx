@@ -14,11 +14,14 @@ interface Props {
 }
 
 const PermissionedPools: React.FC<Props> = ({ pools }) => {
-  const { location, kycVerified, address } = useAccount((state) => ({
-    location: state.location,
-    kycVerified: state.kycVerified,
-    address: state.publicKeyBase58,
-  }));
+  const { location, kycVerified, kybVerified, address } = useAccount(
+    (state) => ({
+      location: state.location,
+      kycVerified: state.kycVerified,
+      kybVerified: state.kybVerified,
+      address: state.publicKeyBase58,
+    })
+  );
   const { loadState } = useLoad((state) => ({
     loadState: state.state,
   }));
@@ -30,8 +33,13 @@ const PermissionedPools: React.FC<Props> = ({ pools }) => {
   return (
     <div className="flex flex-col gap-y-4 py-4">
       <div className="text-center font-bold text-black px-2 text-base sm:text-base min-[320px]:text-[13px]">
-        Connect Wallet and Complete KYC to access permissioned liquidity on
-        Lumina
+        {kybVerified
+          ? "KYB Passed, Select an existing pool to manage liquidity or click ‘New Pool’"
+          : !kycVerified
+          ? address
+            ? "Complete KYC to access permissioned liquidity on Lumina"
+            : "Connect Wallet and Complete KYC to access permissioned liquidity on Lumina"
+          : "KYC Passed, view your access to permissioned liquidity pools below"}
       </div>
       <div className="hidden md:block">
         {pools.length ? (
@@ -249,20 +257,16 @@ const PermissionedPools: React.FC<Props> = ({ pools }) => {
           </Collapse>
         ))}
       </div>
-      {kycVerified ? (
+      {!kybVerified && kycVerified && (
         <div className="text-center font-bold text-black px-2 text-base sm:text-base min-[320px]:text-[13px]">
-          Permissioned pool creation and management reserved for <br />
-          Enterprise users who complete KYB
-        </div>
-      ) : (
-        <div className="text-center font-bold text-black px-2 text-base sm:text-base min-[320px]:text-[13px]">
-          Complete KYC to access additional permissioned pool liquidity
+          Permissioned pool creation and management is
+          <br /> reserved for institutions that have completed KYB
         </div>
       )}
 
       {address ? (
         !kycVerified ? (
-          <div className="flex justify-center mb-4">
+          <div className="flex justify-center">
             <Link
               href={`/dash/kyc?address=${address}`}
               className="btn py-2 shadow-md btn-primary w-[160px] text-lg font-orbitron"
@@ -270,11 +274,27 @@ const PermissionedPools: React.FC<Props> = ({ pools }) => {
               Start KYC
             </Link>
           </div>
+        ) : !kybVerified ? (
+          <div className="flex justify-center">
+            <Link
+              href={`/dash/kyb?address=${address}`}
+              className="btn py-2 shadow-md btn-primary w-[160px] text-lg font-orbitron"
+            >
+              Start KYB
+            </Link>
+          </div>
         ) : (
-          <></>
+          <div className="flex justify-center">
+            <Link
+              href={`#`}
+              className="btn py-2 shadow-md btn-primary w-[160px] text-lg font-orbitron"
+            >
+              New Pool
+            </Link>
+          </div>
         )
       ) : (
-        <div className="flex justify-center mb-4">
+        <div className="flex justify-center">
           <Button
             className="btn-primary text-white font-orbitron"
             onClick={handleConnectWallet}

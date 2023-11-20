@@ -12,8 +12,6 @@ const KYCPage: NextPageWithLayout = () => {
   const router = useRouter();
 
   const [url, setUrl] = useState("");
-  const testMode =
-    typeof window !== "undefined" && window.localStorage.getItem("TestMode");
 
   const handleStartVerification = () => {
     getUrl();
@@ -21,6 +19,9 @@ const KYCPage: NextPageWithLayout = () => {
   };
 
   const getUrl = async () => {
+    const testMode =
+      typeof window !== "undefined" && window.localStorage.getItem("TestMode");
+
     const address = searchParams.get("address");
     if (!address) {
       console.error("Address is null!");
@@ -121,7 +122,11 @@ const KYCPage: NextPageWithLayout = () => {
       </div>
 
       <div className="w-full flex justify-center">
-        <Button className="font-orbitron" color="primary" onClick={handleStartVerification}>
+        <Button
+          className="font-orbitron"
+          color="primary"
+          onClick={handleStartVerification}
+        >
           Start Verification
         </Button>
       </div>

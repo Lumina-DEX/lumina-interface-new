@@ -19,11 +19,14 @@ import useSupabaseFunctions from "@/services/supabase";
 const ConnectWallet = () => {
   const { darkMode, setDarkMode } = useContext(AppContext);
 
-  const { kycVerified, balances, accountUpdate } = useAccount((state) => ({
-    kycVerified: state.kycVerified,
-    balances: state.balances,
-    accountUpdate: state.update,
-  }));
+  const { kycVerified, kybVerified, balances, accountUpdate } = useAccount(
+    (state) => ({
+      kycVerified: state.kycVerified,
+      kybVerified: state.kybVerified,
+      balances: state.balances,
+      accountUpdate: state.update,
+    })
+  );
 
   const address: string | any = useAccount((state) => state.publicKeyBase58);
   const { getPermissioned } = useSupabaseFunctions();
@@ -86,7 +89,13 @@ const ConnectWallet = () => {
     <div className="flex gap-2 max-sm:fixed max-sm:bottom-0 max-sm:left-0 max-sm:h-14 max-sm:w-full max-sm:z-[2] max-sm:bg-background-l1 max-sm:shadow-10 max-sm:px-4 max-sm:justify-start max-sm:items-center max-sm:flex">
       <div>
         {address ? (
-          kycVerified ? (
+          kybVerified ? (
+            <div className="text-blue-800 font-bold flex flex-row items-center">
+              <BiSolidCheckCircle />
+              <p className="font-metrophobic block max-sm:hidden">KYB Passed</p>
+              <p className="font-metrophobic hidden max-sm:block">KYB</p>
+            </div>
+          ) : kycVerified ? (
             <div className="text-emerald-400 font-bold flex flex-row items-center">
               <BiSolidCheckCircle />
               <p className="font-metrophobic block max-sm:hidden">KYC Passed</p>
@@ -95,10 +104,10 @@ const ConnectWallet = () => {
           ) : (
             <Link
               href={`/dash/kyc?address=${address}`}
-              className="btn w-full min-h-0 shadow-md btn-primary text-lg text-white h-7"
+              className="btn w-full min-h-0 shadow-md btn-primary text-lg text-white h-7 font-orbitron"
             >
-              <p className="block max-sm:hidden">Start KYC</p>
-              <p className="hidden max-sm:block">KYC</p>
+              <span className="block max-sm:hidden">Start KYC</span>
+              <span className="hidden max-sm:block">KYC</span>
             </Link>
           )
         ) : (

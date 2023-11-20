@@ -251,9 +251,7 @@ const SwapPanel = () => {
               >
                 Swap
               </Button>
-              {kycVerified ? (
-                <></>
-              ) : (
+              {!kycVerified && address && (
                 <div>
                   Complete KYC to access additional permissioned pool liquidity
                 </div>

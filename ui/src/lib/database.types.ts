@@ -31,6 +31,7 @@ export interface Database {
         Row: {
           created_at: string
           id: string
+          kyb: boolean | null
           location: string | null
           mode: string | null
           wallet_address: string | null
@@ -39,6 +40,7 @@ export interface Database {
         Insert: {
           created_at?: string
           id?: string
+          kyb?: boolean | null
           location?: string | null
           mode?: string | null
           wallet_address?: string | null
@@ -47,6 +49,7 @@ export interface Database {
         Update: {
           created_at?: string
           id?: string
+          kyb?: boolean | null
           location?: string | null
           mode?: string | null
           wallet_address?: string | null
@@ -62,6 +65,7 @@ export interface Database {
           id: number
           to_token: string | null
           total_liquidity: number | null
+          US: boolean | null
         }
         Insert: {
           apr?: number | null
@@ -70,6 +74,7 @@ export interface Database {
           id?: number
           to_token?: string | null
           total_liquidity?: number | null
+          US?: boolean | null
         }
         Update: {
           apr?: number | null
@@ -78,17 +83,20 @@ export interface Database {
           id?: number
           to_token?: string | null
           total_liquidity?: number | null
+          US?: boolean | null
         }
         Relationships: [
           {
             foreignKeyName: "pools_from_token_fkey"
             columns: ["from_token"]
+            isOneToOne: false
             referencedRelation: "tokens"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "pools_to_token_fkey"
             columns: ["to_token"]
+            isOneToOne: false
             referencedRelation: "tokens"
             referencedColumns: ["id"]
           }
