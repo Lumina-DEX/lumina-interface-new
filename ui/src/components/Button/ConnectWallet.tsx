@@ -117,7 +117,6 @@ const ConnectWallet = () => {
       {address && <Button size="sm">{balances.mina ?? 0} Mina</Button>}
       <div className="font-primary ">
         {address ? (
-          // <Button text={shortenAddress(accounts[0])} variant="secondary" onClick={() => setOpen(!open)} />
           <Dropdown className="font-primary text-gray-800 z-50">
             <Dropdown.Toggle>{shortenAddress(address)}</Dropdown.Toggle>
             <Dropdown.Menu className="px-4 top-[42px] bg-pink-50 w-[262px] max-sm:top-[-317px] right-[-24px] z-10">
