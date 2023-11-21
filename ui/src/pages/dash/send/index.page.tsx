@@ -9,7 +9,7 @@ import CurrencyFormat from "react-currency-format";
 import Decimal from "decimal.js";
 import { Button, Input, Loading } from "react-daisyui";
 
-const TransferPage: NextPageWithLayout = () => {
+const SendPage: NextPageWithLayout = () => {
   const tokens = useTokens((state) => state.tokens);
   const balances = useAccount((state) => state.balances);
 
@@ -114,8 +114,8 @@ const TransferPage: NextPageWithLayout = () => {
   );
 };
 
-TransferPage.getLayout = function getLayout(page: ReactElement) {
+SendPage.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
 };
 
-export default TransferPage;
+export default SendPage;
