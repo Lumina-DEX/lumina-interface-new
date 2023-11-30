@@ -6,14 +6,29 @@ import { Button, Input } from "react-daisyui";
 import { NextPageWithLayout } from "@/pages/_app.page";
 import { FaTimes } from "react-icons/fa";
 import { useRouter } from "next/router";
+import { IBusinessContact } from "@/types/businessContact";
+import useSupabaseFunctions from "@/services/supabase";
 
 const KYBPage: NextPageWithLayout = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
-
+  const { submitBusinessForm } = useSupabaseFunctions();
+  const [formData, setFormData] = useState<IBusinessContact>({
+    firstName: "",
+    lastName: "",
+    businessEmail: "",
+    businessName: "",
+    businessAddress: "",
+    businessTaxId: "",
+  });
   const [step, setStep] = useState<"guidance" | "started" | "finished">(
     "guidance"
   );
+
+  const handleUpdateFormData =
+    (key: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+      setFormData((v) => ({ ...v, [key]: event.target.value }));
+    };
 
   const onStartVerification = () => {
     setStep("started");
@@ -28,6 +43,9 @@ const KYBPage: NextPageWithLayout = () => {
       console.error("Address is null!");
       return;
     }
+
+    await submitBusinessForm(address, formData);
+
     const body = {
       data: {
         address,
@@ -108,35 +126,55 @@ const KYBPage: NextPageWithLayout = () => {
           <label className="label">
             <span className="label-text">First Name</span>
           </label>
-          <Input placeholder="Enter First Name" />
+          <Input
+            placeholder="Enter First Name"
+            value={formData.firstName}
+            onChange={handleUpdateFormData("firstName")}
+          />
         </div>
 
         <div className="form-control w-full max-w-xs">
           <label className="label">
             <span className="label-text">Last Name</span>
           </label>
-          <Input placeholder="Enter Last Name" />
+          <Input
+            placeholder="Enter Last Name"
+            value={formData.lastName}
+            onChange={handleUpdateFormData("lastName")}
+          />
         </div>
 
         <div className="form-control w-full max-w-xs">
           <label className="label">
             <span className="label-text">Business Email</span>
           </label>
-          <Input placeholder="Enter Business Email" />
+          <Input
+            placeholder="Enter Business Email"
+            value={formData.businessEmail}
+            onChange={handleUpdateFormData("businessEmail")}
+          />
         </div>
 
         <div className="form-control w-full max-w-xs">
           <label className="label">
             <span className="label-text">Business Name</span>
           </label>
-          <Input placeholder="Enter Business Name" />
+          <Input
+            placeholder="Enter Business Name"
+            value={formData.businessName}
+            onChange={handleUpdateFormData("businessName")}
+          />
         </div>
 
         <div className="form-control w-full max-w-xs">
           <label className="label">
             <span className="label-text">Business Legal Address</span>
           </label>
-          <Input placeholder="Enter Business Legal Address" />
+          <Input
+            placeholder="Enter Business Legal Address"
+            value={formData.businessAddress}
+            onChange={handleUpdateFormData("businessAddress")}
+          />
         </div>
 
         <div className="form-control w-full max-w-xs">
@@ -145,7 +183,11 @@ const KYBPage: NextPageWithLayout = () => {
               Business Tax Identification Number
             </span>
           </label>
-          <Input placeholder="Enter Tax ID Number" />
+          <Input
+            placeholder="Enter Tax ID Number"
+            value={formData.businessTaxId}
+            onChange={handleUpdateFormData("businessTaxId")}
+          />
         </div>
 
         <div className="w-full flex justify-center">
