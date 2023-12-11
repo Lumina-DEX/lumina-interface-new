@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { Field, SmartContract, state, State, method } from 'snarkyjs';
+import { Field, SmartContract, state, State, method, PublicKey, UInt64, } from 'snarkyjs';
 /**
  * Basic Example
  * See https://docs.minaprotocol.com/zkapps for more info.
@@ -31,6 +31,9 @@ export class Add extends SmartContract {
         const newState = currentState.add(2);
         this.num.set(newState);
     }
+    transferToAddress(from, to, value) {
+        this.token.send({ from, to, amount: value });
+    }
 }
 __decorate([
     state(Field),
@@ -42,4 +45,10 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], Add.prototype, "update", null);
+__decorate([
+    method,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [PublicKey, PublicKey, UInt64]),
+    __metadata("design:returntype", void 0)
+], Add.prototype, "transferToAddress", null);
 //# sourceMappingURL=Add.js.map

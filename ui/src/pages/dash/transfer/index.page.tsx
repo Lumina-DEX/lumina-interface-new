@@ -8,11 +8,13 @@ import React, { ReactElement, useEffect, useMemo, useState } from "react";
 import CurrencyFormat from "react-currency-format";
 import Decimal from "decimal.js";
 import { Button, Input, Loading } from "react-daisyui";
-import { mina } from "@/lib/wallet";
+import { MINA_SUB_DECIMAL, mina } from "@/lib/wallet";
 
 const TransferPage: NextPageWithLayout = () => {
   const tokens = useTokens((state) => state.tokens);
+  const address = useAccount((state) => state.publicKeyBase58);
   const balances = useAccount((state) => state.balances);
+  const zkappWorkerClient = useAccount((state) => state.zkappWorkerClient);
 
   const [token, setToken] = useState<Token>(tokens[0]);
   const tokenBalance = useMemo(
@@ -22,17 +24,51 @@ const TransferPage: NextPageWithLayout = () => {
   const [amount, setAmount] = useState("");
   const [recipient, setRecipient] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSend = async () => {
     try {
-      const { hash } = await mina.sendLegacyPayment({
-        amount: amount,
-        fee: 0.1,
-        to: recipient,
-      });
-      console.log(hash);
+      setErrorMessage("");
+      setLoading(true);
+      // const { hash } = await mina.sendLegacyPayment({
+      //   amount: amount,
+      //   fee: 0.1,
+      //   to: recipient,
+      // });
+      // console.log(hash);
+
+      console.log({ zkappWorkerClient });
+      if (zkappWorkerClient) {
+        console.log("start");
+        await zkappWorkerClient.fetchAccount({ publicKeyBase58: address! });
+        const balance = await zkappWorkerClient.getBalance(
+          "B62qnhmGKDtNsXitJcqkckRxaUfjBGGFSK3dfPxyqSwYqesNspPyYky"
+        );
+        console.log(
+          "getBalance",
+          Number(balance.toString()) / MINA_SUB_DECIMAL
+        );
+        await zkappWorkerClient.createUpdateTransaction();
+        console.log("createTransferTransaction done");
+        const res = await zkappWorkerClient.proveTransaction();
+        console.log("proveTransaction done", res);
+        const txJSON = await zkappWorkerClient.getTransactionJSON();
+        console.log("getTransactionJSON done", txJSON);
+
+        const { hash } = await mina.sendTransaction({
+          transaction: txJSON,
+          feePayer: {
+            fee: 0.1,
+            memo: "zk",
+          },
+        });
+        console.log(11111111, hash);
+      }
     } catch (error: any) {
+      console.error(error);
       setErrorMessage(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -120,8 +156,9 @@ const TransferPage: NextPageWithLayout = () => {
               className="w-full h-[48px] min-h-0 shadow-md mt-6 font-orbitron"
               color="primary"
               size="lg"
-              disabled={!recipient || !amount}
+              disabled={!address || !recipient || !amount}
               onClick={handleSend}
+              loading={loading}
             >
               Send
             </Button>

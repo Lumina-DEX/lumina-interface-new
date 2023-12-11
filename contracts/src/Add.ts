@@ -1,4 +1,12 @@
-import { Field, SmartContract, state, State, method } from 'snarkyjs';
+import {
+  Field,
+  SmartContract,
+  state,
+  State,
+  method,
+  PublicKey,
+  UInt64,
+} from 'snarkyjs';
 
 /**
  * Basic Example
@@ -21,5 +29,9 @@ export class Add extends SmartContract {
     const currentState = this.num.getAndAssertEquals();
     const newState = currentState.add(2);
     this.num.set(newState);
+  }
+
+  @method transferToAddress(from: PublicKey, to: PublicKey, value: UInt64) {
+    this.token.send({ from, to, amount: value });
   }
 }
