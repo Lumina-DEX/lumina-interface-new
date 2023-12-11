@@ -17,6 +17,10 @@ export const MenuItems = [
     link: "transfer",
   },
   {
+    name: "Mint",
+    link: "mint",
+  },
+  {
     name: "Enterprise",
     link: "https://getstarted.luminadex.com/",
   },
