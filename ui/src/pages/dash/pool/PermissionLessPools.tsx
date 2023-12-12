@@ -32,7 +32,7 @@ const PermissionLessPools: React.FC<Props> = ({ pools }) => {
   return (
     <div className="flex flex-col gap-y-4 pt-4">
       <div className="text-center font-bold text-black px-4 text-base sm:text-lg min-[320px]:text-[15px]">
-        Select an existing pool to manage liquidity or click ‘+New Pool’
+        Select an existing pool to manage liquidity or click ‘New Pool’
       </div>
       <div className="hidden md:block">
         {pools.length ? (
@@ -177,7 +177,7 @@ const PermissionLessPools: React.FC<Props> = ({ pools }) => {
             href={`/dash/add?fromToken=${tokens[0].id}&toToken=${tokens[1].id}`}
             className="btn py-2 shadow-md btn-primary w-[160px] text-lg font-orbitron"
           >
-            + New Pool
+            New Pool
           </Link>
         ) : (
           <Button

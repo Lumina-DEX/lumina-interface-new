@@ -28,7 +28,7 @@ const Layout: React.FC<PropsWithChildren> = ({ children }) => {
         updateTokens(data);
       }
     });
-  }, []);
+  }, [getTokens, updateTokens]);
 
   return (
     <AppContext.Provider value={{ darkMode, setDarkMode }}>

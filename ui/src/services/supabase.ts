@@ -1,4 +1,5 @@
 import { Database } from "@/lib/database.types";
+import { IBusinessContact } from "@/types/businessContact";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { useCallback } from "react";
@@ -57,9 +58,24 @@ export default function useSupabaseFunctions() {
     [supabase]
   );
 
+  const submitBusinessForm = useCallback(
+    (walletAddress: string, formData: IBusinessContact) =>
+      supabase.from("businessContacts").insert({
+        wallet_address: walletAddress,
+        first_name: formData.firstName,
+        last_name: formData.lastName,
+        business_email: formData.businessEmail,
+        business_name: formData.businessName,
+        business_address: formData.businessAddress,
+        business_tax_id: formData.businessTaxId,
+      }),
+    [supabase]
+  );
+
   return {
     getPermissioned,
     getPools,
     getTokens,
+    submitBusinessForm,
   };
 }
