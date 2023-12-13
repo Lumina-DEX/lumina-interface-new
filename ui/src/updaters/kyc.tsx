@@ -20,6 +20,7 @@ export default function KycUpdater() {
         if (status === 200 && data) {
           accountUpdate({
             kycVerified: !!data[0],
+            kybVerified: !!data[0] && !!data[0].kyb,
             location: !!data[0] ? data[0].location : null,
           });
         }

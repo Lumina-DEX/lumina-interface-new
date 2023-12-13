@@ -13,12 +13,12 @@ export const MenuItems = [
     link: "pool",
   },
   {
-    name: "Transfer",
-    link: "transfer",
+    name: "Send",
+    link: "send",
   },
   {
-    name: "Enterprise",
-    link: "https://getstarted.luminadex.com/",
+    name: "Manage",
+    link: "manage",
   },
 ];
 

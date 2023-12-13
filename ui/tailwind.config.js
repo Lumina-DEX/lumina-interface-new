@@ -38,6 +38,7 @@ export default {
         "light-100": "var(--light-100)",
         "light-200": "var(--light-200)",
         "light-300": "var(--light-300)",
+        "blue-100": "var(--blue-100)",
       },
       backgroundImage: {
         lumina: "url(/assets/backgrounds/holo.png)",
