@@ -1,4 +1,4 @@
-import { Mina, PublicKey, fetchAccount } from "snarkyjs";
+import { Mina, PrivateKey, PublicKey, UInt64, fetchAccount } from "snarkyjs";
 
 type Transaction = Awaited<ReturnType<typeof Mina.transaction>>;
 
@@ -50,9 +50,6 @@ const functions = {
       state.zkapp!.update();
     });
     state.transaction = transaction;
-  },
-  proveUpdateTransaction: async (args: {}) => {
-    await state.transaction!.prove();
   },
   getTransactionJSON: async (args: {}) => {
     return state.transaction!.toJSON();

@@ -55,7 +55,7 @@ export default function AccountUpdater() {
         await timeout(5);
 
         const zkappPublicKey = PublicKey.fromBase58(
-          "B62qjshG3cddKthD6KjCzHZP4oJM2kGuC8qRHN3WZmKH5B74V9Uddwu"
+          "B62qo2Be4Udo5EG1ux9yMJVkXe9Gz945cocN7Bn4W9DSYyeHZr1C3Ea"
         );
 
         await zkappWorkerClient.initZkappInstance(zkappPublicKey);

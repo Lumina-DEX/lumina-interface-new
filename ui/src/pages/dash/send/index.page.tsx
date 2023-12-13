@@ -4,13 +4,19 @@ import { NextPageWithLayout } from "@/pages/_app.page";
 import useAccount from "@/states/useAccount";
 import useTokens from "@/states/useTokens";
 import { Token } from "@/types/token";
-import React, { ReactElement, useMemo, useState } from "react";
+import React, { ReactElement, useEffect, useMemo, useState } from "react";
 import CurrencyFormat from "react-currency-format";
 import Decimal from "decimal.js";
 import { Button, Input, Loading } from "react-daisyui";
+import { mina } from "@/lib/wallet";
+import {
+  SendTransactionResult,
+  ProviderError,
+} from "@aurowallet/mina-provider";
 
-const SendPage: NextPageWithLayout = () => {
+const TransferPage: NextPageWithLayout = () => {
   const tokens = useTokens((state) => state.tokens);
+  const address = useAccount((state) => state.publicKeyBase58);
   const balances = useAccount((state) => state.balances);
 
   const [token, setToken] = useState<Token>(tokens[0]);
@@ -20,6 +26,33 @@ const SendPage: NextPageWithLayout = () => {
   );
   const [amount, setAmount] = useState("");
   const [recipient, setRecipient] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSend = async () => {
+    try {
+      setErrorMessage("");
+      setLoading(true);
+
+      let data: SendTransactionResult | ProviderError = await mina
+        ?.sendPayment({
+          amount: amount,
+          to: recipient,
+          fee: "",
+          memo: "",
+        })
+        .catch((err: any) => err);
+    } catch (error: any) {
+      console.error(error);
+      setErrorMessage(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    setErrorMessage("");
+  }, [recipient]);
 
   return (
     <div className="card max-w-md font-metrophobic">
@@ -91,7 +124,7 @@ const SendPage: NextPageWithLayout = () => {
               <h2 className="text-lg">Recipient</h2>
               <Input
                 className="w-full bg-transparent"
-                placeholder="View on Minascan"
+                placeholder="Enter Wallet Address"
                 value={recipient}
                 onChange={(event) => setRecipient(event.target.value)}
               />
@@ -101,10 +134,14 @@ const SendPage: NextPageWithLayout = () => {
               className="w-full h-[48px] min-h-0 shadow-md mt-6 font-orbitron"
               color="primary"
               size="lg"
-              disabled={!recipient || !amount}
+              disabled={!address || !recipient || !amount}
+              onClick={handleSend}
+              loading={loading}
             >
               Send
             </Button>
+
+            <p className="text-error">{errorMessage}</p>
           </div>
         </div>
       ) : (
@@ -114,8 +151,8 @@ const SendPage: NextPageWithLayout = () => {
   );
 };
 
-SendPage.getLayout = function getLayout(page: ReactElement) {
+TransferPage.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
 };
 
-export default SendPage;
+export default TransferPage;
