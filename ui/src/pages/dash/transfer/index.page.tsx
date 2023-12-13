@@ -8,13 +8,16 @@ import React, { ReactElement, useEffect, useMemo, useState } from "react";
 import CurrencyFormat from "react-currency-format";
 import Decimal from "decimal.js";
 import { Button, Input, Loading } from "react-daisyui";
-import { MINA_SUB_DECIMAL, mina } from "@/lib/wallet";
+import { mina } from "@/lib/wallet";
+import {
+  SendTransactionResult,
+  ProviderError,
+} from "@aurowallet/mina-provider";
 
 const TransferPage: NextPageWithLayout = () => {
   const tokens = useTokens((state) => state.tokens);
   const address = useAccount((state) => state.publicKeyBase58);
   const balances = useAccount((state) => state.balances);
-  const zkappWorkerClient = useAccount((state) => state.zkappWorkerClient);
 
   const [token, setToken] = useState<Token>(tokens[0]);
   const tokenBalance = useMemo(
@@ -30,40 +33,15 @@ const TransferPage: NextPageWithLayout = () => {
     try {
       setErrorMessage("");
       setLoading(true);
-      // const { hash } = await mina.sendLegacyPayment({
-      //   amount: amount,
-      //   fee: 0.1,
-      //   to: recipient,
-      // });
-      // console.log(hash);
 
-      console.log({ zkappWorkerClient });
-      if (zkappWorkerClient) {
-        console.log("start");
-        await zkappWorkerClient.fetchAccount({ publicKeyBase58: address! });
-        const balance = await zkappWorkerClient.getBalance(
-          "B62qnhmGKDtNsXitJcqkckRxaUfjBGGFSK3dfPxyqSwYqesNspPyYky"
-        );
-        console.log(
-          "getBalance",
-          Number(balance.toString()) / MINA_SUB_DECIMAL
-        );
-        await zkappWorkerClient.createUpdateTransaction();
-        console.log("createTransferTransaction done");
-        const res = await zkappWorkerClient.proveTransaction();
-        console.log("proveTransaction done", res);
-        const txJSON = await zkappWorkerClient.getTransactionJSON();
-        console.log("getTransactionJSON done", txJSON);
-
-        const { hash } = await mina.sendTransaction({
-          transaction: txJSON,
-          feePayer: {
-            fee: 0.1,
-            memo: "zk",
-          },
-        });
-        console.log(11111111, hash);
-      }
+      let data: SendTransactionResult | ProviderError = await mina
+        ?.sendPayment({
+          amount: amount,
+          to: recipient,
+          fee: "",
+          memo: "",
+        })
+        .catch((err: any) => err);
     } catch (error: any) {
       console.error(error);
       setErrorMessage(error.message);
