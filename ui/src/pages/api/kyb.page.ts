@@ -33,7 +33,7 @@ export default async function handler(
     } = JSON.parse(req.body);
 
     const result = await supabase
-      .from("permissions")
+      .from("KYCpermissions")
       .update({
         kyb: verified,
       })
