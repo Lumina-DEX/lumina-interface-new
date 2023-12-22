@@ -9,25 +9,43 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
-      logs: {
+      KYBpermissions: {
         Row: {
-          body: string | null
+          business_address: string | null
+          business_email: string | null
+          business_name: string | null
+          business_tax_id: string | null
           created_at: string
+          first_name: string | null
           id: string
+          last_name: string | null
+          wallet_address: string | null
         }
         Insert: {
-          body?: string | null
+          business_address?: string | null
+          business_email?: string | null
+          business_name?: string | null
+          business_tax_id?: string | null
           created_at?: string
+          first_name?: string | null
           id?: string
+          last_name?: string | null
+          wallet_address?: string | null
         }
         Update: {
-          body?: string | null
+          business_address?: string | null
+          business_email?: string | null
+          business_name?: string | null
+          business_tax_id?: string | null
           created_at?: string
+          first_name?: string | null
           id?: string
+          last_name?: string | null
+          wallet_address?: string | null
         }
         Relationships: []
       }
-      permissions: {
+      KYCpermissions: {
         Row: {
           created_at: string
           id: string
@@ -54,6 +72,24 @@ export interface Database {
           mode?: string | null
           wallet_address?: string | null
           zkp?: string | null
+        }
+        Relationships: []
+      }
+      logs: {
+        Row: {
+          body: string | null
+          created_at: string
+          id: string
+        }
+        Insert: {
+          body?: string | null
+          created_at?: string
+          id?: string
+        }
+        Update: {
+          body?: string | null
+          created_at?: string
+          id?: string
         }
         Relationships: []
       }
@@ -150,3 +186,83 @@ export interface Database {
     }
   }
 }
+
+export type Tables<
+  PublicTableNameOrOptions extends
+    | keyof (Database["public"]["Tables"] & Database["public"]["Views"])
+    | { schema: keyof Database },
+  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
+    ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
+        Database[PublicTableNameOrOptions["schema"]]["Views"])
+    : never = never
+> = PublicTableNameOrOptions extends { schema: keyof Database }
+  ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
+      Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+      Row: infer R
+    }
+    ? R
+    : never
+  : PublicTableNameOrOptions extends keyof (Database["public"]["Tables"] &
+      Database["public"]["Views"])
+  ? (Database["public"]["Tables"] &
+      Database["public"]["Views"])[PublicTableNameOrOptions] extends {
+      Row: infer R
+    }
+    ? R
+    : never
+  : never
+
+export type TablesInsert<
+  PublicTableNameOrOptions extends
+    | keyof Database["public"]["Tables"]
+    | { schema: keyof Database },
+  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
+    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
+    : never = never
+> = PublicTableNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Insert: infer I
+    }
+    ? I
+    : never
+  : PublicTableNameOrOptions extends keyof Database["public"]["Tables"]
+  ? Database["public"]["Tables"][PublicTableNameOrOptions] extends {
+      Insert: infer I
+    }
+    ? I
+    : never
+  : never
+
+export type TablesUpdate<
+  PublicTableNameOrOptions extends
+    | keyof Database["public"]["Tables"]
+    | { schema: keyof Database },
+  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
+    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
+    : never = never
+> = PublicTableNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Update: infer U
+    }
+    ? U
+    : never
+  : PublicTableNameOrOptions extends keyof Database["public"]["Tables"]
+  ? Database["public"]["Tables"][PublicTableNameOrOptions] extends {
+      Update: infer U
+    }
+    ? U
+    : never
+  : never
+
+export type Enums<
+  PublicEnumNameOrOptions extends
+    | keyof Database["public"]["Enums"]
+    | { schema: keyof Database },
+  EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
+    ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"]
+    : never = never
+> = PublicEnumNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
+  : PublicEnumNameOrOptions extends keyof Database["public"]["Enums"]
+  ? Database["public"]["Enums"][PublicEnumNameOrOptions]
+  : never

@@ -57,7 +57,7 @@ export default async function handler(
     const walletAddress = decodedJwt.credentialSubject["wallet-address"];
     const zkp = decodedJwt.credentialSubject.zkp;
     const location = decodedJwt.credentialSubject.nationality;
-    const result = await supabase.from("permissions").insert({
+    const result = await supabase.from("KYCpermissions").insert({
       wallet_address: walletAddress,
       zkp,
       location,

@@ -11,12 +11,12 @@ export default function useSupabaseFunctions() {
     (walletAddress: string, testMode: string | null) =>
       testMode === "true"
         ? supabase
-            .from("permissions")
+            .from("KYCpermissions")
             .select("*")
             .eq("wallet_address", walletAddress)
             .eq("mode", "APPROVED")
         : supabase
-            .from("permissions")
+            .from("KYCpermissions")
             .select("*")
             .eq("wallet_address", walletAddress)
             .is("mode", null),
@@ -60,7 +60,7 @@ export default function useSupabaseFunctions() {
 
   const submitBusinessForm = useCallback(
     (walletAddress: string, formData: IBusinessContact) =>
-      supabase.from("businessContacts").insert({
+      supabase.from("KYBpermissions").insert({
         wallet_address: walletAddress,
         first_name: formData.firstName,
         last_name: formData.lastName,
