@@ -1,3 +1,4 @@
+import clsx from "classnames";
 import Layout from "@/components/Layout";
 import TokenSelector from "@/components/Selector/TokenSelector";
 import { NextPageWithLayout } from "@/pages/_app.page";
@@ -7,7 +8,7 @@ import { Token } from "@/types/token";
 import React, { ReactElement, useEffect, useMemo, useState } from "react";
 import CurrencyFormat from "react-currency-format";
 import Decimal from "decimal.js";
-import { Button, Input, Loading } from "react-daisyui";
+import { Button, Input, Loading, Tabs } from "react-daisyui";
 import { mina } from "@/lib/wallet";
 import {
   SendTransactionResult,
@@ -19,6 +20,7 @@ const TransferPage: NextPageWithLayout = () => {
   const address = useAccount((state) => state.publicKeyBase58);
   const balances = useAccount((state) => state.balances);
 
+  const [tabValue, setTabValue] = useState(0);
   const [token, setToken] = useState<Token>(tokens[0]);
   const tokenBalance = useMemo(
     () => (token ? balances[token!.symbol.toLowerCase()] || 0 : 0),
@@ -55,12 +57,40 @@ const TransferPage: NextPageWithLayout = () => {
   }, [recipient]);
 
   return (
-    <div className="card max-w-md font-metrophobic">
+    <div className="card max-w-md font-metrophobic bg-light-200 overflow-hidden">
       {tokens.length > 0 ? (
         <div>
-          <div className="flex flex-col items-center pt-6">
-            <h1 className="font-bold text-2xl font-orbitron">Send</h1>
-          </div>
+          <Tabs
+            className="w-full"
+            variant="lifted"
+            size="lg"
+            value={tabValue}
+            onChange={setTabValue}
+          >
+            <Tabs.Tab
+              className={clsx("!border-0 grow", {
+                "text-primary": tabValue === 0,
+                "text-disabled": tabValue !== 0,
+              })}
+              value={0}
+            >
+              Transfer
+            </Tabs.Tab>
+            <Tabs.Tab
+              className={clsx(
+                "!border-0 grow",
+                {
+                  "text-primary": tabValue === 1,
+                  "text-disabled": tabValue !== 1,
+                },
+                "pointer-events-none"
+              )}
+              value={1}
+              disabled
+            >
+              bridge
+            </Tabs.Tab>
+          </Tabs>
 
           {/* Send */}
           <div className="w-full bg-light-100 py-6 px-10 max-[420px]:px-6">
