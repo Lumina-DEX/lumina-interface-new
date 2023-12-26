@@ -9,7 +9,7 @@ interface Props {
   visible: boolean;
   showModal: (visible: boolean) => void;
   setCurToken: (token: Token) => void;
-  token: Token;
+  token: Token | undefined;
 }
 
 const TokenSelecterModal = (props: Props) => {

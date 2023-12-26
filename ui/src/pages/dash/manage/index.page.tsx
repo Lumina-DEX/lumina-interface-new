@@ -1,19 +1,24 @@
 import Layout from "@/components/Layout";
-import { Avatar, Loading, Table, Dropdown } from "react-daisyui";
+import { Avatar, Loading, Table, Dropdown, Button } from "react-daisyui";
 import { ReactElement } from "react";
 import clsx from "classnames";
 import type { NextPageWithLayout } from "@/pages/_app.page";
 import CurrencyFormat from "react-currency-format";
+import { FaCaretDown } from "react-icons/fa";
+import { useRouter } from "next/router";
+import { LPToken, Token } from "@/types/token";
 
 const ManagePage: NextPageWithLayout = () => {
-  const tokens = [
+  const router = useRouter();
+
+  const tokens: (Token | LPToken)[] = [
     {
       id: "id_USDCxxxx",
       symbol: "USDC",
       icon: "/assets/tokens/usdc.png",
       type: "Token",
-      usdPrice: 1.0,
-      priceChange: 0.02,
+      usd_price: 1.0,
+      price_change: 0.02,
       balance: 1.83,
     },
     {
@@ -21,11 +26,52 @@ const ManagePage: NextPageWithLayout = () => {
       symbol: ["USDC", "USTSY"],
       icon: ["/assets/tokens/usdc.png", "/assets/tokens/ustsy.png"],
       type: "LP",
-      usdPrice: 1.25,
-      priceChange: -0.1,
+      usd_price: 1.25,
+      price_change: -0.1,
       balance: 10.3,
-    },
+    } as LPToken,
   ];
+
+  const onSwapClick = (token: Token) => () => {
+    const newSearchParams = new URLSearchParams();
+    newSearchParams.set("fromToken", token.symbol.toLowerCase());
+
+    router.push({
+      pathname: "/dash/swap",
+      search: newSearchParams.toString(),
+    });
+  };
+
+  const onSendClick = (token: Token) => () => {
+    const newSearchParams = new URLSearchParams();
+    newSearchParams.set("token", token.symbol.toLowerCase());
+
+    router.push({
+      pathname: "/dash/send",
+      search: newSearchParams.toString(),
+    });
+  };
+
+  const onPoolClick = (token: Token) => () => {
+    const newSearchParams = new URLSearchParams();
+    newSearchParams.set("fromToken", token.symbol.toLowerCase());
+
+    router.push({
+      pathname: "/dash/add",
+      search: newSearchParams.toString(),
+    });
+  };
+
+  const onManageClick = (lptoken: LPToken) => () => {
+    const newSearchParams = new URLSearchParams();
+    newSearchParams.set("fromToken", lptoken.symbol[0].toLowerCase());
+    newSearchParams.set("toToken", lptoken.symbol[1].toLowerCase());
+
+    router.push({
+      pathname: "/dash/add",
+      search: newSearchParams.toString(),
+    });
+  };
 
   return (
     <div className="px-4">
@@ -98,20 +144,20 @@ const ManagePage: NextPageWithLayout = () => {
                             thousandSeparator
                             decimalScale={2}
                             prefix="$"
-                            value={token.usdPrice}
+                            value={token.usd_price}
                           />
                           <CurrencyFormat
                             displayType="text"
                             className={clsx(
                               "font-secondary text-left text-base max-md:hidden",
                               {
-                                "text-green-500": token.priceChange >= 0,
-                                "text-red-500": token.priceChange < 0,
+                                "text-green-500": token.price_change >= 0,
+                                "text-red-500": token.price_change < 0,
                               }
                             )}
-                            {...(token.priceChange > 0 ? { prefix: "+" } : {})}
+                            {...(token.price_change > 0 ? { prefix: "+" } : {})}
                             suffix="%"
-                            value={token.priceChange}
+                            value={token.price_change}
                           />
                         </div>
                         <div className="flex flex-col text-base">
@@ -121,7 +167,9 @@ const ManagePage: NextPageWithLayout = () => {
                             thousandSeparator
                             decimalScale={2}
                             prefix="$"
-                            value={token.usdPrice * token.balance}
+                            value={
+                              Number(token.usd_price) * (token.balance || 0)
+                            }
                           />
                           <CurrencyFormat
                             displayType="text"
@@ -136,20 +184,45 @@ const ManagePage: NextPageWithLayout = () => {
                           />
                         </div>
                         <div className="flex flex-col text-base">
-                          <Dropdown end>
-                            <Dropdown.Toggle>Actions</Dropdown.Toggle>
-                            <Dropdown.Menu className="z-10 fixed w-[100px]">
+                          <Dropdown end hover>
+                            <Dropdown.Toggle>
+                              Actions
+                              <FaCaretDown />
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu className="z-10 fixed w-[100px] rounded-md bg-light-100">
                               {token.type === "Token" && (
                                 <>
-                                  <Dropdown.Item>Swap</Dropdown.Item>
-                                  <Dropdown.Item>Send</Dropdown.Item>
-                                  <Dropdown.Item>Pool</Dropdown.Item>
+                                  <Dropdown.Item
+                                    className="py-1 justify-center"
+                                    onClick={onSwapClick(token)}
+                                  >
+                                    Swap
+                                  </Dropdown.Item>
+                                  <Dropdown.Item
+                                    className="py-1 justify-center"
+                                    onClick={onSendClick(token)}
+                                  >
+                                    Send
+                                  </Dropdown.Item>
+                                  <Dropdown.Item
+                                    className="py-1 justify-center"
+                                    onClick={onPoolClick(token)}
+                                  >
+                                    Pool
+                                  </Dropdown.Item>
                                 </>
                               )}
                               {token.type === "LP" && (
                                 <>
-                                  <Dropdown.Item>Send</Dropdown.Item>
-                                  <Dropdown.Item>Manage</Dropdown.Item>
+                                  <Dropdown.Item className="py-1 justify-center">
+                                    Send
+                                  </Dropdown.Item>
+                                  <Dropdown.Item
+                                    className="py-1 justify-center"
+                                    onClick={onManageClick(token as LPToken)}
+                                  >
+                                    Manage
+                                  </Dropdown.Item>
                                 </>
                               )}
                             </Dropdown.Menu>
@@ -165,6 +238,15 @@ const ManagePage: NextPageWithLayout = () => {
                 <Loading variant="dots" />
               </div>
             )}
+          </div>
+          <div className="w-full flex justify-center">
+            <Button
+              className="h-[48px] min-h-0 shadow-md font-orbitron"
+              color="primary"
+              size="lg"
+            >
+              Mint Token
+            </Button>
           </div>
         </div>
       </div>

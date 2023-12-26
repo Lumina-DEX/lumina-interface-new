@@ -4,18 +4,10 @@ import CoinPriceChart from "./CoinPriceChart";
 import SwapPanel from "./SwapPanel";
 import useTokens from "@/states/useTokens";
 import { Loading } from "react-daisyui";
-import useAccount from "@/states/useAccount";
 import { Token } from "@/types/token";
 import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/router";
 function SwapPage() {
-  const router = useRouter();
-  const { tokens } = useTokens((state) => ({
-    tokens: state.tokens,
-  }));
-  const { balances } = useAccount((state) => ({
-    balances: state.balances,
-  }));
+  const tokens = useTokens((state) => state.tokens);
   const searchParams = useSearchParams();
   const [fromToken, setFromToken] = useState<Token>(tokens[0]);
   const [toToken, setToToken] = useState<Token>(tokens[1]);

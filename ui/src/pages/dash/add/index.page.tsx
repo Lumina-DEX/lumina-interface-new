@@ -14,73 +14,62 @@ import type { NextPageWithLayout } from "@/pages/_app.page";
 const AddLiquidityPanel: NextPageWithLayout = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const fromTokenSymbol = searchParams.get("fromToken");
+  const toTokenSymbol = searchParams.get("toToken");
 
-  const tokens = useTokens((state) => state.tokens);
+  const tokens = useTokens((state) =>
+    Object.fromEntries(
+      state.tokens.map((token) => [token.symbol.toLowerCase(), token])
+    )
+  );
   const balances = useAccount((state) => state.balances);
 
   const [fromToken, setFromToken] = useState<Token>(tokens[0]);
   const [fromAmount, setFromAmount] = useState("");
   const fromTokenBalance = useMemo(
     () => balances[fromToken?.symbol.toLowerCase() || ""] || 0,
-    [balances, fromToken?.id]
+    [balances, fromToken?.symbol]
   );
 
   const [toToken, setToToken] = useState<Token>(tokens[1]);
   const [toAmount, setToAmount] = useState("0.0");
   const toTokenBalance = useMemo(
     () => balances[toToken?.symbol.toLowerCase() || ""] || 0,
-    [balances, toToken?.id]
+    [balances, toToken?.symbol]
   );
 
   useEffect(() => {
-    if (!searchParams.get("fromToken")) {
-      setFromToken(tokens[0]);
-      setToToken(tokens[1]);
-    } else {
-      setFromToken(
-        tokens.find((token) => token.id === searchParams.get("fromToken"))!
-      );
-      setToToken(
-        tokens.find((token) => token.id === searchParams.get("toToken"))!
-      );
+    if (fromTokenSymbol) {
+      setFromToken(tokens[fromTokenSymbol]);
     }
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(tokens), fromTokenSymbol]);
 
   useEffect(() => {
-    if (fromToken === toToken) {
-      setFromToken(toToken);
-      setToToken(
-        tokens.find((token) => token.id === searchParams.get("fromToken"))!
-      );
+    if (toTokenSymbol) {
+      setToToken(tokens[toTokenSymbol]);
     }
-    const newSearchParams = new URLSearchParams();
-    newSearchParams.append("fromToken", fromToken.id);
-    newSearchParams.append("toToken", toToken.id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(tokens), toTokenSymbol]);
 
-    router.push({
-      pathname: router.pathname,
-      search: newSearchParams.toString(),
-    });
+  useEffect(() => {
+    setFromAmount("0");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fromToken]);
 
   useEffect(() => {
-    if (fromToken === toToken) {
-      setFromToken(
-        tokens.find((token) => token.id === searchParams.get("toToken"))!
-      );
-      setToToken(fromToken);
-    }
-    const newSearchParams = new URLSearchParams();
-    newSearchParams.append("fromToken", fromToken.id);
-    newSearchParams.append("toToken", toToken.id);
+    setToAmount("0");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [toToken]);
 
+  const onTokenSelect = (pos: "fromToken" | "toToken") => (token: Token) => {
+    const newSearchParams = new URLSearchParams(searchParams.toString());
+    newSearchParams.set(pos, token.symbol.toLowerCase());
     router.push({
       pathname: router.pathname,
       search: newSearchParams.toString(),
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [toToken]);
+  };
 
   return (
     <div className="font-metrophobic bg-light-200 card w-[470px] overflow-hidden max-[500px]:w-[400px] max-[420px]:w-[300px]">
@@ -92,7 +81,10 @@ const AddLiquidityPanel: NextPageWithLayout = () => {
             </h3>
 
             <div className="flex justify-between items-center w-full">
-              <TokenSelector token={fromToken} setToken={setFromToken} />
+              <TokenSelector
+                token={fromToken}
+                setToken={onTokenSelect("fromToken")}
+              />
               <span className="font-secondary">Balance {fromTokenBalance}</span>
             </div>
             <div className="flex justify-between items-center w-full">
@@ -143,7 +135,10 @@ const AddLiquidityPanel: NextPageWithLayout = () => {
         <div className="w-full p-8">
           <div className="flex flex-col w-full gap-4">
             <div className="flex justify-between items-center w-full">
-              <TokenSelector token={toToken} setToken={setToToken} />
+              <TokenSelector
+                token={toToken}
+                setToken={onTokenSelect("toToken")}
+              />
               <span className="font-secondary">Balance {toTokenBalance}</span>
             </div>
             <div className="flex justify-between items-center w-full">
@@ -153,7 +148,7 @@ const AddLiquidityPanel: NextPageWithLayout = () => {
                   thousandSeparator={true}
                   decimalScale={2}
                   placeholder="0.0"
-                  value={fromAmount}
+                  value={toAmount}
                   onValueChange={({ value }) => setToAmount(value)}
                 />
                 <CurrencyFormat
@@ -163,7 +158,7 @@ const AddLiquidityPanel: NextPageWithLayout = () => {
                   decimalScale={2}
                   prefix="~$"
                   value={new Decimal(toToken?.usd_price || "0")
-                    .times(fromAmount || "0")
+                    .times(toAmount || "0")
                     .toString()}
                 />
               </div>
@@ -173,7 +168,7 @@ const AddLiquidityPanel: NextPageWithLayout = () => {
                   color="secondary"
                   size="xs"
                   onClick={() =>
-                    setFromAmount((Number(fromTokenBalance) / 2).toString())
+                    setToAmount((Number(toTokenBalance) / 2).toString())
                   }
                 >
                   50%
@@ -182,7 +177,7 @@ const AddLiquidityPanel: NextPageWithLayout = () => {
                   className="opacity-50"
                   color="secondary"
                   size="xs"
-                  onClick={() => setFromAmount(fromTokenBalance.toString())}
+                  onClick={() => setToAmount(toTokenBalance.toString())}
                 >
                   Max
                 </Button>
@@ -193,13 +188,13 @@ const AddLiquidityPanel: NextPageWithLayout = () => {
               {fromToken && toToken ? (
                 <>
                   <Button
-                    className="grow shadow-md basis-1/2 leading-5"
+                    className="grow shadow-md leading-5"
                     color="primary"
                   >
                     Approve {fromToken.symbol.toUpperCase()}
                   </Button>
                   <Button
-                    className="grow shadow-md basis-1/2 leading-5"
+                    className="grow shadow-md leading-5"
                     color="primary"
                   >
                     Approve {toToken.symbol.toUpperCase()}

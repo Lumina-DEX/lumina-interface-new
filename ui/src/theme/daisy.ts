@@ -24,5 +24,6 @@ export const light = {
   ".btn": {
     border: "none",
     "text-transform": "none",
+    "font-family": "Orbitron !important",
   },
 };

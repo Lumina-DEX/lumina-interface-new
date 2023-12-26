@@ -16,10 +16,17 @@ import { connect } from "@/lib/wallet";
 
 type Percent = number | string;
 
-const SwapPanel = () => {
+const SwapPanel: React.FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const tokens = useTokens((state) => state.tokens);
+  const fromTokenSymbol = searchParams.get("fromToken");
+  const toTokenSymbol = searchParams.get("toToken");
+
+  const tokens = useTokens((state) =>
+    Object.fromEntries(
+      state.tokens.map((token) => [token.symbol.toLowerCase(), token])
+    )
+  );
   const { kycVerified, address, balances } = useAccount((state) => ({
     kycVerified: state.kycVerified,
     address: state.publicKeyBase58,
@@ -27,17 +34,17 @@ const SwapPanel = () => {
   }));
   const [tabValue, setTabValue] = useState(0);
 
-  const [fromToken, setFromToken] = useState<Token>(tokens[0]);
+  const [fromToken, setFromToken] = useState<Token | undefined>(undefined);
   const [fromAmount, setFromAmount] = useState("");
-  const fromTokenBalance = useMemo(() => {
-    let tokenName = fromToken!.symbol;
-    return balances[tokenName.toLowerCase()] || 0;
-  }, [balances, fromToken]);
+  const fromTokenBalance = useMemo(
+    () => balances[(fromToken?.symbol || "").toLowerCase()] || 0,
+    [balances, fromToken]
+  );
 
-  const [toToken, setToToken] = useState<Token>(tokens[1]);
+  const [toToken, setToToken] = useState<Token | undefined>(undefined);
   const [toAmount, setToAmount] = useState("0.0");
   const toTokenBalance = useMemo(
-    () => balances[toToken!.symbol.toLowerCase()] || 0,
+    () => balances[(toToken?.symbol || "").toLowerCase()] || 0,
     [balances, toToken]
   );
 
@@ -48,45 +55,40 @@ const SwapPanel = () => {
   }));
 
   useEffect(() => {
-    setFromAmount("0");
-    if (fromToken === toToken) {
-      setFromToken(toToken);
-      setToToken(
-        tokens.find((token) => token.id === searchParams.get("fromToken"))!
-      );
+    if (fromTokenSymbol) {
+      setFromToken(tokens[fromTokenSymbol]);
     }
-    const newSearchParams = new URLSearchParams();
-    newSearchParams.append("fromToken", fromToken.id);
-    newSearchParams.append("toToken", toToken.id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(tokens), fromTokenSymbol]);
 
-    router.push({
-      pathname: router.pathname,
-      search: newSearchParams.toString(),
-    });
+  useEffect(() => {
+    if (toTokenSymbol) {
+      setToToken(tokens[toTokenSymbol]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(tokens), toTokenSymbol]);
+
+  useEffect(() => {
+    setFromAmount("0");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fromToken]);
 
   useEffect(() => {
-    setFromAmount("0");
-    if (fromToken === toToken) {
-      setFromToken(
-        tokens.find((token) => token.id === searchParams.get("toToken"))!
-      );
-      setToToken(fromToken);
-    }
-    const newSearchParams = new URLSearchParams();
-    newSearchParams.append("fromToken", fromToken.id);
-    newSearchParams.append("toToken", toToken.id);
+    setToAmount("0");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [toToken]);
 
+  const onConnectWallet = async () => {
+    connect();
+  };
+
+  const onTokenSelect = (pos: "fromToken" | "toToken") => (token: Token) => {
+    const newSearchParams = new URLSearchParams(searchParams.toString());
+    newSearchParams.set(pos, token.symbol.toLowerCase());
     router.push({
       pathname: router.pathname,
       search: newSearchParams.toString(),
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [toToken]);
-
-  const handleConnectWallet = async () => {
-    connect();
   };
 
   return (
@@ -135,7 +137,10 @@ const SwapPanel = () => {
         </div>
         <div className="flex flex-col w-full gap-4">
           <div className="flex justify-between items-center w-full">
-            <TokenSelector token={fromToken} setToken={setFromToken} />
+            <TokenSelector
+              token={fromToken}
+              setToken={onTokenSelect("fromToken")}
+            />
             <span className="font-metrophobic">Balance {fromTokenBalance}</span>
           </div>
           <div className="flex justify-between items-center w-full flex-row">
@@ -158,7 +163,7 @@ const SwapPanel = () => {
                     thousandSeparator={true}
                     decimalScale={2}
                     prefix="~$"
-                    value={new Decimal(fromToken!.usd_price || "0")
+                    value={new Decimal(fromToken?.usd_price || "0")
                       .times(fromAmount || "0")
                       .toString()}
                   />
@@ -195,7 +200,10 @@ const SwapPanel = () => {
       <div className="w-full p-8 font-metrophobic">
         <div className="flex flex-col w-full gap-4">
           <div className="flex justify-between items-center w-full">
-            <TokenSelector token={toToken} setToken={setToToken} />
+            <TokenSelector
+              token={toToken}
+              setToken={onTokenSelect("toToken")}
+            />
             <span className="font-metrophobic">Balance {toTokenBalance}</span>
           </div>
           <div className="flex flex-row">
@@ -218,7 +226,7 @@ const SwapPanel = () => {
                     thousandSeparator={true}
                     decimalScale={2}
                     prefix="~$"
-                    value={new Decimal(toToken!.usd_price || "0")
+                    value={new Decimal(toToken?.usd_price || "0")
                       .times(toAmount || "0")
                       .toString()}
                   />
@@ -260,7 +268,7 @@ const SwapPanel = () => {
           ) : (
             <Button
               className="btn-primary text-white font-orbitron"
-              onClick={handleConnectWallet}
+              onClick={onConnectWallet}
               disabled={!loadState}
             >
               Connect Wallet
