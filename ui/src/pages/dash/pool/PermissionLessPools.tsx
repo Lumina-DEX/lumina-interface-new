@@ -56,7 +56,7 @@ const PermissionLessPools: React.FC<Props> = ({ pools }) => {
                   <Table.Row key={index} className="text-disabled">
                     <div className="flex justify-between">
                       <Link
-                        href={`/dash/add?fromToken=${pool.from_token.id}&toToken=${pool.to_token.id}`}
+                        href={`/dash/add?fromToken=${pool.from_token.symbol.toLowerCase()}&toToken=${pool.to_token.symbol.toLowerCase()}`}
                       >
                         <div className="flex items-center gap-3">
                           <Avatar.Group className="overflow-visible">

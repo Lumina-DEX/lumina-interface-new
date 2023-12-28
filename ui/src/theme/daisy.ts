@@ -5,6 +5,11 @@ export const light = {
 
   ".tab": {
     "--tab-bg": "var(--light-100)",
+    "font-family": "Orbitron !important",
+  },
+
+  ".tab-active": {
+    "font-weight": 600,
   },
 
   ".dropdown .btn": {
@@ -19,5 +24,6 @@ export const light = {
   ".btn": {
     border: "none",
     "text-transform": "none",
+    "font-family": "Orbitron !important",
   },
 };

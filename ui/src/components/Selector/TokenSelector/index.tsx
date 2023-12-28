@@ -4,7 +4,7 @@ import { BsChevronDown } from "react-icons/bs";
 import TokenSelecterModal from "@/components/Modal/TokenSelecterModal";
 
 interface Props {
-  token: Token;
+  token: Token | undefined;
   setToken: (token: Token) => void;
 }
 
@@ -28,14 +28,18 @@ const TokenSelector: React.FC<Props> = ({ token, setToken }) => {
         className="flex bg-opacity-9 rounded-lg cursor-pointer p-1"
         onClick={openModal}
       >
-        <div className="flex-none grid w-10 justify-items-center items-center">
-          <div
-            className="w-8 h-8 bg-no-repeat bg-contain"
-            style={{ backgroundImage: `url(${token.icon})` }}
-          ></div>
-        </div>
+        {token && (
+          <div className="flex-none grid w-10 justify-items-center items-center">
+            <div
+              className="w-8 h-8 bg-no-repeat bg-contain"
+              style={{ backgroundImage: `url(${token.icon})` }}
+            />
+          </div>
+        )}
         <div className="flex flex-row items-center px-2">
-          <div className="text-black text-xl">{token.symbol}</div>
+          <div className="text-black text-xl">
+            {token?.symbol || "Select Token"}
+          </div>
           <div className="pl-2">
             <BsChevronDown />
           </div>
