@@ -6,6 +6,7 @@ import { AppContext } from "@/contexts/AppContext";
 import { LoadingContext } from "@/contexts/LoadingContext";
 import useSupabaseFunctions from "@/services/supabase";
 import useTokens from "@/states/useTokens";
+import { Token } from "@/types/token";
 
 const Layout: React.FC<PropsWithChildren> = ({ children }) => {
   const [isLoading, setLoading] = useState(true);
@@ -25,7 +26,7 @@ const Layout: React.FC<PropsWithChildren> = ({ children }) => {
     getTokens().then((response) => {
       const { status, data } = response;
       if (status === 200 && data) {
-        updateTokens(data);
+        updateTokens(data.map((v) => ({ ...v, type: "Token" } as Token)));
       }
     });
   }, [getTokens, updateTokens]);
