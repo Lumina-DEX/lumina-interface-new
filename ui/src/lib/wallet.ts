@@ -12,6 +12,9 @@ export async function connect() {
 
   typeof window !== "undefined" &&
     window.localStorage.setItem(WALLET_CONNECTED_BEFORE_FLAG, "true");
+
+  mina.on("accountsChanged", requestAccounts);
+  mina.on("chainChanged", requestNetwork);
 }
 
 export async function disconnect() {
