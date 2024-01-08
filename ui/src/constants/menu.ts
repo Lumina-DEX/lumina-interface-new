@@ -6,19 +6,19 @@ export const Logo = {
 export const MenuItems = [
   {
     name: "Swap",
-    link: "swap",
+    link: "/dash/swap",
   },
   {
     name: "Pool",
-    link: "pool",
+    link: "/dash/pool",
   },
   {
     name: "Send",
-    link: "send",
+    link: "/dash/send",
   },
   {
     name: "Manage",
-    link: "manage",
+    link: "/dash/manage",
   },
 ];
 

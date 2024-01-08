@@ -7,7 +7,7 @@ import { useCallback } from "react";
 export default function useSupabaseFunctions() {
   const supabase: SupabaseClient<Database> = useSupabaseClient();
 
-  const getPermissioned = useCallback(
+  const getKYCPermissioned = useCallback(
     (walletAddress: string, testMode: string | null) =>
       testMode === "true"
         ? supabase
@@ -23,20 +23,29 @@ export default function useSupabaseFunctions() {
     [supabase]
   );
 
+  const getKYBPermissioned = useCallback(
+    (walletAddress: string) =>
+      supabase
+        .from("KYBpermissions")
+        .select("*")
+        .eq("wallet_address", walletAddress),
+    [supabase]
+  );
+
   const getPools = useCallback(
     () =>
       supabase
         .from("pools")
         .select(
           `
-          id,
-          total_liquidity, 
-          apr, 
-          from_token(id, symbol, icon), 
-          to_token(id, symbol, icon),
-          created_at,
-          US
-        `
+            id,
+            total_liquidity, 
+            apr, 
+            from_token(id, symbol, icon), 
+            to_token(id, symbol, icon),
+            created_at,
+            US
+          `
         )
         .order("US", { ascending: true }),
     [supabase]
@@ -73,7 +82,8 @@ export default function useSupabaseFunctions() {
   );
 
   return {
-    getPermissioned,
+    getKYCPermissioned,
+    getKYBPermissioned,
     getPools,
     getTokens,
     submitBusinessForm,

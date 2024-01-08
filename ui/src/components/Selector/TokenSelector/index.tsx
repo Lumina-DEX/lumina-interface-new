@@ -25,18 +25,18 @@ const TokenSelector: React.FC<Props> = ({ token, setToken }) => {
   return (
     <>
       <div
-        className="flex bg-opacity-9 rounded-lg cursor-pointer p-1"
+        className="flex bg-opacity-9 rounded-lg cursor-pointer"
         onClick={openModal}
       >
         {token && (
-          <div className="flex-none grid w-10 justify-items-center items-center">
+          <div className="flex-none grid w-8 justify-items-center items-center mr-2">
             <div
               className="w-8 h-8 bg-no-repeat bg-contain"
               style={{ backgroundImage: `url(${token.icon})` }}
             />
           </div>
         )}
-        <div className="flex flex-row items-center px-2">
+        <div className="flex flex-row items-center">
           <div className="text-black text-xl">
             {token?.symbol || "Select Token"}
           </div>

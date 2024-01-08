@@ -14,7 +14,6 @@ import { disconnect, connect } from "@/lib/wallet";
 import Link from "next/link";
 import { BiSolidCheckCircle } from "react-icons/bi";
 import useLoad from "@/states/useLoad";
-import useSupabaseFunctions from "@/services/supabase";
 
 const ConnectWallet = () => {
   const { darkMode, setDarkMode } = useContext(AppContext);
@@ -29,7 +28,6 @@ const ConnectWallet = () => {
   );
 
   const address: string | any = useAccount((state) => state.publicKeyBase58);
-  const { getPermissioned } = useSupabaseFunctions();
   const { loadState } = useLoad((state) => ({
     loadState: state.state,
   }));
@@ -68,14 +66,6 @@ const ConnectWallet = () => {
       window.localStorage.setItem("TestMode", "true");
       setTestFlag("true");
     }
-    getPermissioned(address, window.localStorage.getItem("TestMode")).then(
-      (response) => {
-        const { status, data } = response;
-        if (status === 200 && data) {
-          accountUpdate({ kycVerified: !!data[0] });
-        }
-      }
-    );
   };
 
   const disconnectWallet = () => {

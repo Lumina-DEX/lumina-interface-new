@@ -135,13 +135,18 @@ const SwapPanel: React.FC = () => {
             <TransactionsSetting setSlippagePercent={setSlippagePercent} />
           </Dropdown>
         </div>
-        <div className="flex flex-col w-full gap-4">
-          <div className="flex justify-between items-center w-full">
-            <TokenSelector
-              token={fromToken}
-              setToken={onTokenSelect("fromToken")}
-            />
-            <span className="font-metrophobic">Balance {fromTokenBalance}</span>
+        <div className="flex flex-col w-full">
+          <div className="flex flex-col w-full">
+            <div className="flex justify-between items-center w-full">
+              <TokenSelector
+                token={fromToken}
+                setToken={onTokenSelect("fromToken")}
+              />
+              <span className="font-metrophobic">
+                Balance {fromTokenBalance}
+              </span>
+            </div>
+            {fromToken && <span className="text-sm">Pay</span>}
           </div>
           <div className="flex justify-between items-center w-full flex-row">
             <div className="basis-1/2">
@@ -199,41 +204,44 @@ const SwapPanel: React.FC = () => {
       {/* Swap to */}
       <div className="w-full p-8 font-metrophobic">
         <div className="flex flex-col w-full gap-4">
-          <div className="flex justify-between items-center w-full">
-            <TokenSelector
-              token={toToken}
-              setToken={onTokenSelect("toToken")}
-            />
-            <span className="font-metrophobic">Balance {toTokenBalance}</span>
-          </div>
-          <div className="flex flex-row">
-            <div className="basis-1/2">
-              <div className="flex flex-row items-baseline gap-2 justify-between">
-                <div className="text-left">
-                  <CurrencyFormat
-                    displayType="text"
-                    className="w-full bg-transparent text-default text-3xl text-left focus:outline-none"
-                    thousandSeparator={true}
-                    decimalScale={2}
-                    placeholder="0.0"
-                    value={toAmount}
-                  />
-                </div>
-                <div className="text-left">
-                  <CurrencyFormat
-                    displayType="text"
-                    className="font-metrophobic text-disabled"
-                    thousandSeparator={true}
-                    decimalScale={2}
-                    prefix="~$"
-                    value={new Decimal(toToken?.usd_price || "0")
-                      .times(toAmount || "0")
-                      .toString()}
-                  />
+          <div className="flex flex-col w-full">
+            <div className="flex justify-between items-center w-full">
+              <TokenSelector
+                token={toToken}
+                setToken={onTokenSelect("toToken")}
+              />
+              <span className="font-metrophobic">Balance {toTokenBalance}</span>
+            </div>
+            {toToken && <span className="text-sm">Receive</span>}
+            <div className="flex flex-row">
+              <div className="basis-1/2">
+                <div className="flex flex-row items-baseline gap-2 justify-between">
+                  <div className="text-left">
+                    <CurrencyFormat
+                      displayType="text"
+                      className="w-full bg-transparent text-default text-3xl text-left focus:outline-none"
+                      thousandSeparator={true}
+                      decimalScale={2}
+                      placeholder="0.0"
+                      value={toAmount}
+                    />
+                  </div>
+                  <div className="text-left">
+                    <CurrencyFormat
+                      displayType="text"
+                      className="font-metrophobic text-disabled"
+                      thousandSeparator={true}
+                      decimalScale={2}
+                      prefix="~$"
+                      value={new Decimal(toToken?.usd_price || "0")
+                        .times(toAmount || "0")
+                        .toString()}
+                    />
+                  </div>
                 </div>
               </div>
+              <div className="basis-1/2"></div>
             </div>
-            <div className="basis-1/2"></div>
           </div>
           {/* Slippage Tolerance */}
 
@@ -274,6 +282,18 @@ const SwapPanel: React.FC = () => {
               Connect Wallet
             </Button>
           )}
+
+          <a
+            href="https://twitter.com/intent/tweet?button_hashtag=LuminaDEXchallenge&ref_src=twsrc%5Etfw"
+            className="twitter-hashtag-button"
+            data-size="large"
+            data-text="Check out the #LuminaDEXchallenge on app.luminadex.com. I just swapped some testnet tokens and you can too!"
+            data-url="https://luminadex.com/"
+            data-related="luminadex"
+            data-show-count="false"
+          >
+            Tweet #LuminaDEXchallenge
+          </a>
         </div>
       </div>
     </div>

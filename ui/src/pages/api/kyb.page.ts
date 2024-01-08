@@ -33,12 +33,11 @@ export default async function handler(
     } = JSON.parse(req.body);
 
     const result = await supabase
-      .from("KYCpermissions")
+      .from("KYBpermissions")
       .update({
-        kyb: verified,
+        is_verified: verified,
       })
-      .eq("wallet_address", address)
-      .eq("mode", mode);
+      .eq("wallet_address", address);
 
     if (result.error) {
       throw result.error.message;
