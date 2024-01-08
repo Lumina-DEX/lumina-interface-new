@@ -18,6 +18,7 @@ export interface Database {
           created_at: string
           first_name: string | null
           id: string
+          is_verified: boolean | null
           last_name: string | null
           wallet_address: string | null
         }
@@ -29,6 +30,7 @@ export interface Database {
           created_at?: string
           first_name?: string | null
           id?: string
+          is_verified?: boolean | null
           last_name?: string | null
           wallet_address?: string | null
         }
@@ -40,6 +42,7 @@ export interface Database {
           created_at?: string
           first_name?: string | null
           id?: string
+          is_verified?: boolean | null
           last_name?: string | null
           wallet_address?: string | null
         }
@@ -49,7 +52,6 @@ export interface Database {
         Row: {
           created_at: string
           id: string
-          kyb: boolean | null
           location: string | null
           mode: string | null
           wallet_address: string | null
@@ -58,7 +60,6 @@ export interface Database {
         Insert: {
           created_at?: string
           id?: string
-          kyb?: boolean | null
           location?: string | null
           mode?: string | null
           wallet_address?: string | null
@@ -67,7 +68,6 @@ export interface Database {
         Update: {
           created_at?: string
           id?: string
-          kyb?: boolean | null
           location?: string | null
           mode?: string | null
           wallet_address?: string | null

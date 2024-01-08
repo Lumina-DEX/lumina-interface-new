@@ -1,13 +1,13 @@
 import React from "react";
+import clsx from "classnames";
 import SearchInput from "@/components/Input/SearchInput";
 import CurrencyFormat from "react-currency-format";
 import { Avatar, Table, Button, Collapse, Loading } from "react-daisyui";
 import { Pool } from "@/types/pool";
 import useAccount from "@/states/useAccount";
-import { CgUnavailable } from "react-icons/cg";
+import { RxCircle, RxCircleBackslash } from "react-icons/rx";
 import Link from "next/link";
 import { connect } from "@/lib/wallet";
-import { BsCircle } from "react-icons/bs";
 import useLoad from "@/states/useLoad";
 interface Props {
   pools: Pool[];
@@ -30,9 +30,14 @@ const PermissionedPools: React.FC<Props> = ({ pools }) => {
     connect();
   };
 
+  const AllowIcon = () => <RxCircle className="text-emerald-400 text-base" />;
+  const NotAllowIcon = () => (
+    <RxCircleBackslash className="text-rose-500 text-base" />
+  );
+
   return (
     <div className="flex flex-col gap-y-4 py-4">
-      <div className="text-center font-bold text-black px-2 text-base sm:text-base min-[320px]:text-[13px]">
+      <div className="text-center font-bold text-black px-4 text-base sm:text-lg min-[320px]:text-[15px]">
         {kybVerified
           ? "KYB Passed, Select an existing pool to manage liquidity or click ‘New Pool’"
           : !kycVerified
@@ -59,70 +64,62 @@ const PermissionedPools: React.FC<Props> = ({ pools }) => {
 
             <Table.Body>
               {pools.map((pool, index) => {
+                const restricted: boolean = kycVerified
+                  ? (location === "US" && !pool.US) ||
+                    (location !== "US" && pool.US)
+                  : true;
+
+                const swapEligible: boolean = true;
+                const poolEligible: boolean = kybVerified;
+
                 return (
                   <Table.Row key={index} className="text-disabled">
-                    <div className="flex justify-between">
-                      <div className="flex items-center gap-3">
-                        <Avatar.Group className="overflow-visible">
-                          <Avatar
-                            className="border-0"
-                            src={pool.from_token.icon}
-                            shape="circle"
-                            size={30}
-                          />
-                          <Avatar
-                            className="border-0 translate-x-2"
-                            src={pool.to_token.icon}
-                            shape="circle"
-                            size={30}
-                          />
-                        </Avatar.Group>
-                        <span className="uppercase text-base">
-                          {pool.from_token.symbol} / {pool.to_token.symbol}
-                        </span>
-                      </div>
-                      {kycVerified ? (
-                        location === "US" ? (
-                          pool.US ? (
-                            <div className="flex flex-row gap-x-2">
-                              <div className="flex flex-row items-center gap-x-1   justify-start">
-                                <BsCircle className="text-emerald-400 font-bold" />
-                                Swap
-                              </div>
-                              <div className="flex flex-row items-center gap-x-1   justify-start">
-                                <CgUnavailable className="text-rose-500 text-[18px]" />
-                                Pool
-                              </div>
-                            </div>
-                          ) : (
-                            <div className="flex flex-row items-center gap-x-1   justify-start">
-                              <CgUnavailable className="text-rose-500 text-[18px]" />
-                              Restricted
-                            </div>
-                          )
-                        ) : pool.US ? (
-                          <div className="flex flex-row items-center gap-x-1   justify-start">
-                            <CgUnavailable className="text-rose-500 text-[18px]" />
+                    <div className="flex justify-between items-center">
+                      <Link
+                        href={`/dash/add?fromToken=${pool.from_token.symbol.toLowerCase()}&toToken=${pool.to_token.symbol.toLowerCase()}`}
+                        className={clsx({
+                          "pointer-events-none": restricted || !kybVerified,
+                        })}
+                      >
+                        <div className="flex items-center gap-3">
+                          <Avatar.Group className="overflow-visible">
+                            <Avatar
+                              className="border-0"
+                              src={pool.from_token.icon}
+                              shape="circle"
+                              size={30}
+                            />
+                            <Avatar
+                              className="border-0 translate-x-2"
+                              src={pool.to_token.icon}
+                              shape="circle"
+                              size={30}
+                            />
+                          </Avatar.Group>
+                          <span className="uppercase text-base">
+                            {pool.from_token.symbol} / {pool.to_token.symbol}
+                          </span>
+                        </div>
+                      </Link>
+                      <div className="flex flex-row gap-x-2 flex-wrap justify-end max-w-[128px]">
+                        {restricted ? (
+                          <div className="flex flex-row items-center gap-x-1">
+                            <NotAllowIcon />
                             Restricted
                           </div>
                         ) : (
-                          <div className="flex flex-row gap-x-2">
-                            <div className="flex flex-row items-center gap-x-1   justify-start">
-                              <BsCircle className="text-emerald-400 font-bold" />
+                          <>
+                            <div className="flex flex-row items-center gap-x-1">
+                              {swapEligible ? <AllowIcon /> : <NotAllowIcon />}
                               Swap
                             </div>
-                            <div className="flex flex-row items-center gap-x-1   justify-start">
-                              <CgUnavailable className="text-rose-500 text-[18px]" />
+                            <div className="flex flex-row items-center gap-x-1">
+                              {poolEligible ? <AllowIcon /> : <NotAllowIcon />}
                               Pool
                             </div>
-                          </div>
-                        )
-                      ) : (
-                        <div className="flex flex-row items-center gap-x-1   justify-start">
-                          <CgUnavailable className="text-rose-500 text-[18px]" />
-                          Restricted
-                        </div>
-                      )}
+                          </>
+                        )}
+                      </div>
                     </div>
                     <CurrencyFormat
                       displayType="text"
@@ -157,105 +154,91 @@ const PermissionedPools: React.FC<Props> = ({ pools }) => {
         )}
       </div>
       <div className="block md:hidden">
-        {pools.map((pool, index) => (
-          <Collapse checkbox icon="arrow" key={index}>
-            <Collapse.Title className="text-xl font-medium">
-              <div className="flex items-center gap-3">
-                <Avatar.Group className="overflow-visible">
-                  <Avatar
-                    className="border-0"
-                    src={pool.from_token.icon}
-                    shape="circle"
-                    size={30}
-                  />
-                  <Avatar
-                    className="border-0 translate-x-2"
-                    src={pool.to_token.icon}
-                    shape="circle"
-                    size={30}
-                  />
-                </Avatar.Group>
-                <span className="uppercase text-base">
-                  {pool.from_token.symbol} / {pool.to_token.symbol}
-                </span>
-              </div>
-            </Collapse.Title>
-            <Collapse.Content>
-              {kycVerified ? (
-                location === "US" ? (
-                  pool.US ? (
-                    <div className="flex flex-row gap-x-2">
-                      <div className="flex flex-row items-center gap-x-1   justify-start">
-                        <BsCircle className="text-emerald-400 font-bold" />
-                        Swap
-                      </div>
-                      <div className="flex flex-row items-center gap-x-1   justify-start">
-                        <CgUnavailable className="text-rose-500 text-[18px]" />
-                        Pool
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="flex flex-row items-center gap-x-1   justify-start">
-                      <CgUnavailable className="text-rose-500 text-[18px]" />
+        {pools.map((pool, index) => {
+          const restricted: boolean = kycVerified
+            ? (location === "US" && !pool.US) || (location !== "US" && pool.US)
+            : false;
+
+          const swapEligible: boolean = true;
+          const poolEligible: boolean = kybVerified;
+
+          return (
+            <Collapse checkbox icon="arrow" key={index}>
+              <Collapse.Title className="text-xl font-medium">
+                <div className="flex items-center gap-3">
+                  <Avatar.Group className="overflow-visible">
+                    <Avatar
+                      className="border-0"
+                      src={pool.from_token.icon}
+                      shape="circle"
+                      size={30}
+                    />
+                    <Avatar
+                      className="border-0 translate-x-2"
+                      src={pool.to_token.icon}
+                      shape="circle"
+                      size={30}
+                    />
+                  </Avatar.Group>
+                  <span className="uppercase text-base">
+                    {pool.from_token.symbol} / {pool.to_token.symbol}
+                  </span>
+                </div>
+              </Collapse.Title>
+              <Collapse.Content>
+                <div className="flex flex-row gap-x-2">
+                  {restricted ? (
+                    <div className="flex flex-row items-center gap-x-1">
+                      <NotAllowIcon />
                       Restricted
                     </div>
-                  )
-                ) : pool.US ? (
-                  <div className="flex flex-row items-center gap-x-1   justify-start">
-                    <CgUnavailable className="text-rose-500 text-[18px]" />
-                    Restricted
-                  </div>
-                ) : (
-                  <div className="flex flex-row gap-x-2">
-                    <div className="flex flex-row items-center gap-x-1   justify-start">
-                      <BsCircle className="text-emerald-400 font-bold" />
-                      Swap
-                    </div>
-                    <div className="flex flex-row items-center gap-x-1   justify-start">
-                      <CgUnavailable className="text-rose-500 text-[18px]" />
-                      Pool
-                    </div>
-                  </div>
-                )
-              ) : (
-                <div className="flex flex-row items-center gap-x-1   justify-start">
-                  <CgUnavailable className="text-rose-500 text-[18px]" />
-                  Restricted
+                  ) : (
+                    <>
+                      <div className="flex flex-row items-center gap-x-1">
+                        {swapEligible ? <AllowIcon /> : <NotAllowIcon />}
+                        Swap
+                      </div>
+                      <div className="flex flex-row items-center gap-x-1">
+                        {poolEligible ? <AllowIcon /> : <NotAllowIcon />}
+                        Pool
+                      </div>
+                    </>
+                  )}
                 </div>
-              )}
-              <div className="flex justify-between">
-                <div>Your Liquidity</div>
-                <CurrencyFormat
-                  displayType="text"
-                  className="font-secondary text-left text-base"
-                  thousandSeparator
-                  decimalScale={2}
-                  value={0}
-                />
-              </div>
-              <div className="flex justify-between">
-                <div>Total Liquidity</div>
-                <CurrencyFormat
-                  displayType="text"
-                  className="font-secondary text-left text-base"
-                  thousandSeparator
-                  decimalScale={2}
-                  value={pool.total_liquidity}
-                />
-              </div>
-              <div className="flex justify-between">
-                <div>APR</div>
-                <CurrencyFormat
-                  displayType="text"
-                  className="font-secondary text-left text-base"
-                  decimalScale={2}
-                  suffix="%"
-                  value={pool.apr}
-                />
-              </div>
-            </Collapse.Content>
-          </Collapse>
-        ))}
+                <div className="flex justify-between">
+                  <div>Your Liquidity</div>
+                  <CurrencyFormat
+                    displayType="text"
+                    className="font-secondary text-left text-base"
+                    thousandSeparator
+                    decimalScale={2}
+                    value={0}
+                  />
+                </div>
+                <div className="flex justify-between">
+                  <div>Total Liquidity</div>
+                  <CurrencyFormat
+                    displayType="text"
+                    className="font-secondary text-left text-base"
+                    thousandSeparator
+                    decimalScale={2}
+                    value={pool.total_liquidity}
+                  />
+                </div>
+                <div className="flex justify-between">
+                  <div>APR</div>
+                  <CurrencyFormat
+                    displayType="text"
+                    className="font-secondary text-left text-base"
+                    decimalScale={2}
+                    suffix="%"
+                    value={pool.apr}
+                  />
+                </div>
+              </Collapse.Content>
+            </Collapse>
+          );
+        })}
       </div>
       {!kybVerified && kycVerified && (
         <div className="text-center font-bold text-black px-2 text-base sm:text-base min-[320px]:text-[13px]">
@@ -286,7 +269,7 @@ const PermissionedPools: React.FC<Props> = ({ pools }) => {
         ) : (
           <div className="flex justify-center">
             <Link
-              href={`#`}
+              href={`/dash/pool/new`}
               className="btn py-2 shadow-md btn-primary w-[160px] text-lg font-orbitron"
             >
               New Pool

@@ -112,7 +112,7 @@ const TransferPage: NextPageWithLayout = () => {
             value={1}
             disabled
           >
-            bridge
+            Bridge
           </Tabs.Tab>
         </Tabs>
 
