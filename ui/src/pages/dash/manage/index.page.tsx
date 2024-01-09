@@ -8,7 +8,7 @@ const ManagePage: NextPageWithLayout = () => {
   return (
     <div className="flex flex-col gap-8">
       <ManageCard />
-      <OrdersCard />
+      {/* <OrdersCard /> */}
     </div>
   );
 };
