@@ -40,6 +40,12 @@ const TransferPage: NextPageWithLayout = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    if (amount.startsWith(".")) {
+      setAmount("0" + amount);
+    }
+  }, [amount]);
+
   const handleSend = async () => {
     try {
       setErrorMessage("");
@@ -143,7 +149,7 @@ const TransferPage: NextPageWithLayout = () => {
                     decimalScale={2}
                     prefix="~$"
                     value={new Decimal(token?.usd_price || "0")
-                      .times(amount || "0")
+                      .times((amount === "." ? 0 : amount) || "0")
                       .toString()}
                   />
                 </div>
