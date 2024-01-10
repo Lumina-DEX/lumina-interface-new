@@ -3,7 +3,7 @@ import { AppContext } from "@/contexts/AppContext";
 import { shortenAddress } from "@/utils/address";
 import { toggleHTMLClass } from "@/utils/theme";
 import { WalletDropdownList } from "@/constants/menu";
-import { Button, Dropdown, Form, Toggle } from "react-daisyui";
+import { Button, Dropdown, Toggle } from "react-daisyui";
 import useAccount from "@/states/useAccount";
 import { FiCopy } from "react-icons/fi";
 import { RxExit } from "react-icons/rx";
@@ -14,18 +14,17 @@ import { disconnect, connect } from "@/lib/wallet";
 import Link from "next/link";
 import { BiSolidCheckCircle } from "react-icons/bi";
 import useLoad from "@/states/useLoad";
+import usePermission from "@/hooks/permission";
 
 const ConnectWallet = () => {
   const { darkMode, setDarkMode } = useContext(AppContext);
 
-  const { kycVerified, kybVerified, balances, accountUpdate } = useAccount(
-    (state) => ({
-      kycVerified: state.kycVerified,
-      kybVerified: state.kybVerified,
-      balances: state.balances,
-      accountUpdate: state.update,
-    })
-  );
+  const { sync: syncPermission } = usePermission();
+  const { kycVerified, kybVerified, balances } = useAccount((state) => ({
+    kycVerified: state.kycVerified,
+    kybVerified: state.kybVerified,
+    balances: state.balances,
+  }));
 
   const address: string | any = useAccount((state) => state.publicKeyBase58);
   const { loadState } = useLoad((state) => ({
@@ -57,7 +56,6 @@ const ConnectWallet = () => {
       return;
     }
     const testMode = window.localStorage.getItem("TestMode");
-    console.log("testMode", testMode);
     if (testMode === "true") {
       window.localStorage.setItem("TestMode", "false");
       setTestFlag("false");
@@ -66,6 +64,8 @@ const ConnectWallet = () => {
       window.localStorage.setItem("TestMode", "true");
       setTestFlag("true");
     }
+
+    syncPermission(address);
   };
 
   const disconnectWallet = () => {
@@ -145,40 +145,29 @@ const ConnectWallet = () => {
               <hr />
               <Dropdown.Item>zkKYC</Dropdown.Item>
               <Dropdown.Item className="flex justify-between">
-                <div>Language(EN)e</div>
+                <div>Language(EN)</div>
                 <div className="flex justify-end">
                   <AiOutlineRight size={18} />
                 </div>
               </Dropdown.Item>
-              <Dropdown.Item className="flex justify-between">
-                <div onClick={toggleTheme}>
-                  {darkMode ? "Darkmode" : "Lightmode"}
-                </div>
+              <Dropdown.Item
+                className="flex justify-between"
+                onClick={toggleTheme}
+              >
+                <div>{darkMode ? "Darkmode" : "Lightmode"}</div>
                 <div className="flex justify-end">
                   <MdOutlineDarkMode size={18} />
                 </div>
               </Dropdown.Item>
 
-              <Dropdown.Item>
-                <Form.Label
-                  title="Real / Test(KYC)"
-                  className="text-[12px] w-100"
-                >
-                  {testMode === "true" ? (
-                    <Toggle
-                      defaultChecked
-                      color="primary"
-                      className="ml-[14px]"
-                      onChange={setTestMode}
-                    />
-                  ) : (
-                    <Toggle
-                      color="primary"
-                      className="ml-[14px]"
-                      onChange={setTestMode}
-                    />
-                  )}
-                </Form.Label>
+              <Dropdown.Item
+                className="flex justify-between"
+                onClick={setTestMode}
+              >
+                <div>Real / Test(KYC)</div>
+                <div className="flex justify-end">
+                  <Toggle color="primary" checked={testMode === "true"} />
+                </div>
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>

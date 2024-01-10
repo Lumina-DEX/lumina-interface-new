@@ -27,6 +27,7 @@ const PoolPermsStep: React.FC<Props> = ({ onSubmit }) => {
             <option value={""} disabled>
               Select Countries
             </option>
+            <option value={undefined}>None</option>
             <option value={"Homer"}>Homer</option>
             <option value={"Marge"}>Marge</option>
           </Select>

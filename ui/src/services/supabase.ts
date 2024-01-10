@@ -67,6 +67,19 @@ export default function useSupabaseFunctions() {
     [supabase]
   );
 
+  const getLeaderboard = useCallback(
+    () =>
+      supabase.from("leaderboard").select(
+        `
+          id,
+          name,
+          points,
+          created_at
+        `
+      ),
+    [supabase]
+  );
+
   const submitBusinessForm = useCallback(
     (walletAddress: string, formData: IBusinessContact) =>
       supabase.from("KYBpermissions").insert({
@@ -86,6 +99,7 @@ export default function useSupabaseFunctions() {
     getKYBPermissioned,
     getPools,
     getTokens,
+    getLeaderboard,
     submitBusinessForm,
   };
 }

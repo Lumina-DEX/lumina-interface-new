@@ -42,8 +42,8 @@ const SwapPermsStep: React.FC<Props> = ({ onSubmit }) => {
             <option value={""} disabled>
               Select Age Minimum
             </option>
-            <option value={"Homer"}>Homer</option>
-            <option value={"Marge"}>Marge</option>
+            <option value={undefined}>None</option>
+            <option value={"13"}>13</option>
           </Select>
         </div>
       </div>
