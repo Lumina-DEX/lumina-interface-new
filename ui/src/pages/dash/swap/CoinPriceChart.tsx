@@ -96,7 +96,7 @@ const CoinPriceChart = () => {
   }, []);
 
   return (
-    <div id="coinPriceChart" style={{ width: "100%" }}>
+    <div id="coinPriceChart" className="w-full">
       <div
         ref={chartContainerRef}
         style={{ width: "100%", height: "100%" }}

@@ -75,6 +75,27 @@ export interface Database {
         }
         Relationships: []
       }
+      leaderboard: {
+        Row: {
+          created_at: string
+          id: string
+          name: string | null
+          points: number | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name?: string | null
+          points?: number | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string | null
+          points?: number | null
+        }
+        Relationships: []
+      }
       logs: {
         Row: {
           body: string | null

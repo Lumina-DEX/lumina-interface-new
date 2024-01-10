@@ -21,7 +21,7 @@ const SwapParamsStep: React.FC<Props> = ({ onSubmit }) => {
           {Fees.map((fee, index) => (
             <Button
               key={index}
-              className={clsx("flex-1", {
+              className={clsx("font-metrophobic", "flex-1", {
                 "bg-violet-200": Number(swapFee) === fee,
               })}
               shape="square"
@@ -32,11 +32,9 @@ const SwapParamsStep: React.FC<Props> = ({ onSubmit }) => {
             </Button>
           ))}
           <Input
-            className={clsx({
-              "text-gray-300": Fees.includes(Number(swapFee)),
-            })}
             size="sm"
             placeholder={""}
+            bordered={false}
             value={swapFee}
             onChange={(e) => setSwapFee(e.target.value)}
           />
