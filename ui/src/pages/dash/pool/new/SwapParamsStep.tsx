@@ -53,8 +53,8 @@ const SwapParamsStep: React.FC<Props> = ({ onSubmit }) => {
           <option value={""} disabled>
             Select Pricing Curve
           </option>
-          <option value={"Homer"}>Homer</option>
-          <option value={"Marge"}>Marge</option>
+          <option value={"AMM"}>AMM</option>
+          <option value={"CPMM"}>CPMM</option>
         </Select>
       </div>
 
