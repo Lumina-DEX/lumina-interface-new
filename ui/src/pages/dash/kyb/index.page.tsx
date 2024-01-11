@@ -8,11 +8,13 @@ import { FaTimes } from "react-icons/fa";
 import { useRouter } from "next/router";
 import { IBusinessContact } from "@/types/businessContact";
 import useSupabaseFunctions from "@/services/supabase";
+import usePermission from "@/hooks/permission";
 
 const KYBPage: NextPageWithLayout = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { submitBusinessForm } = useSupabaseFunctions();
+  const { sync: syncPermission } = usePermission();
   const [formData, setFormData] = useState<IBusinessContact>({
     firstName: "",
     lastName: "",
@@ -24,6 +26,7 @@ const KYBPage: NextPageWithLayout = () => {
   const [step, setStep] = useState<"guidance" | "started" | "finished">(
     "guidance"
   );
+  const [isLoading, setLoading] = useState(false);
 
   const handleUpdateFormData =
     (key: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,16 +47,28 @@ const KYBPage: NextPageWithLayout = () => {
       return;
     }
 
-    await submitBusinessForm(address, formData);
+    try {
+      setLoading(true);
 
-    const body = {
-      data: {
+      await submitBusinessForm(
         address,
-        mode: mode === "true" ? "APPROVED" : undefined,
-        verified: true,
-      },
-    };
-    await fetch("/api/kyb", { method: "POST", body: JSON.stringify(body) });
+        formData,
+        mode === "true" ? "APPROVED" : undefined
+      );
+      const body = {
+        data: {
+          address,
+          mode: mode === "true" ? "APPROVED" : undefined,
+          verified: true,
+        },
+      };
+      await fetch("/api/kyb", { method: "POST", body: JSON.stringify(body) });
+      syncPermission(address);
+    } catch (e) {
+      console.error("onSubmitVerification", e);
+    } finally {
+      setLoading(false);
+    }
 
     setStep("finished");
   };
@@ -195,6 +210,7 @@ const KYBPage: NextPageWithLayout = () => {
             className="font-orbitron"
             color="primary"
             onClick={onSubmitVerification}
+            loading={isLoading}
           >
             Submit Verification
           </Button>

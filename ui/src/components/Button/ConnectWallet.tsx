@@ -166,7 +166,13 @@ const ConnectWallet = () => {
               >
                 <div>Real / Test(KYC)</div>
                 <div className="flex justify-end">
-                  <Toggle color="primary" checked={testMode === "true"} />
+                  <Toggle
+                    color="primary"
+                    checked={testMode === "true"}
+                    onChange={() => {
+                      //
+                    }}
+                  />
                 </div>
               </Dropdown.Item>
             </Dropdown.Menu>

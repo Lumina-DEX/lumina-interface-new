@@ -37,7 +37,8 @@ export default async function handler(
       .update({
         is_verified: verified,
       })
-      .eq("wallet_address", address);
+      .eq("wallet_address", address)
+      .eq("mode", mode);
 
     if (result.error) {
       throw result.error.message;

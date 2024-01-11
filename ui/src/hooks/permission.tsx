@@ -10,6 +10,7 @@ export default function usePermission() {
   const sync = (address: string) => {
     const testMode =
       typeof window !== "undefined" && window.localStorage.getItem("TestMode");
+
     getKYCPermissioned(address!, testMode || null).then((response) => {
       const { status, data } = response;
       if (status === 200 && data) {
@@ -19,7 +20,7 @@ export default function usePermission() {
         });
       }
     });
-    getKYBPermissioned(address!).then((response) => {
+    getKYBPermissioned(address!, testMode || null).then((response) => {
       const { status, data } = response;
       if (status === 200 && data) {
         accountUpdate({

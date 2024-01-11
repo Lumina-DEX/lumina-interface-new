@@ -24,11 +24,18 @@ export default function useSupabaseFunctions() {
   );
 
   const getKYBPermissioned = useCallback(
-    (walletAddress: string) =>
-      supabase
-        .from("KYBpermissions")
-        .select("*")
-        .eq("wallet_address", walletAddress),
+    (walletAddress: string, testMode: string | null) =>
+      testMode === "true"
+        ? supabase
+            .from("KYBpermissions")
+            .select("*")
+            .eq("wallet_address", walletAddress)
+            .eq("mode", "APPROVED")
+        : supabase
+            .from("KYBpermissions")
+            .select("*")
+            .eq("wallet_address", walletAddress)
+            .is("mode", null),
     [supabase]
   );
 
@@ -81,7 +88,11 @@ export default function useSupabaseFunctions() {
   );
 
   const submitBusinessForm = useCallback(
-    (walletAddress: string, formData: IBusinessContact) =>
+    (
+      walletAddress: string,
+      formData: IBusinessContact,
+      mode: "APPROVED" | undefined
+    ) =>
       supabase.from("KYBpermissions").insert({
         wallet_address: walletAddress,
         first_name: formData.firstName,
@@ -90,6 +101,7 @@ export default function useSupabaseFunctions() {
         business_name: formData.businessName,
         business_address: formData.businessAddress,
         business_tax_id: formData.businessTaxId,
+        mode: mode,
       }),
     [supabase]
   );

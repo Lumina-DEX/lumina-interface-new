@@ -94,7 +94,7 @@ const SwapPanel: React.FC = () => {
   return (
     <>
       {/* Swap from */}
-      <div className="relative w-full p-8 pt-12 bg-light-100 font-metrophobic">
+      <div className="relative w-full p-8 pt-16 bg-light-100 font-metrophobic">
         <div className="absolute top-3 right-3 cursor-pointer">
           <div className="flex items-center gap-2">
             {/* Slippage Tolerance */}
@@ -180,7 +180,7 @@ const SwapPanel: React.FC = () => {
                 </div>
               </div>
             </div>
-            {fromToken && <span className="text-sm">Pay</span>}
+            <span className="text-sm">Pay</span>
           </div>
         </div>
       </div>
@@ -225,7 +225,7 @@ const SwapPanel: React.FC = () => {
                   </div>
                 </div>
               </div>
-              {toToken && <span className="text-sm">Receive</span>}
+              <span className="text-sm">Receive</span>
             </div>
           </div>
 

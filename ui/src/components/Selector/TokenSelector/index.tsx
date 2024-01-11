@@ -25,7 +25,7 @@ const TokenSelector: React.FC<Props> = ({ token, setToken }) => {
   return (
     <>
       <div
-        className="flex bg-opacity-9 rounded-lg cursor-pointer"
+        className="flex h-8 bg-opacity-9 rounded-lg cursor-pointer"
         onClick={openModal}
       >
         {token && (
