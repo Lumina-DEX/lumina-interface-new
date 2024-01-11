@@ -20,6 +20,7 @@ export interface Database {
           id: string
           is_verified: boolean | null
           last_name: string | null
+          mode: string | null
           wallet_address: string | null
         }
         Insert: {
@@ -32,6 +33,7 @@ export interface Database {
           id?: string
           is_verified?: boolean | null
           last_name?: string | null
+          mode?: string | null
           wallet_address?: string | null
         }
         Update: {
@@ -44,6 +46,7 @@ export interface Database {
           id?: string
           is_verified?: boolean | null
           last_name?: string | null
+          mode?: string | null
           wallet_address?: string | null
         }
         Relationships: []
