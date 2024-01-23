@@ -1,20 +1,19 @@
 import useAccount from "@/states/useAccount";
 import { PublicKey } from "snarkyjs";
 import ZkappWorkerClient from "@/lib/zkappWorkerClient";
-import { useEffect, useState } from "react";
-import { MINA_SUB_DECIMAL } from "@/lib/wallet";
+import { useEffect } from "react";
 import useLoad from "@/states/useLoad";
 
 export default function AccountUpdater() {
-  const state = useAccount();
+  const { address, hasBeenSetup, accountUpdate } = useAccount((state) => ({
+    address: state.publicKeyBase58,
+    hasBeenSetup: state.hasBeenSetup,
+    accountUpdate: state.update,
+  }));
 
-  const [displayText, setDisplayText] = useState("");
-  const [transactionlink, setTransactionLink] = useState("");
   const { loadUpdate } = useLoad((state) => ({
     loadUpdate: state.update,
   }));
-  // -------------------------------------------------------
-  // Do Setup
 
   useEffect(() => {
     async function timeout(seconds: number): Promise<void> {
@@ -26,7 +25,7 @@ export default function AccountUpdater() {
     }
 
     (async () => {
-      if (!state.hasBeenSetup) {
+      if (!hasBeenSetup) {
         loadUpdate({ msg: "Loading web worker...", process: 0 });
         const zkappWorkerClient = new ZkappWorkerClient();
         await timeout(5);
@@ -39,7 +38,7 @@ export default function AccountUpdater() {
         const mina = (window as any).mina;
 
         if (mina == null) {
-          state.update({ hasWallet: false });
+          accountUpdate({ hasWallet: false });
           loadUpdate({
             msg: `<a href="https://www.aurowallet.com/" target="_blank" rel="noreferrer">Install Auro wallet</a>`,
             process: 60,
@@ -60,7 +59,7 @@ export default function AccountUpdater() {
 
         await zkappWorkerClient.initZkappInstance(zkappPublicKey);
 
-        state.update({
+        accountUpdate({
           zkappWorkerClient,
           hasWallet: true,
           hasBeenSetup: true,
@@ -75,81 +74,35 @@ export default function AccountUpdater() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // -------------------------------------------------------
-  // Wait for account to exist, if it didn't
+  // Risk
+  useEffect(() => {
+    if (address) {
+      (async () => {
+        try {
+          const { message } = await fetch("/api/chainalysis/register", {
+            method: "POST",
+            body: JSON.stringify({ address }),
+          }).then((response) => response.json());
 
-  // useEffect(() => {
-  //   (async () => {
-  //     if (state.hasBeenSetup && !state.accountExists) {
-  //       // for (;;) {
-  //       //   const res = await state.zkappWorkerClient!.fetchAccount({
-  //       //     publicKeyBase58: state.publicKeyBase58!,
-  //       //   });
-  //       //   const accountExists = res.error == null;
-  //       //   if (accountExists) {
-  //       //     break;
-  //       //   }
-  //       //   await new Promise((resolve) => setTimeout(resolve, 5000));
-  //       // }
-  //       // state.update({ accountExists: true });
-  //     } else if (state.hasBeenSetup && state.accountExists) {
-  //       const balance = await state.zkappWorkerClient!.getBalance(
-  //         state.publicKeyBase58!
-  //       );
-  //       state.update({
-  //         balances: { mina: Number(balance.toString()) / MINA_SUB_DECIMAL },
-  //       });
-  //     }
-  //   })();
-  // }, [state.hasBeenSetup]);
+          if (message !== "Success") {
+            throw new Error("Failed");
+          }
+        } catch (error) {
+          console.error("/api/chainalysis/register", error);
+          return;
+        }
+        try {
+          const { body } = await fetch("/api/chainalysis/retrieve", {
+            method: "POST",
+            body: JSON.stringify({ address }),
+          }).then((response) => response.json());
+          accountUpdate({ risking: body });
+        } catch (error) {
+          console.error("/api/chainalysis/retrieve", error);
+        }
+      })();
+    }
+  }, [accountUpdate, address]);
 
-  // -------------------------------------------------------
-  // Create UI elements
   return null;
-
-  // let hasWallet;
-  // if (state.hasWallet != null && !state.hasWallet) {
-  //   const auroLink = "https://www.aurowallet.com/";
-  //   const auroLinkElem = (
-  //     <a href={auroLink} target="_blank" rel="noreferrer">
-  //       Install Auro wallet here
-  //     </a>
-  //   );
-  //   hasWallet = <div>Could not find a wallet. {auroLinkElem}</div>;
-  // }
-
-  // const stepDisplay = transactionlink ? (
-  //   <a href={displayText} target="_blank" rel="noreferrer">
-  //     View transaction
-  //   </a>
-  // ) : (
-  //   displayText
-  // );
-
-  // let setup = (
-  //   <div className="leading-5 font-bold text-2xl">
-  //     {stepDisplay}
-  //     {hasWallet}
-  //   </div>
-  // );
-
-  // let accountDoesNotExist;
-  // if (state.hasBeenSetup && !state.accountExists) {
-  //   const faucetLink =
-  //     "https://faucet.minaprotocol.com/?address=" + state.publicKey!.toBase58();
-  //   accountDoesNotExist = (
-  //     <div>
-  //       Account does not exist.
-  //       <a href={faucetLink} target="_blank" rel="noreferrer">
-  //         Visit the faucet to fund this fee payer account
-  //       </a>
-  //     </div>
-  //   );
-  // }
-
-  // if (state.hasBeenSetup && state.accountExists) {
-  //   return null;
-  // }
-
-  // return null;
 }

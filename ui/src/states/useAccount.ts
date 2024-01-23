@@ -1,4 +1,5 @@
 import ZkappWorkerClient from "@/lib/zkappWorkerClient";
+import { RiskInfo } from "@/types/risk";
 import { Field, PublicKey } from "snarkyjs";
 import { create } from "zustand";
 
@@ -18,6 +19,8 @@ interface AccountModel {
   kycVerified: boolean;
   kybVerified: boolean;
   location: null | string;
+  //
+  risking?: RiskInfo;
 }
 
 interface AccountState extends AccountModel {

@@ -9,6 +9,7 @@ import { Database } from "@/lib/database.types";
 import { NextPage } from "next";
 import Updaters from "@/updaters";
 import Head from "next/head";
+import useAccount from "@/states/useAccount";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -23,6 +24,9 @@ export default function App({
 }) {
   const [supabase] = useState(() => createPagesBrowserClient<Database>());
   const getLayout = Component.getLayout ?? ((page) => page);
+  const { risking } = useAccount((state) => ({
+    risking: state.risking,
+  }));
 
   return (
     <>
@@ -33,7 +37,15 @@ export default function App({
         supabaseClient={supabase}
         initialSession={pageProps.initialSession}
       >
-        {getLayout(<Component {...pageProps} />)}
+        {getLayout(
+          risking?.risk !== "Low" ? (
+            <Component {...pageProps} />
+          ) : (
+            <span className="text-4xl text-red-500 font-bold">
+              You are blocked!
+            </span>
+          )
+        )}
         <Updaters />
       </SessionContextProvider>
     </>
