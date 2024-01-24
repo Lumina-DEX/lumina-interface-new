@@ -38,7 +38,7 @@ export default function App({
         initialSession={pageProps.initialSession}
       >
         {getLayout(
-          risking?.risk !== "Low" ? (
+          risking?.risk === "Low" ? (
             <Component {...pageProps} />
           ) : (
             <span className="text-4xl text-red-500 font-bold">
