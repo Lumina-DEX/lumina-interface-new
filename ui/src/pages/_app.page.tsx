@@ -38,12 +38,12 @@ export default function App({
         initialSession={pageProps.initialSession}
       >
         {getLayout(
-          risking?.risk === "Low" ? (
-            <Component {...pageProps} />
-          ) : (
+          risking && risking.risk !== "Low" ? (
             <span className="text-4xl text-red-500 font-bold">
               You are blocked!
             </span>
+          ) : (
+            <Component {...pageProps} />
           )
         )}
         <Updaters />
