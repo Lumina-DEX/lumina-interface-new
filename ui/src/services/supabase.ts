@@ -87,6 +87,32 @@ export default function useSupabaseFunctions() {
     [supabase]
   );
 
+  const getRisk = useCallback(
+    (address: string) =>
+      supabase
+        .from("risk")
+        .select(
+          `
+          address,
+          score,
+          info
+        `
+        )
+        .eq("address", address)
+        .single(),
+    [supabase]
+  );
+
+  const saveRisk = useCallback(
+    (address: string, score: string, info: string) =>
+      supabase.from("risk").insert({
+        address,
+        score,
+        info,
+      }),
+    [supabase]
+  );
+
   const submitBusinessForm = useCallback(
     (
       walletAddress: string,
@@ -112,6 +138,8 @@ export default function useSupabaseFunctions() {
     getPools,
     getTokens,
     getLeaderboard,
+    getRisk,
+    saveRisk,
     submitBusinessForm,
   };
 }

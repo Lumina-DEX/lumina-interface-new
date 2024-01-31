@@ -162,6 +162,30 @@ export interface Database {
           }
         ]
       }
+      risk: {
+        Row: {
+          address: string | null
+          created_at: string
+          id: string
+          info: string | null
+          score: string | null
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string
+          id?: string
+          info?: string | null
+          score?: string | null
+        }
+        Update: {
+          address?: string | null
+          created_at?: string
+          id?: string
+          info?: string | null
+          score?: string | null
+        }
+        Relationships: []
+      }
       tokens: {
         Row: {
           created_at: string
