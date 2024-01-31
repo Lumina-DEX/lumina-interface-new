@@ -3,8 +3,10 @@ import { PublicKey } from "snarkyjs";
 import ZkappWorkerClient from "@/lib/zkappWorkerClient";
 import { useEffect } from "react";
 import useLoad from "@/states/useLoad";
+import useSupabaseFunctions from "@/services/supabase";
 
 export default function AccountUpdater() {
+  const { getRisk, saveRisk } = useSupabaseFunctions();
   const { address, hasBeenSetup, accountUpdate } = useAccount((state) => ({
     address: state.publicKeyBase58,
     hasBeenSetup: state.hasBeenSetup,
@@ -79,6 +81,27 @@ export default function AccountUpdater() {
     if (address) {
       (async () => {
         try {
+          const response = await getRisk(address);
+
+          if (response.status !== 200) {
+            throw new Error("");
+          }
+
+          const risk = response.data;
+
+          if (!risk) {
+            console.error("No risk score in database");
+          } else {
+            const { info } = risk;
+            const body = JSON.parse(info!);
+
+            accountUpdate({ risking: body });
+            return;
+          }
+        } catch (error) {
+          console.error("getRisk", error);
+        }
+        try {
           const { message } = await fetch("/api/chainalysis/register", {
             method: "POST",
             body: JSON.stringify({ address }),
@@ -96,13 +119,16 @@ export default function AccountUpdater() {
             method: "POST",
             body: JSON.stringify({ address }),
           }).then((response) => response.json());
+
+          await saveRisk(address, body.risk, JSON.stringify(body));
+
           accountUpdate({ risking: body });
         } catch (error) {
           console.error("/api/chainalysis/retrieve", error);
         }
       })();
     }
-  }, [accountUpdate, address]);
+  }, [address, accountUpdate, getRisk, saveRisk]);
 
   return null;
 }

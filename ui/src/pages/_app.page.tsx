@@ -38,7 +38,7 @@ export default function App({
         initialSession={pageProps.initialSession}
       >
         {getLayout(
-          risking && risking.risk !== "Low" ? (
+          risking && (risking.risk === "High" || risking.risk === "Severe") ? (
             <span className="text-4xl text-red-500 font-bold">
               You are blocked!
             </span>
