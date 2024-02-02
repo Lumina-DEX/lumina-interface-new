@@ -14,9 +14,9 @@ interface Props {
 }
 
 const PermissionedPools: React.FC<Props> = ({ pools }) => {
-  const { location, kycVerified, kybVerified, address } = useAccount(
+  const { nationality, kycVerified, kybVerified, address } = useAccount(
     (state) => ({
-      location: state.location,
+      nationality: state.nationality,
       kycVerified: state.kycVerified,
       kybVerified: state.kybVerified,
       address: state.publicKeyBase58,
@@ -65,8 +65,8 @@ const PermissionedPools: React.FC<Props> = ({ pools }) => {
             <Table.Body>
               {pools.map((pool, index) => {
                 const restricted: boolean = kycVerified
-                  ? (location === "US" && !pool.US) ||
-                    (location !== "US" && pool.US)
+                  ? (nationality === "US" && !pool.US) ||
+                    (nationality !== "US" && pool.US)
                   : true;
 
                 const swapEligible: boolean = true;
@@ -156,7 +156,8 @@ const PermissionedPools: React.FC<Props> = ({ pools }) => {
       <div className="block md:hidden">
         {pools.map((pool, index) => {
           const restricted: boolean = kycVerified
-            ? (location === "US" && !pool.US) || (location !== "US" && pool.US)
+            ? (nationality === "US" && !pool.US) ||
+              (nationality !== "US" && pool.US)
             : false;
 
           const swapEligible: boolean = true;
