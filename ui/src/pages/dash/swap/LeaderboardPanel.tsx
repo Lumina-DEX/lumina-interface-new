@@ -43,16 +43,7 @@ function LeaderboardPanel() {
               .map((member, index) => (
                 <Table.Row key={index}>
                   <div className="flex justify-start">
-                    <span>
-                      <a
-                        className="underline"
-                        target="_blank"
-                        href={`https://twitter.com/${member.name}`}
-                        rel="noopener"
-                      >
-                        @{member.name}
-                      </a>
-                    </span>
+                    <span>{member.name}</span>
                   </div>
                   <div className="flex justify-center">
                     <span>{member.points}</span>

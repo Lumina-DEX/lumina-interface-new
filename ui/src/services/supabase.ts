@@ -132,6 +132,30 @@ export default function useSupabaseFunctions() {
     [supabase]
   );
 
+  const updateKYCClaimStatus = useCallback(
+    (
+      walletAddress: string,
+      mode: "APPROVED" | undefined,
+      claimStatus: "Unclaimed" | "Pending" | "Claimed"
+    ) =>
+      mode
+        ? supabase
+            .from("KYCpermissions")
+            .update({
+              claim_status: claimStatus,
+            })
+            .eq("wallet_address", walletAddress)
+            .eq("mode", "APPROVED")
+        : supabase
+            .from("KYCpermissions")
+            .update({
+              claim_status: claimStatus,
+            })
+            .eq("wallet_address", walletAddress)
+            .neq("mode", "APPROVED"),
+    [supabase]
+  );
+
   return {
     getKYCPermissioned,
     getKYBPermissioned,
@@ -141,5 +165,6 @@ export default function useSupabaseFunctions() {
     getRisk,
     saveRisk,
     submitBusinessForm,
+    updateKYCClaimStatus,
   };
 }

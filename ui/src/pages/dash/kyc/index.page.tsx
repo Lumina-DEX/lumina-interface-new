@@ -6,10 +6,12 @@ import { Button } from "react-daisyui";
 import { NextPageWithLayout } from "@/pages/_app.page";
 import { FaTimes } from "react-icons/fa";
 import { useRouter } from "next/router";
+import useSupabaseFunctions from "@/services/supabase";
 
 const KYCPage: NextPageWithLayout = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { updateKYCClaimStatus } = useSupabaseFunctions();
 
   const [url, setUrl] = useState("");
 
@@ -61,7 +63,7 @@ const KYCPage: NextPageWithLayout = () => {
           width="100%"
           height="100%"
           src={url}
-          allow="cross-origin-isolated"
+          allow="camera; cross-origin-isolated"
           // @ts-ignore
           credentialless="true"
         ></iframe>
