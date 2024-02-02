@@ -53,24 +53,30 @@ export interface Database {
       }
       KYCpermissions: {
         Row: {
+          claim_status: string | null
           created_at: string
           id: string
+          jwt: string | null
           location: string | null
           mode: string | null
           wallet_address: string | null
           zkp: string | null
         }
         Insert: {
+          claim_status?: string | null
           created_at?: string
           id?: string
+          jwt?: string | null
           location?: string | null
           mode?: string | null
           wallet_address?: string | null
           zkp?: string | null
         }
         Update: {
+          claim_status?: string | null
           created_at?: string
           id?: string
+          jwt?: string | null
           location?: string | null
           mode?: string | null
           wallet_address?: string | null
