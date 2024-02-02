@@ -11,7 +11,6 @@ import useSupabaseFunctions from "@/services/supabase";
 const KYCPage: NextPageWithLayout = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { updateKYCClaimStatus } = useSupabaseFunctions();
 
   const [url, setUrl] = useState("");
 
@@ -34,8 +33,7 @@ const KYCPage: NextPageWithLayout = () => {
     await zkpid.login();
     const url = await zkpid.startkyc({
       address,
-      uid: "unique session",
-      test: testMode === "true" ? "APPROVED" : undefined,
+      mode: testMode === "true",
     });
     setUrl(url);
   };

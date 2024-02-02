@@ -21,7 +21,7 @@ interface AccountModel {
   kycVerified: boolean;
   kybStarted: boolean;
   kybVerified: boolean;
-  location: null | string;
+  nationality: null | string;
   kycClaimed: string; // "" | "Unclaimed" | "Pending" | "Claimed"
   kycJwt: string;
   //
@@ -49,7 +49,7 @@ const useAccount = create<AccountState>((set) => ({
   kycVerified: false,
   kybStarted: false,
   kybVerified: false,
-  location: null,
+  nationality: null,
   kycClaimed: "",
   kycJwt: "",
   update: (value: Partial<AccountModel>) => {

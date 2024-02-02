@@ -50,15 +50,11 @@ const KYBPage: NextPageWithLayout = () => {
     try {
       setLoading(true);
 
-      await submitBusinessForm(
-        address,
-        formData,
-        mode === "true" ? "APPROVED" : undefined
-      );
+      await submitBusinessForm(address, formData, mode === "true");
       const body = {
         data: {
           address,
-          mode: mode === "true" ? "APPROVED" : undefined,
+          mode: mode === "true",
           verified: true,
         },
       };

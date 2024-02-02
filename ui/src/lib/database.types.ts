@@ -19,8 +19,8 @@ export interface Database {
           first_name: string | null
           id: string
           is_verified: boolean | null
+          kyb_mode: string | null
           last_name: string | null
-          mode: string | null
           wallet_address: string | null
         }
         Insert: {
@@ -32,8 +32,8 @@ export interface Database {
           first_name?: string | null
           id?: string
           is_verified?: boolean | null
+          kyb_mode?: string | null
           last_name?: string | null
-          mode?: string | null
           wallet_address?: string | null
         }
         Update: {
@@ -45,8 +45,8 @@ export interface Database {
           first_name?: string | null
           id?: string
           is_verified?: boolean | null
+          kyb_mode?: string | null
           last_name?: string | null
-          mode?: string | null
           wallet_address?: string | null
         }
         Relationships: []
@@ -57,30 +57,30 @@ export interface Database {
           created_at: string
           id: string
           jwt: string | null
-          location: string | null
-          mode: string | null
+          kyc_mode: string | null
+          kyc_status: string | null
+          nationality: string | null
           wallet_address: string | null
-          zkp: string | null
         }
         Insert: {
           claim_status?: string | null
           created_at?: string
           id?: string
           jwt?: string | null
-          location?: string | null
-          mode?: string | null
+          kyc_mode?: string | null
+          kyc_status?: string | null
+          nationality?: string | null
           wallet_address?: string | null
-          zkp?: string | null
         }
         Update: {
           claim_status?: string | null
           created_at?: string
           id?: string
           jwt?: string | null
-          location?: string | null
-          mode?: string | null
+          kyc_mode?: string | null
+          kyc_status?: string | null
+          nationality?: string | null
           wallet_address?: string | null
-          zkp?: string | null
         }
         Relationships: []
       }

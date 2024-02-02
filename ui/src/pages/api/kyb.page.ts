@@ -26,7 +26,7 @@ export default async function handler(
     //   data: {
     //     address: 'B62qoEM26H9XzUhWQxjzpNN4B5ysMdAW7YnbRRbj3M3sStdyn3e8Npc',
     //     verified: true,
-    //     mode: 'APPROVED'
+    //     mode: true
     //   },
     const {
       data: { mode, address, verified },
@@ -38,7 +38,7 @@ export default async function handler(
         is_verified: verified,
       })
       .eq("wallet_address", address)
-      .eq("mode", mode);
+      .eq("kyb_mode", mode ? "TESTING" : null);
 
     if (result.error) {
       throw result.error.message;
