@@ -61,12 +61,21 @@ export default async function handler(
       wallet_address: walletAddress,
       zkp,
       location,
+      jwt,
       mode: test,
     });
     decodedJwt.console.log({
       record: { walletAddress, zkp, mode: test },
       result,
     });
+
+    await supabase
+      .from("KYCpermissions")
+      .update({
+        claim_status: "Pending",
+      })
+      .eq("wallet_address", walletAddress)
+      .eq("mode", test);
 
     res.status(200);
   } catch (e) {
