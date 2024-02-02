@@ -12,7 +12,7 @@ export default function usePermission() {
     const testMode =
       typeof window !== "undefined" && window.localStorage.getItem("TestMode");
 
-    getKYCPermissioned(address!, testMode || null).then((response) => {
+    getKYCPermissioned(address!, testMode === "true").then((response) => {
       const { status, data } = response;
       if (status === 200 && data && data.length > 0) {
         accountUpdate({
@@ -21,12 +21,12 @@ export default function usePermission() {
             ? !!data[0] && data[0].claim_status === "Claimed"
             : !!data[0],
           kycClaimed: data[0]?.claim_status || "",
-          location: data[0]?.location,
+          nationality: data[0]?.nationality,
           kycJwt: data[0]?.jwt || "",
         });
       }
     });
-    getKYBPermissioned(address!, testMode || null).then((response) => {
+    getKYBPermissioned(address!, testMode === "true").then((response) => {
       const { status, data } = response;
       if (status === 200 && data && data.length > 0) {
         accountUpdate({

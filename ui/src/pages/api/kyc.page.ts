@@ -24,60 +24,40 @@ export default async function handler(
       body: JSON.stringify(req.body),
     });
     // {
-    //   data: {
-    //     address: 'B62qoEM26H9XzUhWQxjzpNN4B5ysMdAW7YnbRRbj3M3sStdyn3e8Npc',
-    //     customerId: '4e9eeacc-5dba-421b-8e0c-9c430cad46cb',
-    //     uid: 'unique session',
-    //     type: 'kyc-zkpid',
-    //     test: 'APPROVED'
-    //   },
-    //   payload: {
-    //     data: {
-    //       error: 0,
-    //       jwt: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJFZERTQSJ9.eyJAY29udGV4dCI6WyJodHRwczovL3d3dy53My5vcmcvMjAxOC9jcmVkZW50aWFscy92MSIsImh0dHBzOi8vd3d3LnczLm9yZy8yMDE4L2NyZWRlbnRpYWxzL2V4YW1wbGVzL3YxIl0sImlkIjoiMmIzOWM1NDYtMWEzNC00MTg4LTkzNzgtZDY4ODFhMDE5NDVlIiwidHlwZSI6WyJWZXJpZmlhYmxlQ3JlZGVudGlhbCIsIkt5YyBBdHRlc3RhdGlvbiJdLCJjcmVkZW50aWFsU3ViamVjdCI6eyJ6a3AiOiI3bVhKVUhCck1Cbm55azZyb2N1OUJ1Mm9zV0MzdlRGb3JidUhkR3BXWGhEOVRxNlhYQkE0OWRrb2M2a29idWlyOUZLRGhtVkVNQTZUN2kzTHFLclJrV2lUZWJVVUt2WXgiLCJ3YWxsZXQtYWRkcmVzcyI6IkI2MnFvRU0yNkg5WHpVaFdReGp6cE5ONEI1eXNNZEFXN1luYlJSYmozTTNzU3RkeW4zZThOcGMiLCJuYXRpb25hbGl0eSI6IkxUIiwiaWQiOiJCNjJxb0VNMjZIOVh6VWhXUXhqenBOTjRCNXlzTWRBVzdZbmJSUmJqM00zc1N0ZHluM2U4TnBjIn0sImlzc3VlciI6eyJpZCI6ImRpZDprZXk6VjAwMTp6Nk1rZ3pheWlOZzJOUkJOR0NBRGZZbmFoY1R1YjdBOXVva1VDajFrdlFqeUZKV2siLCJuYW1lIjoiemtwLUlEIn0sImlzc3VhbmNlRGF0ZSI6IjIwMjMtMDktMTFUMTI6MTI6MjQrMDA6MDAiLCJleHBpcmF0aW9uRGF0ZSI6IjIwMjQtMDktMTBUMTI6MTI6MjQrMDA6MDAiLCJwcm9vZiI6eyJ0eXBlIjoiRWQyNTUxOVNpZ25hdHVyZTIwMjAiLCJjcmVhdGVkIjoiMjAyMy0wOS0xMVQxMjoxMjoyNC41NzVaIiwiandzIjoiZXlKMGVYQWlPaUpLVjFRaUxDSmhiR2NpT2lKRlpFUlRRU0o5Li5TcVZJOU11S2hZX0ZLc0xGQ0tFZ0JUa09qQW1GNGtMOTlGcWJudE9neFNVXzNadUdpckRRSjdLVU9rNUtlRXNCQ1cwV05kZGNLa2dfdy02YmxuTWpCQSIsInByb29mUHVycG9zZSI6ImFzc2VydGlvbk1ldGhvZCIsInZlcmlmaWNhdGlvbk1ldGhvZCI6ImRpZDprZXk6VjAwMTp6Nk1rZ3pheWlOZzJOUkJOR0NBRGZZbmFoY1R1YjdBOXVva1VDajFrdlFqeUZKV2sifX0.ZTISeVAIsgUjLgtwyajXPqy--KLzLDsfZMimsX5_q_sGAxeE42b5K3maSNpwgIsa8HqGLDDv7gLnXUJNL-bfAw',
-    //       signid: [Array]
-    //     }
+    //   "data": {
+    //       "error": 0,
+    //       "kyc_status": "APPROVED",
+    //       "kyc_mode": "TESTING",
+    //       "jwt": "eyJ0eXAiOiJKV1Q.....",
+    //       "signid": [
+    //           "2c8f52d4-6080-4b4a-85b9-82d0b94993d7"
+    //       ]
     //   }
     // }
     const {
-      data: { test },
-      payload,
+      data: { error, kyc_status, kyc_mode, jwt, signid },
     } = req.body;
 
-    if (payload.data.error) {
-      throw payload.data.error;
+    if (error) {
+      throw error;
     }
 
-    if (test && test !== "APPROVED") {
-      throw "Verification Failed!";
-    }
-
-    const { jwt } = payload.data;
     const decodedJwt: any = jwt_decode(jwt);
-    const walletAddress = decodedJwt.credentialSubject["wallet-address"];
-    const zkp = decodedJwt.credentialSubject.zkp;
-    const location = decodedJwt.credentialSubject.nationality;
+    const credentialSubject =
+      decodedJwt.verifiableCredential[0].credentialSubject;
+    const walletAddress = credentialSubject["wallet-address"];
+    const nationality = credentialSubject["nationality"];
+
     const result = await supabase.from("KYCpermissions").insert({
-      wallet_address: walletAddress,
-      zkp,
-      location,
       jwt,
-      mode: test,
-    });
-    decodedJwt.console.log({
-      record: { walletAddress, zkp, mode: test },
-      result,
+      wallet_address: walletAddress,
+      nationality,
+      kyc_status,
+      kyc_mode,
+      claim_status: "Unclaimed",
     });
 
-    await supabase
-      .from("KYCpermissions")
-      .update({
-        claim_status: "Pending",
-      })
-      .eq("wallet_address", walletAddress)
-      .eq("mode", test);
-
-    res.status(200);
+    res.status(200).json({ message: "success", result });
   } catch (e) {
     console.error("/api/kyc", e);
     res.status(500);

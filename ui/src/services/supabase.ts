@@ -8,34 +8,34 @@ export default function useSupabaseFunctions() {
   const supabase: SupabaseClient<Database> = useSupabaseClient();
 
   const getKYCPermissioned = useCallback(
-    (walletAddress: string, testMode: string | null) =>
-      testMode === "true"
+    (walletAddress: string, testMode: boolean) =>
+      testMode
         ? supabase
             .from("KYCpermissions")
             .select("*")
             .eq("wallet_address", walletAddress)
-            .eq("mode", "APPROVED")
+            .eq("kyc_mode", "TESTING")
         : supabase
             .from("KYCpermissions")
             .select("*")
             .eq("wallet_address", walletAddress)
-            .is("mode", null),
+            .is("kyc_mode", null),
     [supabase]
   );
 
   const getKYBPermissioned = useCallback(
-    (walletAddress: string, testMode: string | null) =>
-      testMode === "true"
+    (walletAddress: string, testMode: boolean) =>
+      testMode
         ? supabase
             .from("KYBpermissions")
             .select("*")
             .eq("wallet_address", walletAddress)
-            .eq("mode", "APPROVED")
+            .eq("kyb_mode", "TESTING")
         : supabase
             .from("KYBpermissions")
             .select("*")
             .eq("wallet_address", walletAddress)
-            .is("mode", null),
+            .is("kyb_mode", null),
     [supabase]
   );
 
@@ -93,10 +93,10 @@ export default function useSupabaseFunctions() {
         .from("risk")
         .select(
           `
-          address,
-          score,
-          info
-        `
+            address,
+            score,
+            info
+          `
         )
         .eq("address", address)
         .single(),
@@ -114,11 +114,7 @@ export default function useSupabaseFunctions() {
   );
 
   const submitBusinessForm = useCallback(
-    (
-      walletAddress: string,
-      formData: IBusinessContact,
-      mode: "APPROVED" | undefined
-    ) =>
+    (walletAddress: string, formData: IBusinessContact, mode: boolean) =>
       supabase.from("KYBpermissions").insert({
         wallet_address: walletAddress,
         first_name: formData.firstName,
@@ -127,7 +123,7 @@ export default function useSupabaseFunctions() {
         business_name: formData.businessName,
         business_address: formData.businessAddress,
         business_tax_id: formData.businessTaxId,
-        mode: mode,
+        kyb_mode: mode ? "TESTING" : undefined,
       }),
     [supabase]
   );
@@ -135,8 +131,8 @@ export default function useSupabaseFunctions() {
   const updateKYCClaimStatus = useCallback(
     (
       walletAddress: string,
-      mode: "APPROVED" | undefined,
-      claimStatus: "Unclaimed" | "Pending" | "Claimed"
+      claimStatus: "Unclaimed" | "Pending" | "Claimed",
+      mode: boolean
     ) =>
       mode
         ? supabase
@@ -145,14 +141,14 @@ export default function useSupabaseFunctions() {
               claim_status: claimStatus,
             })
             .eq("wallet_address", walletAddress)
-            .eq("mode", "APPROVED")
+            .eq("kyc_mode", "TESTING")
         : supabase
             .from("KYCpermissions")
             .update({
               claim_status: claimStatus,
             })
             .eq("wallet_address", walletAddress)
-            .neq("mode", "APPROVED"),
+            .neq("kyc_mode", "TESTING"),
     [supabase]
   );
 

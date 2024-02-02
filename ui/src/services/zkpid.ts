@@ -41,11 +41,7 @@ export default class ZKPid {
     this.token = token;
   }
 
-  async startkyc(req: {
-    address: string;
-    uid: string;
-    test: string | undefined;
-  }) {
+  async startkyc(req: { address: string; mode: boolean }) {
     if (!this.zkPidMainUrl) {
       throw new Error("ZKPID_URL is missing in env");
     }
@@ -63,8 +59,7 @@ export default class ZKPid {
         },
         body: JSON.stringify({
           address: req.address,
-          uid: req.uid,
-          // dummyStatus: req.test,
+          dummyStatus: req.mode && "APPROVED",
         }),
       })
     ).json();
