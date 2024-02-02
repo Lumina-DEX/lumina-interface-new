@@ -6,6 +6,7 @@ import { create } from "zustand";
 interface AccountModel {
   zkappWorkerClient: null | ZkappWorkerClient;
   hasWallet: null | boolean;
+  hasSideos: boolean;
   hasBeenSetup: boolean;
   accountExists: boolean;
   currentNum: null | Field;
@@ -16,9 +17,13 @@ interface AccountModel {
   //
   network: null | string;
   balances: { [id: string]: number };
+  kycStarted: boolean;
   kycVerified: boolean;
+  kybStarted: boolean;
   kybVerified: boolean;
   location: null | string;
+  kycClaimed: string; // "" | "Unclaimed" | "Pending" | "Claimed"
+  kycJwt: string;
   //
   risking?: RiskInfo;
 }
@@ -30,6 +35,7 @@ interface AccountState extends AccountModel {
 const useAccount = create<AccountState>((set) => ({
   zkappWorkerClient: null,
   hasWallet: null,
+  hasSideos: false,
   hasBeenSetup: false,
   accountExists: false,
   currentNum: null,
@@ -39,9 +45,13 @@ const useAccount = create<AccountState>((set) => ({
   creatingTransaction: false,
   network: null,
   balances: {},
+  kycStarted: false,
   kycVerified: false,
+  kybStarted: false,
   kybVerified: false,
   location: null,
+  kycClaimed: "",
+  kycJwt: "",
   update: (value: Partial<AccountModel>) => {
     set((state) => ({ ...state, ...value }));
   },

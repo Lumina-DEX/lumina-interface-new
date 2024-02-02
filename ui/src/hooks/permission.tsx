@@ -3,7 +3,8 @@ import useAccount from "@/states/useAccount";
 
 export default function usePermission() {
   const { getKYCPermissioned, getKYBPermissioned } = useSupabaseFunctions();
-  const { accountUpdate } = useAccount((state) => ({
+  const { hasSideos, accountUpdate } = useAccount((state) => ({
+    hasSideos: state.hasSideos,
     accountUpdate: state.update,
   }));
 
@@ -13,18 +14,24 @@ export default function usePermission() {
 
     getKYCPermissioned(address!, testMode || null).then((response) => {
       const { status, data } = response;
-      if (status === 200 && data) {
+      if (status === 200 && data && data.length > 0) {
         accountUpdate({
-          kycVerified: !!data[0],
-          location: !!data[0] ? data[0].location : null,
+          kycStarted: !!data[0],
+          kycVerified: hasSideos
+            ? !!data[0] && data[0].claim_status === "Claimed"
+            : !!data[0],
+          kycClaimed: data[0]?.claim_status || "",
+          location: data[0]?.location,
+          kycJwt: data[0]?.jwt || "",
         });
       }
     });
     getKYBPermissioned(address!, testMode || null).then((response) => {
       const { status, data } = response;
-      if (status === 200 && data) {
+      if (status === 200 && data && data.length > 0) {
         accountUpdate({
-          kybVerified: !!data[0] && (data[0].is_verified ?? false),
+          kybStarted: !!data[0],
+          kybVerified: data[0]?.is_verified ?? false,
         });
       }
     });

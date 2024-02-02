@@ -38,15 +38,16 @@ export default function AccountUpdater() {
         await zkappWorkerClient.setActiveInstanceToBerkeley();
 
         const mina = (window as any).mina;
+        const DAW = (window as any).DAW;
 
-        if (mina == null) {
-          accountUpdate({ hasWallet: false });
-          loadUpdate({
-            msg: `<a href="https://www.aurowallet.com/" target="_blank" rel="noreferrer">Install Auro wallet</a>`,
-            process: 60,
-          });
-          return;
-        }
+        // if (!mina) {
+        //   accountUpdate({ hasWallet: false });
+        //   loadUpdate({
+        //     msg: `<a href="https://www.aurowallet.com/" target="_blank" rel="noreferrer">Install Auro wallet</a>`,
+        //     process: 0.6,
+        //   });
+        //   return;
+        // }
 
         await zkappWorkerClient.loadContract();
 
@@ -63,7 +64,9 @@ export default function AccountUpdater() {
 
         accountUpdate({
           zkappWorkerClient,
-          hasWallet: true,
+          hasWallet: !!mina,
+          hasSideos:
+            DAW && "extensionInstalled" in DAW && DAW.extensionInstalled,
           hasBeenSetup: true,
           publicKey: null,
           publicKeyBase58: "",
