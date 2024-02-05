@@ -19,7 +19,7 @@ export default function usePermission() {
           accountUpdate({
             kycStarted: !!data[0],
             kycVerified: hasSideos
-              ? !!data[0] && data[0].claim_status === "Claimed"
+              ? !!data[0] && data[0].claim_status === "CLAIMED"
               : !!data[0],
             kycClaimed: data[0]?.claim_status || "",
             nationality: data[0]?.nationality,
