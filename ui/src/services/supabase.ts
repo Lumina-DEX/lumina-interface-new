@@ -9,41 +9,24 @@ export default function useSupabaseFunctions() {
 
   const getKYCPermissioned = useCallback(
     (walletAddress: string, testMode: boolean) =>
-      testMode
-        ? supabase
-            .from("KYCpermissions")
-            .select("*")
-            .eq("wallet_address", walletAddress)
-            .eq("kyc_mode", "TESTING")
-            .order("created_at", { ascending: false })
-            .limit(1)
-        : supabase
-            .from("KYCpermissions")
-            .select("*")
-            .eq("wallet_address", walletAddress)
-            .is("kyc_mode", null)
-            .order("created_at", { ascending: false })
-            .limit(1),
+      supabase
+        .from("KYCpermissions")
+        .select("*")
+        .eq("wallet_address", walletAddress)
+        .order("created_at", { ascending: false })
+        .limit(1),
     [supabase]
   );
 
   const getKYBPermissioned = useCallback(
     (walletAddress: string, testMode: boolean) =>
-      testMode
-        ? supabase
-            .from("KYBpermissions")
-            .select("*")
-            .eq("wallet_address", walletAddress)
-            .eq("kyb_mode", "TESTING")
-            .order("created_at", { ascending: false })
-            .limit(1)
-        : supabase
-            .from("KYBpermissions")
-            .select("*")
-            .eq("wallet_address", walletAddress)
-            .is("kyb_mode", null)
-            .order("created_at", { ascending: false })
-            .limit(1),
+      supabase
+        .from("KYBpermissions")
+        .select("*")
+        .eq("wallet_address", walletAddress)
+        .eq("kyb_mode", "TESTING")
+        .order("created_at", { ascending: false })
+        .limit(1),
     [supabase]
   );
 
@@ -136,30 +119,6 @@ export default function useSupabaseFunctions() {
     [supabase]
   );
 
-  const updateKYCClaimStatus = useCallback(
-    (
-      walletAddress: string,
-      claimStatus: "Unclaimed" | "Pending" | "Claimed",
-      mode: boolean
-    ) =>
-      mode
-        ? supabase
-            .from("KYCpermissions")
-            .update({
-              claim_status: claimStatus,
-            })
-            .eq("wallet_address", walletAddress)
-            .eq("kyc_mode", "TESTING")
-        : supabase
-            .from("KYCpermissions")
-            .update({
-              claim_status: claimStatus,
-            })
-            .eq("wallet_address", walletAddress)
-            .neq("kyc_mode", "TESTING"),
-    [supabase]
-  );
-
   return {
     getKYCPermissioned,
     getKYBPermissioned,
@@ -169,6 +128,5 @@ export default function useSupabaseFunctions() {
     getRisk,
     saveRisk,
     submitBusinessForm,
-    updateKYCClaimStatus,
   };
 }

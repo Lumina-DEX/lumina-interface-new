@@ -6,23 +6,14 @@ let timer: NodeJS.Timeout | undefined = undefined;
 
 export default function KycUpdater() {
   const { sync: syncPermission } = usePermission();
-  const { address, kycClaimed, kycJwt, hasSideos, hasWallet, accountUpdate } =
-    useAccount((state) => ({
-      address: state.publicKeyBase58,
-      kycClaimed: state.kycClaimed,
-      kycJwt: state.kycJwt,
-      hasSideos: state.hasSideos,
-      hasWallet: state.hasWallet,
-      accountUpdate: state.update,
-    }));
+  const { address, accountUpdate } = useAccount((state) => ({
+    address: state.publicKeyBase58,
+    accountUpdate: state.update,
+  }));
 
   const state = useAccount();
 
   console.log({ state });
-
-  const sendDAWOfferCredential = () => {
-    (document.querySelector("#dawOfferCredential") as any).click();
-  };
 
   useEffect(() => {
     if (address) {
@@ -44,36 +35,5 @@ export default function KycUpdater() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address]);
 
-  useEffect(() => {
-    switch (kycClaimed) {
-      case "Pending":
-        alert("Pending in claiming KYC credentials");
-        break;
-      case "Unclaimed":
-        if (!hasSideos) {
-          alert("Download Sideos Wallet");
-        } else {
-          alert("Claim KYC Credential with DAW");
-          sendDAWOfferCredential();
-        }
-        break;
-      case "Claimed":
-      default:
-        break;
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [kycClaimed]);
-
-  return (
-    <>
-      <button
-        className="hidden"
-        type="button"
-        id="dawOfferCredential"
-        data-jwt={kycJwt}
-      >
-        Pick up the credential
-      </button>
-    </>
-  );
+  return null;
 }

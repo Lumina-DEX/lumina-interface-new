@@ -19,7 +19,7 @@ interface AccountModel {
   balances: { [id: string]: number };
   kycStarted: boolean;
   kycVerified: boolean;
-  kycClaimed: string; // "" | "Unclaimed" | "Pending" | "Claimed"
+  kycClaimed: string; // "" | "UNCLAIMED" | "PENDING" | "CLAIMED"
   kycJwt: string;
   kybStarted: boolean;
   kybVerified: boolean;

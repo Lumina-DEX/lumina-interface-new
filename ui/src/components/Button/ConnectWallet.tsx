@@ -103,7 +103,7 @@ const ConnectWallet = () => {
         </div>
       );
     }
-    if (hasSideos && kycStarted && kycClaimed !== "Claimed") {
+    if (hasSideos && kycStarted && kycClaimed !== "CLAIMED") {
       return (
         <Button
           id="dawOfferCredential"

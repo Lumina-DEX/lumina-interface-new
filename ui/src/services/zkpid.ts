@@ -62,7 +62,7 @@ export default class ZKPid {
         body: JSON.stringify({
           uid: uuidv4(),
           address: req.address,
-          dummyStatus: req.mode && "APPROVED",
+          dummyStatus: req.mode ? "APPROVED" : undefined,
         }),
       })
     ).json();
