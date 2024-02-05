@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from "uuid";
+
 export default class ZKPid {
   private zkPidAuthUrl;
   private zkPidMainUrl;
@@ -58,7 +60,7 @@ export default class ZKPid {
           "X-Token": this.token,
         },
         body: JSON.stringify({
-          uid: "luminadex",
+          uid: uuidv4(),
           address: req.address,
           dummyStatus: req.mode && "APPROVED",
         }),
