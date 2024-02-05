@@ -58,6 +58,7 @@ export default class ZKPid {
           "X-Token": this.token,
         },
         body: JSON.stringify({
+          uid: "luminadex",
           address: req.address,
           dummyStatus: req.mode && "APPROVED",
         }),
