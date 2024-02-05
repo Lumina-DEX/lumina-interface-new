@@ -16,7 +16,9 @@ export default function KycUpdater() {
       accountUpdate: state.update,
     }));
 
-  console.log({ kycJwt, kycClaimed });
+  const state = useAccount();
+
+  console.log({ state });
 
   const sendDAWOfferCredential = () => {
     (document.querySelector("#dawOfferCredential") as any).click();

@@ -19,11 +19,11 @@ interface AccountModel {
   balances: { [id: string]: number };
   kycStarted: boolean;
   kycVerified: boolean;
+  kycClaimed: string; // "" | "Unclaimed" | "Pending" | "Claimed"
+  kycJwt: string;
   kybStarted: boolean;
   kybVerified: boolean;
   nationality: null | string;
-  kycClaimed: string; // "" | "Unclaimed" | "Pending" | "Claimed"
-  kycJwt: string;
   //
   risking?: RiskInfo;
 }
@@ -32,7 +32,7 @@ interface AccountState extends AccountModel {
   update: (value: Partial<AccountModel>) => void;
 }
 
-const useAccount = create<AccountState>((set) => ({
+export const InitialAccountState = {
   zkappWorkerClient: null,
   hasWallet: null,
   hasSideos: false,
@@ -52,6 +52,10 @@ const useAccount = create<AccountState>((set) => ({
   nationality: null,
   kycClaimed: "",
   kycJwt: "",
+};
+
+const useAccount = create<AccountState>((set) => ({
+  ...InitialAccountState,
   update: (value: Partial<AccountModel>) => {
     set((state) => ({ ...state, ...value }));
   },
