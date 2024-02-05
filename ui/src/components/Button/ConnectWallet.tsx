@@ -20,7 +20,19 @@ const ConnectWallet = () => {
   const { darkMode, setDarkMode } = useContext(AppContext);
 
   const { sync: syncPermission } = usePermission();
-  const { kycVerified, kybVerified, balances } = useAccount((state) => ({
+  const {
+    hasSideos,
+    kycJwt,
+    kycStarted,
+    kycClaimed,
+    kycVerified,
+    kybVerified,
+    balances,
+  } = useAccount((state) => ({
+    hasSideos: state.hasSideos,
+    kycJwt: state.kycJwt,
+    kycStarted: state.kycStarted,
+    kycClaimed: state.kycClaimed,
     kycVerified: state.kycVerified,
     kybVerified: state.kybVerified,
     balances: state.balances,
@@ -72,40 +84,56 @@ const ConnectWallet = () => {
     disconnect();
   };
 
-  return (
-    // {walletConnected && (
-    //   <Button size="sm">{balances.mina ?? 0} Mina</Button>
-    //
-    <div className="flex gap-2 max-sm:fixed max-sm:bottom-0 max-sm:left-0 max-sm:h-14 max-sm:w-full max-sm:z-[2] max-sm:bg-background-l1 max-sm:shadow-10 max-sm:px-4 max-sm:justify-start max-sm:items-center max-sm:flex">
+  const renderIdentifyAction = () => {
+    if (kybVerified) {
+      return (
+        <div className="text-blue-800 font-bold flex flex-row items-center">
+          <BiSolidCheckCircle />
+          <p className="font-metrophobic block max-sm:hidden">KYB Passed</p>
+          <p className="font-metrophobic hidden max-sm:block">KYB</p>
+        </div>
+      );
+    }
+    if (kycVerified) {
+      return (
+        <div className="text-emerald-400 font-bold flex flex-row items-center">
+          <BiSolidCheckCircle />
+          <p className="font-metrophobic block max-sm:hidden">KYC Passed</p>
+          <p className="font-metrophobic hidden max-sm:block">KYC</p>
+        </div>
+      );
+    }
+    if (hasSideos && kycStarted && kycClaimed !== "Claimed") {
+      return (
+        <Button
+          id="dawOfferCredential"
+          data-jwt={kycJwt}
+          size="sm"
+          color="primary"
+        >
+          Claim Credential
+        </Button>
+      );
+    }
+    return (
       <div>
-        {address ? (
-          kybVerified ? (
-            <div className="text-blue-800 font-bold flex flex-row items-center">
-              <BiSolidCheckCircle />
-              <p className="font-metrophobic block max-sm:hidden">KYB Passed</p>
-              <p className="font-metrophobic hidden max-sm:block">KYB</p>
-            </div>
-          ) : kycVerified ? (
-            <div className="text-emerald-400 font-bold flex flex-row items-center">
-              <BiSolidCheckCircle />
-              <p className="font-metrophobic block max-sm:hidden">KYC Passed</p>
-              <p className="font-metrophobic hidden max-sm:block">KYC</p>
-            </div>
-          ) : (
-            <Link
-              href={`/dash/kyc?address=${address}`}
-              className="btn w-full min-h-0 shadow-md btn-primary text-lg text-white h-7 font-orbitron"
-            >
-              <span className="block max-sm:hidden">Start KYC</span>
-              <span className="hidden max-sm:block">KYC</span>
-            </Link>
-          )
-        ) : (
-          <></>
-        )}
+        <Link
+          href={`/dash/kyc?address=${address}`}
+          className="btn w-full min-h-0 shadow-md btn-primary text-lg text-white h-7 font-orbitron"
+        >
+          <span className="hidden max-sm:block">KYC</span>
+          <span className="block max-sm:hidden">Start KYC</span>
+        </Link>
       </div>
+    );
+  };
+
+  return (
+    <div className="flex gap-2 max-sm:fixed max-sm:bottom-0 max-sm:left-0 max-sm:h-14 max-sm:w-full max-sm:z-[2] max-sm:bg-background-l1 max-sm:shadow-10 max-sm:px-4 max-sm:justify-start max-sm:items-center max-sm:flex">
+      {address && renderIdentifyAction()}
       {address && <Button size="sm">{balances.mina ?? 0} Mina</Button>}
-      <div className="font-primary ">
+
+      <div className="font-primary">
         {address ? (
           <Dropdown className="font-primary text-gray-800 z-50">
             <Dropdown.Toggle>{shortenAddress(address)}</Dropdown.Toggle>
