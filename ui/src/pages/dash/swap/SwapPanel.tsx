@@ -240,9 +240,9 @@ const SwapPanel: React.FC = () => {
                 Swap
               </Button>
               {!kycVerified && address && (
-                <div>
+                <span>
                   Complete KYC to access additional permissioned pool liquidity
-                </div>
+                </span>
               )}
             </div>
           ) : (

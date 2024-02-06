@@ -25,7 +25,7 @@ export default async function handler(
     });
 
     const { data } = req.body;
-    if (data && "jwt" in data) {
+    if (data && "jwt" in data && "kyc_status" in data && "signid" in data) {
       // {
       //   "data": {
       //       "error": 0,
@@ -59,7 +59,7 @@ export default async function handler(
       });
 
       res.status(200).json({ message: "success", result });
-    } else if (data && "wallet_address" in data) {
+    } else if (data && "jwt" in data && "kyc_credential_status" in data) {
       // {
       //   data: {
       //     wallet_address: <wallet address>,
