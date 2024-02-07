@@ -14,14 +14,25 @@ interface Props {
 }
 
 const PermissionedPools: React.FC<Props> = ({ pools }) => {
-  const { nationality, kycVerified, kybVerified, address } = useAccount(
-    (state) => ({
-      nationality: state.nationality,
-      kycVerified: state.kycVerified,
-      kybVerified: state.kybVerified,
-      address: state.publicKeyBase58,
-    })
-  );
+  const {
+    nationality,
+    hasSideos,
+    kycStarted,
+    kycClaimed,
+    kycJwt,
+    kycVerified,
+    kybVerified,
+    address,
+  } = useAccount((state) => ({
+    nationality: state.nationality,
+    hasSideos: state.hasSideos,
+    kycStarted: state.kycStarted,
+    kycClaimed: state.kycClaimed,
+    kycJwt: state.kycJwt,
+    kycVerified: state.kycVerified,
+    kybVerified: state.kybVerified,
+    address: state.publicKeyBase58,
+  }));
   const { loadState } = useLoad((state) => ({
     loadState: state.state,
   }));
@@ -35,16 +46,79 @@ const PermissionedPools: React.FC<Props> = ({ pools }) => {
     <RxCircleBackslash className="text-rose-500 text-base" />
   );
 
+  const renderNotes = () => {
+    if (kybVerified) {
+      return "KYB Passed, Select an existing pool to manage liquidity or click ‘New Pool’";
+    }
+    if (kycVerified) {
+      return "KYC Passed, view your access to permissioned liquidity pools below";
+    }
+    if (hasSideos && kycStarted && kycClaimed !== "CLAIMED") {
+      return "Claim Credential to access permissioned liquidity on Lumina";
+    }
+    if (address) {
+      return "Complete KYC to access permissioned liquidity on Lumina";
+    }
+    return "Connect Wallet and Complete KYC to access permissioned liquidity on Lumina";
+  };
+
+  const renderAction = () => {
+    if (kybVerified) {
+      return (
+        <Link
+          href={`/dash/pool/new`}
+          className="btn py-2 shadow-md btn-primary w-[160px] text-lg font-orbitron"
+        >
+          New Pool
+        </Link>
+      );
+    }
+    if (kycVerified) {
+      return (
+        <Link
+          href={`/dash/kyb?address=${address}`}
+          className="btn py-2 shadow-md btn-primary w-[160px] text-lg font-orbitron"
+        >
+          Start KYB
+        </Link>
+      );
+    }
+    if (hasSideos && kycStarted && kycClaimed !== "CLAIMED") {
+      return (
+        <Button
+          id="dawOfferCredential"
+          data-jwt={kycJwt}
+          className="btn-primary text-white font-orbitron"
+        >
+          Claim Credential
+        </Button>
+      );
+    }
+    if (address) {
+      return (
+        <Link
+          href={`/dash/kyc?address=${address}`}
+          className="btn py-2 shadow-md btn-primary w-[160px] text-lg font-orbitron"
+        >
+          Start KYC
+        </Link>
+      );
+    }
+    return (
+      <Button
+        className="btn-primary text-white font-orbitron"
+        onClick={handleConnectWallet}
+        disabled={!loadState}
+      >
+        Connect Wallet
+      </Button>
+    );
+  };
+
   return (
     <div className="flex flex-col gap-y-4 py-4">
       <div className="text-center font-bold text-black px-4 text-base sm:text-lg min-[320px]:text-[15px]">
-        {kybVerified
-          ? "KYB Passed, Select an existing pool to manage liquidity or click ‘New Pool’"
-          : !kycVerified
-          ? address
-            ? "Complete KYC to access permissioned liquidity on Lumina"
-            : "Connect Wallet and Complete KYC to access permissioned liquidity on Lumina"
-          : "KYC Passed, view your access to permissioned liquidity pools below"}
+        {renderNotes()}
       </div>
       <div className="hidden md:block">
         {pools.length ? (
@@ -241,6 +315,7 @@ const PermissionedPools: React.FC<Props> = ({ pools }) => {
           );
         })}
       </div>
+
       {!kybVerified && kycVerified && (
         <div className="text-center font-bold text-black px-2 text-base sm:text-base min-[320px]:text-[13px]">
           Permissioned pool creation and management is
@@ -248,46 +323,7 @@ const PermissionedPools: React.FC<Props> = ({ pools }) => {
         </div>
       )}
 
-      {address ? (
-        !kycVerified ? (
-          <div className="flex justify-center">
-            <Link
-              href={`/dash/kyc?address=${address}`}
-              className="btn py-2 shadow-md btn-primary w-[160px] text-lg font-orbitron"
-            >
-              Start KYC
-            </Link>
-          </div>
-        ) : !kybVerified ? (
-          <div className="flex justify-center">
-            <Link
-              href={`/dash/kyb?address=${address}`}
-              className="btn py-2 shadow-md btn-primary w-[160px] text-lg font-orbitron"
-            >
-              Start KYB
-            </Link>
-          </div>
-        ) : (
-          <div className="flex justify-center">
-            <Link
-              href={`/dash/pool/new`}
-              className="btn py-2 shadow-md btn-primary w-[160px] text-lg font-orbitron"
-            >
-              New Pool
-            </Link>
-          </div>
-        )
-      ) : (
-        <div className="flex justify-center">
-          <Button
-            className="btn-primary text-white font-orbitron"
-            onClick={handleConnectWallet}
-            disabled={!loadState}
-          >
-            Connect Wallet
-          </Button>
-        </div>
-      )}
+      <div className="flex justify-center">{renderAction()}</div>
     </div>
   );
 };
