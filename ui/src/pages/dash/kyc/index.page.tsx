@@ -6,13 +6,20 @@ import { Button } from "react-daisyui";
 import { NextPageWithLayout } from "@/pages/_app.page";
 import { FaTimes } from "react-icons/fa";
 import { useRouter } from "next/router";
-import useSupabaseFunctions from "@/services/supabase";
+import useAccount from "@/states/useAccount";
 
 const KYCPage: NextPageWithLayout = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const address = useAccount((state) => state.publicKeyBase58);
 
   const [url, setUrl] = useState("");
+
+  useEffect(() => {
+    if (!address) {
+      router.push("/dash");
+    }
+  }, [address, router]);
 
   const handleStartVerification = () => {
     getUrl();
@@ -35,7 +42,10 @@ const KYCPage: NextPageWithLayout = () => {
       address,
       mode: testMode === "true",
     });
-    setUrl(url);
+
+    if (url) {
+      setUrl(url);
+    }
   };
 
   const setUpCallback = () => {
